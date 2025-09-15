@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import "./styles/globals.css";
 
 export default function RootLayout({
   children,
@@ -7,9 +7,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
+      <head>
+        <title>
+          TradeBox 
+        </title>
+       </head>
       <body>
-        {children}
+          {children}
       </body>
     </html>
   );

@@ -1,0 +1,42 @@
+.nav {
+  position: relative;
+  display: flex;
+  background: #fff;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 100%;
+  background: #e0e0e0;
+  border-radius: 12px;
+  transition: left .3s cubic-bezier(.1,0,.2,1);
+  z-index: 0;
+}
+
+.navItem {
+  flex: 1;
+  text-align: center;
+  z-index: 1;
+  padding: 10px 0;
+  position: relative;
+}
+
+.icon {
+  font-size: 1.8rem;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.activeIcon {
+  font-size: 1.8rem;
+  color: #888;
+  transition: color .3s;
+  color: #1976d2;
+}
