@@ -1,7 +1,12 @@
 .layout {
     display: flex;
     flex-direction: column;
-    min-height: 100dvh;
-    padding: 15px;
+    height: 100dvh;
     justify-content: space-between;
+}
+
+.nav_wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
 }

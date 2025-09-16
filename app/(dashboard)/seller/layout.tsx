@@ -8,10 +8,8 @@ export default function DashboardSellerLayout({
 }>) {
   return (
         <div className={styles.layout}>
-            
             {children}
-            
-            <div className={styles.nav}>
+            <div className={styles.nav_wrapper  }>
                 <BottomNav/>
             </div>
         </div>
