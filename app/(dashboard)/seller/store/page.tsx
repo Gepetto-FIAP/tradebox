@@ -3,7 +3,12 @@
 export default function Sell() {
   return (
     <>
-      Seller Store
+    <div>
+      Loja
+    </div>
+    <div>
+      store 
+    </div>
     </>
   );
 }

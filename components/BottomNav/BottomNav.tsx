@@ -8,7 +8,6 @@ import { BiHome, BiMoneyWithdraw, BiLineChart, BiStore, BiBarcodeReader, BiCart,
 
 const navItems = [
   { href: '/seller', icon: BiHome, label: 'Home' },
-  { href: '/seller/campaign', icon: BiCart , label: 'Campanhas' },
   { href: '/seller/sell', icon: BiBarcodeReader , label: 'Vender' },
   { href: '/seller/store', icon: BiStore , label: 'Loja' },
   { href: '/seller/analytics', icon: BiLineChart , label: 'Análises' },
@@ -24,11 +23,13 @@ export default function BottomNav() {
       {navItems.map((item, idx) => {
         const isActive = pathname === item.href;
         return (
-          <Link key={item.href} href={item.href} className={styles.navItem}>
-            <item.icon className={isActive ? styles.activeIcon : styles.icon}/>
+          <Link key={item.href} href={item.href} className={`${styles.navItem} ${isActive ? styles.activeItem : ''}`}>
+            <item.icon className={styles.icon}/>
+            <span className={styles.label}>{item.label}</span>
           </Link>
         );
       })}
     </nav>
   );
 }
+

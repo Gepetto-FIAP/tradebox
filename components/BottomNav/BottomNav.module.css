@@ -1,42 +1,58 @@
 .nav {
   position: relative;
   display: flex;
-  background: #fff;
-  height: 60px;
   align-items: center;
   justify-content: space-between;
-  overflow: hidden;
 }
 
 .slider {
   position: absolute;
-  top: 0;
+  top: -4px;
   left: 0;
-  width: 20%;
-  height: 100%;
-  background: #e0e0e0;
-  border-radius: 12px;
+  right: 0;
+  width: 25%;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 10px;
   transition: left .3s cubic-bezier(.1,0,.2,1);
   z-index: 0;
 }
 
 .navItem {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  z-index: 1;
-  padding: 10px 0;
+  background: transparent;
+  padding: 10px;
   position: relative;
+  border-radius: 10px;
+  text-decoration: none;
+  z-index: 1;
+  gap: 1px;
+  flex: 1 1 0px;
+  overflow: hidden;
+  transition: .3s;
+}
+
+
+.label {
+  text-decoration: none;
+  color: var(--color-muted);
+  font-size: 0.75rem;
 }
 
 .icon {
-  font-size: 1.8rem;
-  color: #888;
+  font-size: 1.5rem;
+  color: var(--color-muted);
   transition: color 0.2s;
 }
 
-.activeIcon {
-  font-size: 1.8rem;
-  color: #888;
-  transition: color .3s;
-  color: #1976d2;
+.activeItem .icon {
+  color: var(--color-primary);
+}
+
+.activeItem .label {
+  color: var(--color-primary);
 }

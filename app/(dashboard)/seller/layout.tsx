@@ -8,12 +8,9 @@ export default function DashboardSellerLayout({
 }>) {
   return (
         <div className={styles.layout}>
-            <div>
-                <p>Header</p>
-            </div>
-            <div>
-                {children}
-            </div>
+            
+            {children}
+            
             <div className={styles.nav}>
                 <BottomNav/>
             </div>

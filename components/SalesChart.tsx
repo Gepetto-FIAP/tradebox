@@ -1,17 +1,31 @@
 'use client';
 
-import { Bar } from 'react-chartjs-2';
-import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart, Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend, ScriptableContext } from 'chart.js';
+import {Line} from 'react-chartjs-2'
 
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+Chart.register(Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend);
+
+
+
 
 const data = {
-  labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
+  labels: ['seg', 'ter', 'qua', 'qui', 'sex', 'sab', 'dom'],
   datasets: [
     {
+      backgroundColor: (context: ScriptableContext<"line">) => {
+        const ctx = context.chart.ctx;
+        const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+        gradient.addColorStop(0, "#2276cbb0");
+        gradient.addColorStop(1, "#2276cb08");
+        return gradient;
+      },
       label: 'Vendas',
-      data: [12, 19, 3, 5],
-      backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      data: [20, 24, 28, 22, 22, 24, 24, 32],
+      borderColor: '#2276cb',
+      borderWidth: 5,
+      tension: 0.3,
+      fill: true,
+      pointRadius: 0
     },
   ],
 };
@@ -19,11 +33,22 @@ const data = {
 const options = {
   responsive: true,
   plugins: {
-    legend: { position: 'top' as const },
-    title: { display: true, text: 'Vendas por mês' },
+    tooltip: { enabled: false },
+    legend: { display: false },
+    title: { display: false },
+  },
+    scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: false,
+    },
+
+
   },
 };
 
 export default function SalesChart() {
-  return <Bar data={data} options={options} />;
+  return <Line data={data} options={options} />;
 }

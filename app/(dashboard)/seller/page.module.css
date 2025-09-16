@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.greeting {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.name {
+    font-size: 2.1rem;
+    color: var(--color-text-primary);
+}
+
+.chart {
+    width: 500px;
+}
