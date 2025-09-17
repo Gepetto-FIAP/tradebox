@@ -1,9 +1,10 @@
+import Link from 'next/link';
 
 export default function Home() {
   return (
     <div>
       <h1>
-        Olá mundo!
+        <Link href="/seller">Dashboard</Link >
       </h1>
     </div>
   );

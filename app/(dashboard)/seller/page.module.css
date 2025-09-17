@@ -2,8 +2,11 @@
     display: flex;
     flex-direction: column;
     line-height: 1;
-    padding: 25px;
-    color: #fff;
+    padding: 25px 25px 0px;
+    color: var(--color-text);
+
+
+    mask-image: linear-gradient(to bottom, black 40%, transparent 101%);
 }
 
 .greeting {
@@ -13,7 +16,7 @@
 
 .name {
     font-weight: 100;
-    font-size: 2.1rem;
+    font-size: 1.8rem;
 }
 
 .content {
@@ -23,18 +26,21 @@
     width: 100%;
     padding: 25px;
     overflow-x: auto;
+
+    gap: 10px;
 }
 
 .chart_wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #ffffff15;
+    border: 2px solid var(--color-border);
     overflow: hidden;
     border-radius: 8px;
     width: 100%;
     max-width: 400px;
 }
+
 
 .chart_container {
     display: flex;
@@ -46,19 +52,12 @@
     padding: 10px 0 0 10px;
 }
 
-.chart_label {
-    color: var(--color-secondary);
-    font-weight: 200;
-    font-size: 0.8rem;
-    opacity: 0.75;
-}
-
 .chart_value {
     color: var(--color-primary);
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-top: 5px;
-    color: #fff;
+    font-size: 1.9rem;
+    font-weight: 200;
+    margin-top: 3px;
+    color: var(--color-text);
 }
 
 .chart {
@@ -73,8 +72,49 @@
 }
 
 .title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #fff;
+    font-size: 1rem;
+    font-weight: 100;
+    color:  var(--color-text);
     margin-bottom: 10px;
+    display: none; /* remover depois */
+}
+
+.recent_orders_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--color-border);
+    overflow: hidden;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.orders_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.orders_content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+}
+
+.card_label {
+    color: var(--color-secondary);
+    font-weight: 300;
+    font-size: 0.8em;
+    opacity: 0.75;
+}
+
+.recent_orders {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
 }

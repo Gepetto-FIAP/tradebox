@@ -3,9 +3,9 @@
   --color-bg-light: #ffffff;
   --color-primary: #01b5fa;
   --color-secondary: #e0e0e0;
-  --color-text: #222;
+  --color-text: #fff;
   --color-muted: #888;
-  --color-border: #ddd;
+  --color-border: #ffffff15;
 }
 
 * {

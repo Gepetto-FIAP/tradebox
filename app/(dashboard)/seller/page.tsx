@@ -1,5 +1,6 @@
 import SalesChart from '@/components/SalesChart'; //teste
 import styles from './page.module.css';
+import RecentOrders from '@/components/RecentOrders/RecentOrders';
 
 export default function Seller() {
   return (
@@ -9,20 +10,37 @@ export default function Seller() {
         <div className={styles.name}>Fulano!</div>
       </div>
       <div className={styles.content}> 
-        <div className={styles.title}>
-          Visão Geral
+        <div>
+          <h2 className={styles.title}>Visão geral</h2>
         </div>
         <div className={styles.chart_wrapper}>
           <div className={styles.chart_container}>
             <div className={styles.chart_content}>
-              <div className={styles.chart_label}>Vendas nos últimos 7 dias</div>
+              <div className={styles.card_label}>Vendas nos últimos 7 dias</div>
               <div className={styles.chart_value}>R$ 25.234,56</div>
             </div>
             <div className={styles.chart}>
-              <SalesChart colorStart={"#01b3fa70"} colorEnd={"transparent"} colorBorder={"#01b5fa"} />
+              <SalesChart colorStart={"#01b5fa70"} colorEnd={"transparent"} colorBorder={"#01b5fa"} />
             </div>
           </div>
         </div>
+
+        <div>
+          <h2 className={styles.title}>Pedidos recentes</h2>
+        </div>
+
+        <div className={styles.recent_orders_wrapper}>
+          <div className={styles.orders_container}>
+            <div className={styles.orders_content}>
+              <div className={styles.card_label}>Últimas vendas</div>
+            </div>
+            <div className={styles.recent_orders}>
+              <RecentOrders/>
+            </div>
+          </div>
+        </div>
+
+
 
       </div>
 
