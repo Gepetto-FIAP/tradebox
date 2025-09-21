@@ -1,0 +1,192 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: background 0.5s ease;
+}
+
+.loginBox {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-bg-dark);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--color-muted);
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.userTypeToggle {
+  margin-bottom: 8px;
+}
+
+.toggleHeader {
+  margin-bottom: 12px;
+}
+
+.toggleLabel {
+  font-weight: 500;
+  color: var(--color-bg-dark);
+  font-size: 14px;
+}
+
+.toggleContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.toggleButton {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.toggleButton:hover {
+  border-color: #c1c1c1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggleButton.active {
+  border-color: var(--color-primary);
+  background: rgba(1, 181, 250, 0.05);
+  box-shadow: 0 0 0 3px rgba(1, 181, 250, 0.1);
+}
+
+.toggleIcon {
+  font-size: 20px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.toggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggleTitle {
+  font-weight: 600;
+  color: var(--color-bg-dark);
+  font-size: 14px;
+}
+
+.toggleSubtitle {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 500;
+  color: var(--color-bg-dark);
+  font-size: 14px;
+}
+
+.input {
+  padding: 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  background: white;
+  color: var(--color-bg-dark);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(1, 181, 250, 0.1);
+}
+
+.input::placeholder {
+  color: var(--color-muted);
+}
+
+.submitButton {
+  padding: 16px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 8px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #0195cc;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.footer p {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+  
+  .loginBox {
+    padding: 24px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+}
