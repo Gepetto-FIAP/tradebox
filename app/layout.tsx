@@ -1,5 +1,6 @@
 import "./styles/globals.css";
 import { Urbanist } from "next/font/google";
+import ThemeColorMeta from "@/components/ThemeColorMeta/ThemeColorMeta";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -15,12 +16,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={urbanist.className}>
       <head>
-        <meta name="theme-color" content="#00f" />
+        <meta name="theme-color" content="#000"/>
         <title>
           TradeBox 
         </title>
        </head>
       <body>
+        <ThemeColorMeta />
         <main>
           {children}
         </main>

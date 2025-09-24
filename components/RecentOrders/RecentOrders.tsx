@@ -22,6 +22,103 @@ export default function RecentOrders() {
                 </div>
             </li>
 
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+                        <li className={styles.order_item}>
+                <div className={styles.order_icon}>
+                    <BiMoneyWithdraw />
+                </div>
+                <div className={styles.order_info}>
+                    <div className={styles.order_customer}>
+                        Luiz Inacio Lula da Silva Barbosa
+                    </div>
+                    <div className={styles.order_date}>
+                        01/01/1900
+                    </div>
+                </div>
+                <div className={styles.order_amount}>
+                    + R$ 250,00
+                </div>
+            </li>
+
             <li className={styles.order_item}>
                 <div className={styles.order_icon}>
                     <BiMoneyWithdraw />

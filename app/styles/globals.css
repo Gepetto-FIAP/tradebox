@@ -6,6 +6,9 @@
   --color-text: #fff;
   --color-muted: #888;
   --color-border: #ffffff15;
+
+  --theme-color: #002431; /*meta theme color*/
+  --color-background: #000e14;
 }
 
 * {
@@ -15,7 +18,7 @@
 }
 
 body {
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-primary);
   font-weight: 200;
 }
