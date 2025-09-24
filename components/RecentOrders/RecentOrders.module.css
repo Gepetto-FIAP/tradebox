@@ -21,7 +21,7 @@
     background: var(--color-bg-dark);
     border-radius: 6px;
     padding: 4px;
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     color: var(--color-primary);
     transition: color 0.2s;
 
@@ -42,8 +42,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 230px;
-    max-width: 230px;
+    width: 200px;
+    max-width: 200px;
     display: block;
 }
 

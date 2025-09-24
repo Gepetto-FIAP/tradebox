@@ -1,6 +1,7 @@
 import SalesChart from '@/components/SalesChart'; //teste
 import styles from './page.module.css';
 import RecentOrders from '@/components/RecentOrders/RecentOrders';
+import CardData from '@/components/CardData/CardData';
 
 export default function Seller() {
   return (
@@ -10,9 +11,7 @@ export default function Seller() {
         <div className={styles.name}>Fulano!</div>
       </div>
       <div className={styles.content}> 
-        <div>
-          <h2 className={styles.title}>Visão geral</h2>
-        </div>
+
         <div className={styles.chart_wrapper}>
           <div className={styles.chart_container}>
             <div className={styles.chart_content}>
@@ -25,10 +24,6 @@ export default function Seller() {
           </div>
         </div>
 
-        <div>
-          <h2 className={styles.title}>Pedidos recentes</h2>
-        </div>
-
         <div className={styles.recent_orders_wrapper}>
           <div className={styles.orders_container}>
             <div className={styles.orders_content}>
@@ -38,6 +33,16 @@ export default function Seller() {
               <RecentOrders/>
             </div>
           </div>
+        </div>
+
+        <div className={styles.cards_data_wrapper}>
+
+          <div className={styles.cards_data}>
+              <CardData/>
+              <CardData/>
+              <CardData/>
+          </div>
+
         </div>
 
 

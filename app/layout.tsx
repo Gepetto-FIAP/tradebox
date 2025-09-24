@@ -15,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={urbanist.className}>
       <head>
+        <meta name="theme-color" content="#00f" />
         <title>
           TradeBox 
         </title>
