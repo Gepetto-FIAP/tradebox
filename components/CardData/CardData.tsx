@@ -1,12 +1,17 @@
+import { ReactNode } from 'react';
 import styles from './CardData.module.css';
-import {BiCartAlt } from 'react-icons/bi';
 
-export default function CardData() {
+type CardDataProps = {
+  icon: ReactNode;
+};
+
+
+export default function CardData({ icon }: CardDataProps) {
   return (
     <div className={styles.card_data}>
         <div className={styles.card_content_left}>
             <div className={styles.card_icon}>
-                <BiCartAlt />
+                {icon}
             </div>
         </div>
         <div className={styles.card_content_right}>

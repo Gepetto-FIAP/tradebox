@@ -2,6 +2,7 @@ import SalesChart from '@/components/SalesChart'; //teste
 import styles from './page.module.css';
 import RecentOrders from '@/components/RecentOrders/RecentOrders';
 import CardData from '@/components/CardData/CardData';
+import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
 
 export default function Seller() {
   return (
@@ -38,17 +39,14 @@ export default function Seller() {
         <div className={styles.cards_data_wrapper}>
 
           <div className={styles.cards_data}>
-              <CardData/>
-              <CardData/>
-              <CardData/>
+              <CardData icon={<BiCartAlt/>} />
+              <CardData icon={<BiDollar />} />
+              <CardData icon={<BiLineChart  />} />
+              <CardData icon={<BiBasket />} />
+
           </div>
-
         </div>
-
-
-
       </div>
-
     </>
   );
 }

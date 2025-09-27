@@ -1,0 +1,13 @@
+.history_sell {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid var(--color-border);
+    height: 100%;
+}
+
+.history_label {
+    color: var(--color-secondary);
+    opacity: .75;
+    font-size: .8em;
+    font-weight: 300;
+}

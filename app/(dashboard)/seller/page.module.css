@@ -24,9 +24,9 @@
     height: 100%;
     width: 100%;
     overflow-x: auto;
-    gap: 20px;
     padding: 20px 0;
-    
+    gap: 20px;
+    scrollbar-width: none;
 }
 
 .chart_wrapper {
@@ -34,7 +34,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 400px;
     padding: 0 20px;
 }
 
@@ -64,18 +63,11 @@
     scale: 1.025;
     filter: brightness(0.9) opacity(0.75);
     transition: .3s ease;
+
 }
 
 .chart:hover {
     filter: brightness(1) opacity(1);
-}
-
-.title {
-    font-size: 1rem;
-    font-weight: 100;
-    color:  var(--color-text);
-    margin-bottom: 10px;
-    display: none; /* remover depois */
 }
 
 .recent_orders_wrapper {
@@ -83,14 +75,16 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 400px;
     padding: 0 20px;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .orders_container {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     border: 2px solid var(--color-border);
     overflow: hidden;
     border-radius: 8px;
@@ -117,7 +111,7 @@
     width: 100%;
     padding: 10px;
     gap: 10px;
-    max-height: 25dvh;
+    scrollbar-width: none;
     overflow-x: auto;
 }
 
@@ -134,5 +128,85 @@
     width: 100%;
     overflow-y: auto;
     scrollbar-width: none;
-    padding: 4px;
+    padding: 2px;
 }
+
+@media (min-width: 700px) {
+    .header {
+        padding: 30px 30px 0px;
+    }
+
+    .cards_data_wrapper {
+        padding-left: 0px;
+        height: min-content;
+    }
+
+    .content {
+        display: grid;
+        grid-template-areas: 
+        "chart cards"
+        "orders orders";
+        height: auto;
+        grid-template-rows: 2fr 3fr;
+        grid-template-columns: 3fr 4fr;
+        padding: 30px;
+        grid-gap: 30px;
+        height: 100%;
+    }
+
+    .cards_data {
+        gap: 30px;
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+
+    .chart_wrapper {
+        padding: 0px;
+        align-items: start;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .orders_content {
+        padding: 20px;
+    }
+
+    .recent_orders {
+        padding: 0 20px;
+        max-height: 100%;
+    }
+
+    .recent_orders_wrapper {
+        padding: 0px;
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .orders_container {
+        height: 100%;
+    }
+
+    .chart_container {
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .chart_content {
+        padding: 20px 0 0 20px;
+    }
+
+    .chart_value {
+        font-size: 2.4rem;
+    }
+
+    .card_label {
+        font-size: 0.9rem;
+    }
+}
+
+
+.chart_wrapper { grid-area: chart; }
+.recent_orders_wrapper { grid-area: orders; }
+.cards_data_wrapper { grid-area: cards; }

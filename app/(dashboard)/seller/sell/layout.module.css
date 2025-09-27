@@ -1,0 +1,98 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+    height: 100%;
+}
+
+.sell_options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 2px;
+}
+
+.sell_content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.button {
+    text-decoration: none;
+    color: var(--color-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    width: 50%;
+    border-radius: 8px;
+    padding: 10px;
+    gap: 2px;
+    position: relative;
+    transition: .3s;
+    max-width: 125px;
+    background-image: radial-gradient(circle at 0 0, var(--color-bg-dark) 0%, rgba(0, 0, 0, 0) 50%);
+}
+
+.button::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    transition:  0.3s;
+    background-image: radial-gradient(circle at 0% 0%, var(--color-primary) 0%, var(--color-border) 50%);
+    background-size: 100% 100%;
+    background-clip: border-box;
+    background-origin: border-box;
+}
+
+.button:hover:before {
+    background-size: 400% 400%;
+}
+
+.button svg {
+    transition: .3s;
+    opacity: 0.8;
+}
+
+.button:hover svg {
+    scale: 1.1;
+    opacity: 1;
+}
+
+.button_label {
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    text-align: center;
+    transition: .3s;
+}
+
+.button:hover {
+    color: var(--color-text);
+    background-color: var(--color-bg-dark);
+    filter: drop-shadow(0px 0px 20px #ffffff20);
+}
+
+.button:hover .button_label {
+    color: var(--color-text);
+}
+
+@media (min-width: 700px) {
+    .container {
+        padding: 30px;
+        gap: 30px;
+    }
+}

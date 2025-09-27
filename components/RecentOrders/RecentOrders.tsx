@@ -70,7 +70,7 @@ export default function RecentOrders() {
                     + R$ 250,00
                 </div>
             </li>
-                        <li className={styles.order_item}>
+            <li className={styles.order_item}>
                 <div className={styles.order_icon}>
                     <BiMoneyWithdraw />
                 </div>

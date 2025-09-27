@@ -22,7 +22,15 @@
     -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
-    background: radial-gradient(circle at 0% 0%, var(--color-primary) 0%, #ffffff12 20%) border-box;
+    transition:  0.4s;
+    background-image: radial-gradient(circle at 0% 0%, var(--color-primary) 0%, var(--color-border) 20%);
+    background-size: 100% 100%;
+    background-clip: border-box;
+    background-origin: border-box;
+}
+
+.card_data:hover::before {
+    background-size: 200% 200%;
 }
 
 .card_icon {
@@ -75,4 +83,22 @@
     font-size: 2rem;
     font-weight: 200;
     color: var(--color-text);
+}
+
+
+@media (min-width: 700px) {
+    .card_data {
+        min-width: 0px;
+        padding: 20px;
+        width: auto;
+    }
+
+    .card_value {
+        font-size: 2.4rem;
+    }
+
+    .card_label {
+        font-size: 0.9rem;
+    }
+
 }
