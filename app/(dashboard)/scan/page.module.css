@@ -106,12 +106,11 @@ video.video {
     left: 0;
     bottom: 0;
     margin: auto;
-    margin-bottom: 20px;
+    margin-bottom: 120px;
     width: 100%;
     display: flex;
     justify-content: center;
     z-index: 2;
-
     font-family: Urbanist, sans-serif;
 }
 
@@ -120,12 +119,7 @@ video.video {
     display: flex;
     width: 90%;
     max-width: 600px;
-    border-radius: 8px;
-    padding: 10px;
-    background: var(--color-bg-dark);
-    border: 2px solid var(--color-primary);
     text-align: center;
-    color: var(--color-text);
     opacity: 0.8;
 }
 
@@ -134,19 +128,24 @@ video.video {
     justify-content: space-between;
     width: 100%;
     gap: 10px;
+    background: var(--color-text);
+    overflow: hidden;
+    border-radius: 8px;
 }
 
 .product_info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
     width: 50%;
+    padding: 8px 0;
+    color: var(--color-bg-dark);
+    
 }
 
 .product_box_wrapper .button_wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin-top: 8px;
 }
 
 .product_box_wrapper .button {
@@ -155,15 +154,28 @@ video.video {
     justify-content: center;
     border: none;
     background: transparent;
-    color: var(--color-text);
+    color: var(--color-bg-dark);
+    border: 1px solid var(--color-bg-dark);
     cursor: pointer;
     transition: .3s;
-    font-size: 2.8rem;
+    padding: 4px 6px;
+    border-radius: 4px;
+    gap: 4px;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: Urbanist, sans-serif;
 }
 
+.product_box_wrapper .button_icon {
+    display: flex;
+    font-size: 1.2rem;
+    
+}
+
+
 .product_box_wrapper .button:hover {
-    color: var(--color-primary);
-    transform: scale(1.1);
+    background: var(--color-bg-dark);
+    color: var(--color-text);
 }
 
 .product_box_wrapper .button_close {
@@ -174,7 +186,7 @@ video.video {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: var(--color-primary);
     background: transparent;
     border: 1px solid var(--color-primary);
@@ -184,23 +196,20 @@ video.video {
 
 .product_box_wrapper .button_close:hover {
     background: var(--color-primary);
-    color: var(--color-bg-dark);
+    color: var(--color-text);
 }
 
 .product_image {
     display: flex;
-    overflow: clip;
-    border-radius: 8px;
     height: 100%;
-    max-width: 80px;
+    max-width: 90px;
 }
 
 .product_name {
     display: flex;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 1.1rem;
+    font-weight: 600;
     margin-bottom: 4px;
-
     white-space: nowrap;
     text-overflow: ellipsis;
     display: block;
@@ -209,8 +218,8 @@ video.video {
 
 .product_gtin, .product_brand {
     display: flex;
-    font-size: 0.8rem;
-    font-weight: 200;
+    font-size: 0.9rem;
+    font-weight: 400;
     gap: 4px;
 }
 
@@ -221,17 +230,17 @@ video.video {
 .basket_wrapper {
     position: fixed;
     width: 100%;
-    padding: 10px;
     background: var(--color-text);
     bottom: 0;
     z-index: 2;
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
-    border-top: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-bg-dark);
     height: 0%;
     min-height: max-content;
     transition: height .3s ease-in-out;
     max-width: 800px;
+    font-family: Urbanist, sans-serif;
 }
 
 .basket_wrapper.open {
@@ -257,7 +266,45 @@ button.basket_open_button {
     justify-content: center;
     border-radius: 50px;
     border: none;
-    background: var(--color-primary);
+    background: var(--color-bg-dark);
     color: var(--color-text);
     transition: rotate .3s ease;
+}
+
+.basket_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    padding: 20px;
+    width: 100%;
+    color: var(--color-bg-dark);
+}
+
+.basket_items {
+    display: flex;
+    align-items: end;
+    gap: 8px;
+}
+
+.basket_icon {
+    display: flex;
+    font-size: 1.8rem;
+    border-radius: 50px;
+}
+
+.basket_items_quantity {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.basket_value {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.basket_content {
+    padding: 0 20px;
+    max-height: 100%;
 }

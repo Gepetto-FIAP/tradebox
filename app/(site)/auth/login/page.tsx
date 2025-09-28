@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import styles from './login.module.css';
@@ -52,95 +52,97 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container} style={{ background: backgroundGradient }}>
-      <div className={styles.loginBox}>
-        <h1 className={styles.title}>Login - TradeBox</h1>
-        <p className={styles.subtitle}>
-          Acesse sua conta {formData.userType === 'retailer' ? 'de varejista' : 'da indústria'}
-        </p>
-        
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {/* Toggle de Tipo de Usuário */}
-          <div className={styles.userTypeToggle}>
-            <div className={styles.toggleHeader}>
-              <span className={styles.toggleLabel}>Tipo de Conta</span>
-            </div>
-            <div className={styles.toggleContainer}>
-              <button
-                type="button"
-                onClick={() => setFormData({...formData, userType: 'retailer'})}
-                className={`${styles.toggleButton} ${formData.userType === 'retailer' ? styles.active : ''}`}
-              >
-                <div className={styles.toggleIcon}>🏪</div>
-                <div className={styles.toggleText}>
-                  <span className={styles.toggleTitle}>Varejista</span>
-                  <span className={styles.toggleSubtitle}>Vendas de produtos</span>
-                </div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setFormData({...formData, userType: 'industry'})}
-                className={`${styles.toggleButton} ${formData.userType === 'industry' ? styles.active : ''}`}
-              >
-                <div className={styles.toggleIcon}>🏭</div>
-                <div className={styles.toggleText}>
-                  <span className={styles.toggleTitle}>Indústria</span>
-                  <span className={styles.toggleSubtitle}>Produção de produtos</span>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="seu@email.com"
-              required
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Senha
-            </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="Sua senha"
-              required
-            />
-          </div>
-
-          <button 
-            type="submit" 
-            className={styles.submitButton}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Entrando...' : 'Entrar'}
-          </button>
-        </form>
-
-        <div className={styles.footer}>
-          <p>
-            Não tem uma conta?{' '}
-            <Link href="/auth/register" className={styles.link}>
-              Cadastre-se aqui
-            </Link>
+    <Suspense fallback={<div>Carregando...</div>}>
+      <div className={styles.container} style={{ background: backgroundGradient }}>
+        <div className={styles.loginBox}>
+          <h1 className={styles.title}>Login - TradeBox</h1>
+          <p className={styles.subtitle}>
+            Acesse sua conta {formData.userType === 'retailer' ? 'de varejista' : 'da indústria'}
           </p>
+          
+          <form onSubmit={handleSubmit} className={styles.form}>
+            {/* Toggle de Tipo de Usuário */}
+            <div className={styles.userTypeToggle}>
+              <div className={styles.toggleHeader}>
+                <span className={styles.toggleLabel}>Tipo de Conta</span>
+              </div>
+              <div className={styles.toggleContainer}>
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, userType: 'retailer'})}
+                  className={`${styles.toggleButton} ${formData.userType === 'retailer' ? styles.active : ''}`}
+                >
+                  <div className={styles.toggleIcon}>🏪</div>
+                  <div className={styles.toggleText}>
+                    <span className={styles.toggleTitle}>Varejista</span>
+                    <span className={styles.toggleSubtitle}>Vendas de produtos</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, userType: 'industry'})}
+                  className={`${styles.toggleButton} ${formData.userType === 'industry' ? styles.active : ''}`}
+                >
+                  <div className={styles.toggleIcon}>🏭</div>
+                  <div className={styles.toggleText}>
+                    <span className={styles.toggleTitle}>Indústria</span>
+                    <span className={styles.toggleSubtitle}>Produção de produtos</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="email" className={styles.label}>
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="seu@email.com"
+                required
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="password" className={styles.label}>
+                Senha
+              </label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="Sua senha"
+                required
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              className={styles.submitButton}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Entrando...' : 'Entrar'}
+            </button>
+          </form>
+
+          <div className={styles.footer}>
+            <p>
+              Não tem uma conta?{' '}
+              <Link href="/auth/register" className={styles.link}>
+                Cadastre-se aqui
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

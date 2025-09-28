@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
 
-import { BiBasket, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
+import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
+import InputMoney from '@/components/InputMoney/InputMoney';
 
 
 // Aspect ratio and crop size factor
@@ -197,6 +198,13 @@ export default function CameraView() {
   }
 
 const [basketOpen, setBasketOpen] = useState(false);
+const [cart, setCart] = useState<any[]>([]);
+
+function addToCart(product: any) {
+  setCart((prev) => [...prev, product]);
+}
+
+const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
 
   return (
     
@@ -275,12 +283,28 @@ const [basketOpen, setBasketOpen] = useState(false);
                       {productInfo.marca }
                     </div>
                   </div>
+                  <div className={styles.button_wrapper}>
+                    <button className={styles.button}
+                      onClick={() => {
+                        addToCart(productInfo);
+                        setProductInfo(null); 
+                        setBarcodeResult(null);
+                      }}
+                      >
+                        <div className={styles.button_icon}>
+                          <BiCartAdd />
+                        </div>
+                        <div className={styles.button_text}>
+                          adicionar
+                        </div>
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.button_wrapper}>
-                  <button className={styles.button} >
-                     <BiPlus   />
-                  </button>
+
+                <div className={styles.product_price}>
+                 <InputMoney/>
                 </div>
+
               </div>
             )}
             <button className={styles.button_close} onClick={() => (
@@ -294,24 +318,29 @@ const [basketOpen, setBasketOpen] = useState(false);
       </div>
 
 
-
-
       <div className={`${styles.basket_wrapper} ${basketOpen ? styles.open : ''}`}>
         <button className={styles.basket_open_button} onClick={() => setBasketOpen(!basketOpen)}>
           <BiChevronUp />
         </button>
-        <div className={styles.basket}>
-          <div className={styles.basket_content}>
-            <div className={styles.basket_items}>
+        <div className={styles.basket_header}>
+          <div className={styles.basket_items}>
+            <div className={styles.basket_icon}>
               <BiBasket />
-              <div className={styles.basket_items_quantity}>
-                0 Itens
-              </div>
             </div>
-            <div className={styles.basket_value}>
-              R$ 0,00
+            <div className={styles.basket_items_quantity}>
+              {cart.length} Itens
             </div>
           </div>
+          <div className={styles.basket_value}>
+            R$ {totalValue.toFixed(2)}
+          </div>
+        </div>
+        <div className={styles.basket_content}>
+          {
+            cart.map((item, index) => (
+              item.nome 
+            ))
+          }
         </div>
       </div>
 
