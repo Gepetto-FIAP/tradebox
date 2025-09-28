@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import styles from './login.module.css';
 
-export default function LoginPage() {
+ function LoginPage() {
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
@@ -52,7 +52,6 @@ export default function LoginPage() {
   };
 
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
       <div className={styles.container} style={{ background: backgroundGradient }}>
         <div className={styles.loginBox}>
           <h1 className={styles.title}>Login - TradeBox</h1>
@@ -143,6 +142,15 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-    </Suspense>
   );
 }
+
+const Page = () => {
+    return (
+        <Suspense>
+            <LoginPage />
+        </Suspense>
+    )
+}
+
+export default Page
