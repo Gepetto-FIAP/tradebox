@@ -185,8 +185,7 @@ export default function CameraView() {
 
   async function consultarProduto(codigo: string) {
 
-    if (productInfo != null) return;
-    setBarcodeResult(codigo);
+    if (barcodeResult != null) return;
 
     try {
       const response = await fetch(`/api/gtin?codigo=${codigo}`);
@@ -195,6 +194,7 @@ export default function CameraView() {
     } catch (err) {
       setProductInfo({ error: "Erro ao consultar produto." });
     }
+
   }
 
 const [basketOpen, setBasketOpen] = useState(false);
