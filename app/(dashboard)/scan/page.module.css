@@ -202,7 +202,8 @@ video.video {
 .product_image {
     display: flex;
     height: 100%;
-    max-width: 90px;
+    max-width: 100px;
+    min-width: 50px;
 }
 
 .product_name {

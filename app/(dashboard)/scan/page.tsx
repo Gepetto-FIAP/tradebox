@@ -126,7 +126,6 @@ export default function CameraView() {
       let offsetY = 0;
 
       if (videoAspect > containerAspect) {
-        console.log("Video is wider than container");
         // Vídeo é mais largo: cortado nas laterais
         drawHeight = containerRect.height;
         drawWidth = drawHeight * videoAspect;
@@ -186,6 +185,7 @@ export default function CameraView() {
   async function consultarProduto(codigo: string) {
 
     if (barcodeResult != null) return;
+    setBarcodeResult(codigo);
 
     try {
       const response = await fetch(`/api/gtin?codigo=${codigo}`);
