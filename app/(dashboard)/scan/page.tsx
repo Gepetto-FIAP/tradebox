@@ -2,10 +2,12 @@
 "use client";
 
 import styles from './page.module.css';
-
 import { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
+
+import { BiBasket, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
+
 
 // Aspect ratio and crop size factor
 const DESIRED_CROP_ASPECT_RATIO = 3 / 2;
@@ -16,8 +18,18 @@ export default function CameraView() {
   const displayCroppedCanvasRef = useRef<HTMLCanvasElement>(null);
   const cropOverlayRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
-  const [barcodeResult, setBarcodeResult] = useState<string | null>(null);
   const codeReader = useRef(new BrowserMultiFormatReader());
+
+  const [productInfo, setProductInfo] = useState<any>(null);
+  const [barcodeResult, setBarcodeResult] = useState<any>(null);
+
+  const lineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (lineRef.current) {
+      lineRef.current.style.animationPlayState = barcodeResult ? 'paused' : 'running';
+    }
+  }, [barcodeResult]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
@@ -31,7 +43,7 @@ export default function CameraView() {
           videoRef.current.srcObject = stream;
           videoRef.current.onloadedmetadata = () => {
             videoRef.current?.play();
-            intervalId = setInterval(captureFrameAndCrop, 1);
+            intervalId = setInterval(captureFrameAndCrop, 100);
           };
         }
       } catch (err) {
@@ -81,7 +93,9 @@ export default function CameraView() {
       cropHeight = Math.max(MIN_CROP_HEIGHT, Math.min(MAX_CROP_HEIGHT, cropHeight));
 
       const cropX = (video.videoWidth - cropWidth) / 2;
-      const cropY = (video.videoHeight - cropHeight) / 2;
+      
+      const cropYOffset = video.videoHeight * 0.15; 
+      const cropY = ((video.videoHeight - cropHeight) / 2) - cropYOffset;
 
       displayCanvas.width = cropWidth;
       displayCanvas.height = cropHeight;
@@ -98,13 +112,9 @@ export default function CameraView() {
         cropHeight
       );
 
-
       const container = video.parentElement;
       if (!container) return;
       const containerRect = container.getBoundingClientRect();
-
-      console.log(`Crop area: x=${cropX}, y=${cropY}, width=${cropWidth}, height=${cropHeight}, videoWidth=${video.videoWidth}, videoHeight=${video.videoHeight}, container=${containerRect.width}x${containerRect.height}  `);
-
 
       const videoAspect = video.videoWidth / video.videoHeight;
       const containerAspect = containerRect.width / containerRect.height;
@@ -140,23 +150,24 @@ export default function CameraView() {
       overlayDiv.style.height = `${overlayHeight}px`;
       overlayDiv.style.borderRadius = '8px';
       overlayDiv.style.pointerEvents = 'none';
+      overlayDiv.style.opacity = '1';
       overlayDiv.style.boxSizing = 'border-box';
-
       
       const decodeCanvas = async () => {
         try {
           const result: Result = await codeReader.current.decodeFromCanvas(displayCanvas);
           console.log("Decoded barcode:", result.getText());
-          setBarcodeResult(result.getText());
-          navigator.vibrate([200, 100, 200]);
+
+          consultarProduto(result.getText());
+        
         } catch (err: unknown) {
-           if (err instanceof Error && err.name !== "NotFoundException") {
-                console.error("Decoding error:", err);
-              }
+          if (err instanceof Error && err.name !== "NotFoundException") {
+            console.error("Decoding error:", err);
+          }
         }
       };
 
-      decodeCanvas(); // Call the async function
+      decodeCanvas();
     };
 
     startCamera();
@@ -170,8 +181,35 @@ export default function CameraView() {
     };
   }, []);
 
+
+  async function consultarProduto(codigo: string) {
+
+    if (productInfo != null) return;
+    setBarcodeResult(codigo);
+
+    try {
+      const response = await fetch(`/api/gtin?codigo=${codigo}`);
+      const data = await response.json();      
+      setProductInfo(data);
+    } catch (err) {
+      setProductInfo({ error: "Erro ao consultar produto." });
+    }
+  }
+
+const [basketOpen, setBasketOpen] = useState(false);
+
   return (
-    <div className={styles.container}>
+    
+    <div className={styles.container_scan}>
+
+      <button 
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
+      onClick={() => consultarProduto("7894900700398 ")}
+      >
+        Testar consulta
+      </button>
+
+
       {!error && (
         <div className={styles.cam_wrapper}>
           <video
@@ -184,21 +222,99 @@ export default function CameraView() {
           <div className={styles.overlay} ref={cropOverlayRef}> 
             <span></span>
             <span></span>
-
-            <div className={styles.line}></div>
-            {barcodeResult}
-
+            <div className={styles.line} ref={lineRef}></div>
           </div>
-
-          
         </div>
       )}
-      {error && <p style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1rem' }}>{error}</p>}
 
-      <canvas ref={displayCroppedCanvasRef} className={styles.canvas}>
-        Seu navegador não suporta o elemento canvas.
-      </canvas>       
-     
+      {error && 
+      <p style={{ color: '#f55', marginTop: '1rem', fontSize: '1rem' }}>
+        {error}
+      </p>}
+
+      <canvas ref={displayCroppedCanvasRef} className={styles.canvas}></canvas>   
+      
+      
+      <div className={styles.product_box_wrapper}>
+
+        {barcodeResult && !productInfo && ( 
+          <>
+            <div>Consultando: {barcodeResult}</div>
+          </>
+        )}
+
+        {productInfo && (
+          <div className={styles.product_box}>
+            {productInfo.error ? (
+              <div className={styles.product_error}>
+                {productInfo.error}
+              </div>
+            ) : (
+              <div className={styles.product_content}>
+                <div className={styles.product_image}>
+                  <img src={productInfo.imageBase64} />
+                </div>
+
+                <div className={styles.product_info}>
+                  <div className={styles.product_name}>
+                    {productInfo.nome || "Produto"}
+                  </div>
+                  <div className={styles.product_gtin}>
+                    <div>
+                      GTIN: 
+                    </div>
+                    <div>
+                      {productInfo.ean }  
+                    </div>
+                  </div>
+                  <div className={styles.product_brand}>
+                    <div>
+                      Marca: 
+                    </div>
+                    <div>
+                      {productInfo.marca }
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.button_wrapper}>
+                  <button className={styles.button} >
+                     <BiPlus   />
+                  </button>
+                </div>
+              </div>
+            )}
+            <button className={styles.button_close} onClick={() => (
+              setProductInfo(null),
+              setBarcodeResult(null)
+              )}>
+                <BiX />
+              </button>
+          </div>
+        )}    
+      </div>
+
+
+
+
+      <div className={`${styles.basket_wrapper} ${basketOpen ? styles.open : ''}`}>
+        <button className={styles.basket_open_button} onClick={() => setBasketOpen(!basketOpen)}>
+          <BiChevronUp />
+        </button>
+        <div className={styles.basket}>
+          <div className={styles.basket_content}>
+            <div className={styles.basket_items}>
+              <BiBasket />
+              <div className={styles.basket_items_quantity}>
+                0 Itens
+              </div>
+            </div>
+            <div className={styles.basket_value}>
+              R$ 0,00
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
