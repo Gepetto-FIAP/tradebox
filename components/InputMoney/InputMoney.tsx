@@ -1,30 +1,30 @@
-import React from 'react';
-
-type BasicInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+type MoneyInputProps = {
+  value: number;
+  onValueChange: (value: number) => void;
 };
 
-const BasicInput: React.FC<BasicInputProps> = ({onChange, ...rest}) => {
+const MoneyInput: React.FC<MoneyInputProps> = ({ value, onValueChange, ...rest }) => {
+  function formatMoney(val: number) {
+    return (val / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const onlyNums = e.target.value.replace(/\D/g, '');
+    onValueChange(onlyNums === '' ? 0 : Number(onlyNums));
+  }
+
   return (
-    <input onChange={onChange} {...rest}/>
+    <input
+      type="text"
+      required
+      value={value === 0 ? '' : formatMoney(value)}
+      onChange={handleChange}
+      {...rest}
+      inputMode="numeric"
+      pattern="[0-9]*"
+      placeholder="0,00"
+    />
   );
 };
 
-function App() {
-  const [input, setInput] = React.useState('')
-
-  return (
-    <>
-      <BasicInput
-        value={input}
-        type='number'
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <p>
-        Your input: {input}
-      </p>
-    </>
-  )
-}
-
-export default App
+export default MoneyInput;

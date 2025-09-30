@@ -1,4 +1,3 @@
-
 "use client";
 
 import styles from './page.module.css';
@@ -7,7 +6,7 @@ import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
 
 import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
-import InputMoney from '@/components/InputMoney/InputMoney';
+import MoneyInput from '@/components/InputMoney/InputMoney';
 
 
 // Aspect ratio and crop size factor
@@ -126,7 +125,6 @@ export default function CameraView() {
       let offsetY = 0;
 
       if (videoAspect > containerAspect) {
-        console.log("Video is wider than container");
         // Vídeo é mais largo: cortado nas laterais
         drawHeight = containerRect.height;
         drawWidth = drawHeight * videoAspect;
@@ -182,12 +180,9 @@ export default function CameraView() {
     };
   }, []);
 
-
   async function consultarProduto(codigo: string) {
-
-    if (productInfo != null) return;
+    if (barcodeResult != null) return;
     setBarcodeResult(codigo);
-
     try {
       const response = await fetch(`/api/gtin?codigo=${codigo}`);
       const data = await response.json();      
@@ -197,26 +192,50 @@ export default function CameraView() {
     }
   }
 
-const [basketOpen, setBasketOpen] = useState(false);
-const [cart, setCart] = useState<any[]>([]);
+  const [productValue, setProductValue] = useState<number>(0);
+  const [basketOpen, setBasketOpen] = useState(false);
+  const [cart, setCart] = useState<any[]>([]);
 
-function addToCart(product: any) {
-  setCart((prev) => [...prev, product]);
-}
+  function addToCart(product: any) {
+    setCart((prev) => [...prev, product]);
+  }
 
-const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
+  const totalValue = cart.reduce((sum, item) => {
+    return sum + (item.productValue * item.quantity);
+  }, 0);
+
+  function updateCartItemQuantity(index: number, newQuantity: number) {
+    setCart(prevCart =>
+      newQuantity > 0
+        ? prevCart.map((item, i) =>
+            i === index ? { ...item, quantity: newQuantity } : item
+          )
+        : prevCart.filter((_, i) => i !== index) // remove o item se quantidade for zero
+    );
+  }
+
+  function getCleanCart(cart: any[]) {
+    return cart.map(item => ({
+      nome: item.nome,
+      ean: item.ean,
+      quantidade: item.quantity,
+      productValue: item.productValue,
+      marca: item.marca,
+      categoria: item.categoria
+    }));
+  }
+
+  const cleanCart = getCleanCart(cart);
+  console.log(cleanCart);
 
   return (
-    
     <div className={styles.container_scan}>
-
       <button 
       style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
       onClick={() => consultarProduto("7894900700398 ")}
       >
         Testar consulta
       </button>
-
 
       {!error && (
         <div className={styles.cam_wrapper}>
@@ -242,13 +261,9 @@ const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
 
       <canvas ref={displayCroppedCanvasRef} className={styles.canvas}></canvas>   
       
-      
       <div className={styles.product_box_wrapper}>
-
         {barcodeResult && !productInfo && ( 
-          <>
-            <div>Consultando: {barcodeResult}</div>
-          </>
+          <div>Consultando: {barcodeResult}</div>
         )}
 
         {productInfo && (
@@ -262,7 +277,6 @@ const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
                 <div className={styles.product_image}>
                   <img src={productInfo.imageBase64} />
                 </div>
-
                 <div className={styles.product_info}>
                   <div className={styles.product_name}>
                     {productInfo.nome || "Produto"}
@@ -286,9 +300,18 @@ const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
                   <div className={styles.button_wrapper}>
                     <button className={styles.button}
                       onClick={() => {
-                        addToCart(productInfo);
-                        setProductInfo(null); 
+                        if (!productValue || Number(productValue) === 0) {
+                          alert("Preencha o valor do produto!");
+                          return;
+                        }
+                        addToCart(
+                          { ...productInfo, 
+                            productValue: productValue / 100,
+                            quantity: 1
+                          });
+                        setProductInfo(null);
                         setBarcodeResult(null);
+                        setProductValue(0);
                       }}
                       >
                         <div className={styles.button_icon}>
@@ -302,15 +325,21 @@ const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
                 </div>
 
                 <div className={styles.product_price}>
-                 <InputMoney/>
+                  <div className={styles.product_price_label}>
+                    R$
+                  </div>
+                  <MoneyInput 
+                  value={productValue} 
+                  onValueChange={setProductValue} />
                 </div>
 
               </div>
             )}
-            <button className={styles.button_close} onClick={() => (
-              setProductInfo(null),
-              setBarcodeResult(null)
-              )}>
+            <button className={styles.button_close} onClick={() => {
+              setProductInfo(null);
+              setBarcodeResult(null);
+              setProductValue(0);
+            }}>
                 <BiX />
               </button>
           </div>
@@ -332,13 +361,38 @@ const totalValue = cart.reduce((sum, item) => sum + (item.preco || 0), 0);
             </div>
           </div>
           <div className={styles.basket_value}>
-            R$ {totalValue.toFixed(2)}
+             {totalValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
           </div>
         </div>
         <div className={styles.basket_content}>
           {
-            cart.map((item, index) => (
-              item.nome 
+            cart.map((cartItem, index) => (
+              <div key={index} className={styles.basket_item}>
+                <div className={styles.basket_product_image}>
+                  <img src={cartItem.imageBase64} alt={cartItem.nome} />
+                </div>
+                <div className={styles.basket_product_info}>
+                  <div className={styles.basket_product_name}>
+                    {cartItem.nome}
+                  </div>
+                  <div className={styles.basket_product_quantity}>
+                    <button onClick={() => updateCartItemQuantity(index, cartItem.quantity - 1)}>-</button>
+                    <div>
+                      {cartItem.quantity}
+                    </div>
+                    <button onClick={() => updateCartItemQuantity(index, cartItem.quantity + 1)}>+</button>
+                  </div>
+                </div>
+                <div className={styles.basket_product_price}> 
+                  <div className={styles.basket_product_total}>
+                    {(cartItem.productValue * cartItem.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
+                  </div>
+                  <div className={styles.basket_product_subtotal}>
+                    {cartItem.productValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
+                  </div>
+                </div>
+
+              </div>
             ))
           }
         </div>

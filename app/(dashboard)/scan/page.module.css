@@ -127,7 +127,7 @@ video.video {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    gap: 10px;
+    gap: 8px;
     background: var(--color-text);
     overflow: hidden;
     border-radius: 8px;
@@ -137,15 +137,15 @@ video.video {
     display: flex;
     flex-direction: column;
     width: 50%;
+    min-width: 25%;
     padding: 8px 0;
     color: var(--color-bg-dark);
-    
 }
 
 .product_box_wrapper .button_wrapper {
     display: flex;
     align-items: center;
-    margin-top: 8px;
+    margin-top: auto;
 }
 
 .product_box_wrapper .button {
@@ -168,10 +168,8 @@ video.video {
 
 .product_box_wrapper .button_icon {
     display: flex;
-    font-size: 1.2rem;
-    
+    font-size: 1.1rem;
 }
-
 
 .product_box_wrapper .button:hover {
     background: var(--color-bg-dark);
@@ -202,14 +200,51 @@ video.video {
 .product_image {
     display: flex;
     height: 100%;
-    max-width: 90px;
+    width: 100%;
+    min-width: min(25%, 90px);
+    max-width: 100px;
+}
+
+.product_price_label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    letter-spacing: -1px;
+    margin-top: -2px;
+}
+
+.product_price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    gap: 4px;
+}
+
+.product_price input {
+    field-sizing: content;
+    padding-right: 8px;
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-bg-dark);
+    text-align: end;
+    letter-spacing: -1px;
+    font-family: Urbanist, sans-serif;
+    opacity: 1;
+    outline: none;
+}
+
+.product_price input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.9;
 }
 
 .product_name {
     display: flex;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 4px;
     white-space: nowrap;
     text-overflow: ellipsis;
     display: block;
@@ -218,9 +253,15 @@ video.video {
 
 .product_gtin, .product_brand {
     display: flex;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 400;
     gap: 4px;
+}
+
+.product_gtin > div:last-child, .product_brand > div:last-child {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .product_image img {
@@ -230,7 +271,7 @@ video.video {
 .basket_wrapper {
     position: fixed;
     width: 100%;
-    background: var(--color-text);
+    background: #fafafa;
     bottom: 0;
     z-index: 2;
     border-top-right-radius: 12px;
@@ -308,3 +349,95 @@ button.basket_open_button {
     padding: 0 20px;
     max-height: 100%;
 }
+
+.basket_item:last-child {
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+.basket_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-secondary);
+    padding: 12px 0;
+    color: var(--color-bg-dark);
+}
+
+.basket_product_image {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 65px;
+} 
+
+.basket_product_image img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.basket_product_name {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.basket_product_info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-basis: 50%;
+}
+
+.basket_product_price {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    text-align: end;
+    flex-basis: 20%;
+}
+
+.basket_product_total {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.basket_product_subtotal {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--color-muted);
+}
+
+.basket_product_quantity {
+    display: flex;
+    border: 1px solid var(--color-secondary);
+    width: max-content;
+    border-radius: 4px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-text);
+}
+
+.basket_product_quantity div {
+    font-size: .9rem;
+    font-weight: 200;
+    width: 30px;
+    text-align: center;
+}
+
+.basket_product_quantity button {
+    background: transparent;
+    border: none;
+    padding: 0px 8px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: .3s;
+    color: var(--color-primary);
+}
+
+.basket_product_quantity button:hover {
+    background: var(--color-secondary);
+ 
+}
+
