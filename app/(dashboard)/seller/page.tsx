@@ -39,11 +39,10 @@ export default function Seller() {
         <div className={styles.cards_data_wrapper}>
 
           <div className={styles.cards_data}>
-              <CardData icon={<BiCartAlt/>} />
-              <CardData icon={<BiDollar />} />
-              <CardData icon={<BiLineChart  />} />
-              <CardData icon={<BiBasket />} />
-
+              <CardData icon={<BiCartAlt/>} label="Vendas" value={24} />
+              <CardData icon={<BiDollar />} label="Faturamento" value={"R$ 25.234,56"} />
+              <CardData icon={<BiLineChart  />} label="Performance" value={"+5%"} />
+              <CardData icon={<BiBasket />} label="Itens Vendidos" value={12} />
           </div>
         </div>
       </div>
