@@ -18,6 +18,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import BottomNav from '@/components/BottomNav/BottomNav';
+import { saveAs } from 'file-saver';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -61,6 +62,16 @@ export default function IndustryAnalytics() {
   const bestProduct = Object.entries(productSales).reduce((best, [prod, qty]) => qty > best.qty ? { prod, qty } : best, { prod: '', qty: 0 }).prod;
   const totalRevenue = filteredData.reduce((sum, r) => sum + r.total, 0);
 
+  function exportToCSV(data: TableRow[]) {
+    const header = ['Data', 'Industria', 'Produto', 'Quantidade', 'Valor Total'];
+    const rows = data.map(row => [row.date, row.retailer, row.product, row.quantity, row.total]);
+    const csvContent = [header, ...rows]
+      .map(e => e.map(String).map(v => '"' + v.replace(/"/g, '""') + '"').join(','))
+      .join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, `relatorio-industry-${new Date().toISOString().slice(0,10)}.csv`);
+  }
+
   // Gráfico de linha: vendas por dia
   const lineData = {
     labels: filteredData.map(r => r.date),
@@ -71,6 +82,15 @@ export default function IndustryAnalytics() {
       backgroundColor: '#01b5fa70',
       tension: 0.3,
     }],
+  };
+  const lineOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `Quantidade: ${ctx.parsed.y}`,
+        },
+      },
+    },
   };
 
   // Gráfico de barras: produtos mais vendidos
@@ -83,6 +103,15 @@ export default function IndustryAnalytics() {
       borderColor: '#01b5fa',
       borderWidth: 1,
     }],
+  };
+  const barOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `Qtd: ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
   };
 
   // Gráfico de barras: faturamento por produto
@@ -99,6 +128,15 @@ export default function IndustryAnalytics() {
       borderColor: '#00384d',
       borderWidth: 1,
     }],
+  };
+  const revenueBarOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `R$ ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
   };
 
   return (
@@ -121,6 +159,7 @@ export default function IndustryAnalytics() {
           <input type="text" placeholder="Industria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
           <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
           <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
+          <button className={styles.filterButton} style={{background:'#00384d'}} onClick={() => exportToCSV(filteredData)}>Exportar CSV</button>
         </div>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
@@ -154,9 +193,9 @@ export default function IndustryAnalytics() {
         </div>
         <div style={{ height: 16 }} />
         <div className={styles.charts}>
-          <div className={styles.chartBox}><Line data={lineData} /></div>
-          <div className={styles.chartBox}><Bar data={barData} /></div>
-          <div className={styles.chartBox}><Bar data={revenueBarData} /></div>
+          <div className={styles.chartBox}><Line data={lineData} options={lineOptions} /></div>
+          <div className={styles.chartBox}><Bar data={barData} options={barOptions} /></div>
+          <div className={styles.chartBox}><Bar data={revenueBarData} options={revenueBarOptions} /></div>
         </div>
         <div style={{ height: 50 }} />
         <BottomNav/>
