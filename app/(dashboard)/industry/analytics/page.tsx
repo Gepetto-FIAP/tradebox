@@ -63,7 +63,7 @@ export default function IndustryAnalytics() {
   const totalRevenue = filteredData.reduce((sum, r) => sum + r.total, 0);
 
   function exportToCSV(data: TableRow[]) {
-    const header = ['Data', 'Industria', 'Produto', 'Quantidade', 'Valor Total'];
+    const header = ['Data', 'Indústria', 'Produto', 'Quantidade', 'Valor Total'];
     const rows = data.map(row => [row.date, row.retailer, row.product, row.quantity, row.total]);
     const csvContent = [header, ...rows]
       .map(e => e.map(String).map(v => '"' + v.replace(/"/g, '""') + '"').join(','))
@@ -156,7 +156,7 @@ export default function IndustryAnalytics() {
         </div>
         <div className={styles.filters}>
           <input type="date" value={filter.date} onChange={e => setFilter(f => ({ ...f, date: e.target.value }))} className={styles.filterInput} />
-          <input type="text" placeholder="Industria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
+          <input type="text" placeholder="Indústria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
           <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
           <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
           <button className={styles.filterButton} style={{background:'#00384d'}} onClick={() => exportToCSV(filteredData)}>Exportar CSV</button>
@@ -166,7 +166,7 @@ export default function IndustryAnalytics() {
             <thead>
               <tr>
                 <th>Data</th>
-                <th>Industria</th>
+                <th>Indústria</th>
                 <th>Produto</th>
                 <th>Quantidade</th>
                 <th>Valor Total</th>
