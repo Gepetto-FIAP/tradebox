@@ -197,7 +197,7 @@ export default function IndustryAnalytics() {
           <div className={styles.chartBox}><Bar data={barData} options={barOptions} /></div>
           <div className={styles.chartBox}><Bar data={revenueBarData} options={revenueBarOptions} /></div>
         </div>
-        <div style={{ height: 50 }} />
+        <div style={{ height: 25 }} />
         <BottomNav/>
       </div>
     </div>
