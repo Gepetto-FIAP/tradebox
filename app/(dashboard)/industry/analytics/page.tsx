@@ -18,7 +18,6 @@ import {
   ArcElement,
 } from 'chart.js';
 import BottomNav from '@/components/BottomNav/BottomNav';
-import { saveAs } from 'file-saver';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -61,16 +60,6 @@ export default function IndustryAnalytics() {
   });
   const bestProduct = Object.entries(productSales).reduce((best, [prod, qty]) => qty > best.qty ? { prod, qty } : best, { prod: '', qty: 0 }).prod;
   const totalRevenue = filteredData.reduce((sum, r) => sum + r.total, 0);
-
-  function exportToCSV(data: TableRow[]) {
-    const header = ['Data', 'Indústria', 'Produto', 'Quantidade', 'Valor Total'];
-    const rows = data.map(row => [row.date, row.retailer, row.product, row.quantity, row.total]);
-    const csvContent = [header, ...rows]
-      .map(e => e.map(String).map(v => '"' + v.replace(/"/g, '""') + '"').join(','))
-      .join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `relatorio-industry-${new Date().toISOString().slice(0,10)}.csv`);
-  }
 
   // Gráfico de linha: vendas por dia
   const lineData = {
@@ -159,7 +148,6 @@ export default function IndustryAnalytics() {
           <input type="text" placeholder="Indústria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
           <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
           <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
-          <button className={styles.filterButton} style={{background:'#00384d'}} onClick={() => exportToCSV(filteredData)}>Exportar CSV</button>
         </div>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
