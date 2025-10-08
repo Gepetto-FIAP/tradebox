@@ -7,8 +7,8 @@
     gap: 15px;
     width: 200px;
     min-width: 50%;
-    padding: 15px;
-    background: radial-gradient(circle at 0% 0%, rgba(1, 179, 250, 0.3) 0%, transparent 20%) ;
+    padding: 15px; 
+    background: radial-gradient(circle at 0% 0%, rgba(1, 181, 250, 0.3) 0%, transparent 20%) ;
 }
 
 .card_data::before {
@@ -21,8 +21,9 @@
     border: 2px solid transparent;
     -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
-    transition:  0.4s;
+    transition: 0.4s;
     background-image: radial-gradient(circle at 0% 0%, var(--color-primary) 0%, var(--color-border) 20%);
     background-size: 100% 100%;
     background-clip: border-box;

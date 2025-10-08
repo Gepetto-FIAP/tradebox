@@ -1,0 +1,484 @@
+/* Analytics Dashboard Styles */
+
+.analytics_container {
+  padding: 16px;
+  max-width: 1800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  background: transparent;
+  min-height: 100vh;
+  grid-auto-rows: auto;
+}
+
+/* Header */
+.analytics_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header_title h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 8px 0;
+}
+
+.header_title p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.header_actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.time_filters {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.filter_btn {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter_btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.filter_btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 600;
+}
+
+.refresh_btn {
+  padding: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.refresh_btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Metrics Cards */
+.main_metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Main Charts */
+.main_charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  height: 350px;
+}
+
+.chart_card {
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart_header {
+  padding: 8px 12px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart_header h3 {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--color-secondary);
+  opacity: 0.75;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.chart_header p {
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: var(--color-text);
+  margin: 2px 0 0 0;
+  line-height: 1.2;
+}
+
+.sales_chart_container {
+  flex: 1;
+  position: relative;
+  padding: 4px 8px 8px 8px;
+  overflow: hidden;
+  filter: brightness(0.9) opacity(0.75);
+  transition: .3s ease;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.sales_chart_container:hover {
+  filter: brightness(1) opacity(1);
+}
+
+.sales_chart_container > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart_content {
+  flex: 1;
+  position: relative;
+  padding: 8px 12px 12px 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.chart_content_large {
+  flex: 1;
+  position: relative;
+  padding: 8px 12px 12px 12px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Secondary Section */
+.secondary_section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.secondary_metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.analysis_charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Top Products */
+.top_products {
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  background: transparent;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.section_header {
+  margin-bottom: 20px;
+}
+
+.section_header h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 4px 0;
+}
+
+.section_header p {
+  font-size: 14px;
+  color: var(--color-secondary);
+  margin: 0;
+  opacity: 0.8;
+}
+
+.products_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.product_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.product_item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.product_rank {
+  width: 32px;
+  height: 32px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.product_info {
+  flex: 1;
+}
+
+.product_name {
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.product_stats {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--color-secondary);
+  opacity: 0.8;
+}
+
+.product_revenue {
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Insights Section */
+.insights_section {
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  background: transparent;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  clear: both;
+}
+
+.insights_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.insight_card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-primary);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.insight_card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.insight_icon {
+  font-size: 24px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.insight_content h4 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 6px 0;
+}
+
+.insight_content p {
+  font-size: 13px;
+  color: var(--color-secondary);
+  margin: 0;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .analytics_container {
+    max-width: 1400px;
+    padding: 12px;
+  }
+  
+  .main_charts {
+    grid-template-columns: 1fr 1fr;
+    height: 320px;
+  }
+  
+  .secondary_metrics {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  
+  .insights_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .analytics_container {
+    padding: 10px;
+    gap: 12px;
+  }
+  
+  .main_charts {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 12px;
+  }
+  
+  .main_metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .secondary_metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .insights_grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics_container {
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .analytics_header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .header_actions {
+    justify-content: space-between;
+  }
+  
+  .main_metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .secondary_metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .main_charts {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .chart_content, .chart_content_large {
+    min-height: 200px;
+    padding: 6px 8px 8px 8px;
+  }
+  
+  .sales_chart_container {
+    padding: 4px 6px 6px 6px;
+  }
+  
+  .insights_grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .insight_card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+
+}
+
+@media (max-width: 480px) {
+  .analytics_container {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .header_title h1 {
+    font-size: 24px;
+  }
+  
+  .time_filters {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter_btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  
+  .main_metrics, .secondary_metrics {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .chart_content, .chart_content_large {
+    min-height: 180px;
+    padding: 4px 6px 6px 6px;
+  }
+  
+  .sales_chart_container {
+    padding: 2px 4px 4px 4px;
+  }
+}
