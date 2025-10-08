@@ -13,12 +13,13 @@ type SalesChartProps = {
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     tooltip: { enabled: true },
     legend: { display: false },
     title: { display: false },
   },
-    scales: {
+  scales: {
     x: {
       display: false,
     },
@@ -27,7 +28,6 @@ const options = {
     },
   },
 };
-
 
 const axisX = [15, 22, 17, 20, 24, 27, 24];
 const axisY = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -61,5 +61,9 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesC
 };
 
 
-  return <Line data={data} options={options} />;
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <Line data={data} options={options} />
+    </div>
+  );
 }
