@@ -117,11 +117,11 @@ export default function Analytics() {
 
   // Produtos mais vendidos
   const topProducts = [
-    { name: 'iPhone 15 Pro', sales: 45, revenue: 'R$ 67.500' },
-    { name: 'Notebook Dell', sales: 32, revenue: 'R$ 48.000' },
-    { name: 'Tênis Nike Air', sales: 28, revenue: 'R$ 8.400' },
-    { name: 'Camiseta Basic', sales: 67, revenue: 'R$ 6.700' },
-    { name: 'Fone Bluetooth', sales: 89, revenue: 'R$ 17.800' }
+    { name: 'Produto X', sales: 45, revenue: 'R$ 67.500' },
+    { name: 'Produto Y', sales: 32, revenue: 'R$ 48.000' },
+    { name: 'Produto Z', sales: 28, revenue: 'R$ 8.400' },
+    { name: 'Produto W', sales: 67, revenue: 'R$ 6.700' },
+    { name: 'Produto A', sales: 89, revenue: 'R$ 17.800' }
   ];
 
   const chartOptions = {
