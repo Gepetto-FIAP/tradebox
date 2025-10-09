@@ -2,6 +2,8 @@
   --color-bg-dark: #00384d;
   --color-bg-light: #ffffff;
   --color-primary: #01b5fa;
+  --color-primary-60: #01b3fa60;
+  --color-primary-30: #01b3fa30;
   --color-secondary: #e0e0e0;
   --color-text: #fff;
   --color-muted: #888;
@@ -9,6 +11,11 @@
 
   --theme-color: #002431; /*meta theme color*/
   --color-background: #000e14;
+
+  --breakpoint: 1000px;
+
+  --container-width: 90%;
+  --container-max-width: 1100px;
 }
 
 * {
@@ -23,10 +30,3 @@ body {
   font-weight: 200;
 }
 
-main {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}

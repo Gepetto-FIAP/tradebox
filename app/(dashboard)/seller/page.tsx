@@ -1,4 +1,4 @@
-import SalesChart from '@/components/SalesChart'; //teste
+import SalesChart from '@/components/SalesChart/SalesChart'; //teste
 import styles from './page.module.css';
 import RecentOrders from '@/components/RecentOrders/RecentOrders';
 import CardData from '@/components/CardData/CardData';
@@ -38,11 +38,12 @@ export default function Seller() {
 
         <div className={styles.cards_data_wrapper}>
 
+
           <div className={styles.cards_data}>
-              <CardData icon={<BiCartAlt/>} label="Vendas" value={24} />
-              <CardData icon={<BiDollar />} label="Faturamento" value={"R$ 25.234,56"} />
-              <CardData icon={<BiLineChart  />} label="Performance" value={"+5%"} />
-              <CardData icon={<BiBasket />} label="Itens Vendidos" value={12} />
+              <CardData icon={<BiCartAlt/>} label="Vendas" value={24} badge_value={"+5%"} />
+              <CardData icon={<BiDollar />} label="Faturamento" value={"R$25K"} badge_value={"+10%"} />
+              <CardData icon={<BiLineChart  />} label="Campanhas" value={3} badge_value={"+25%"} />
+              <CardData icon={<BiBasket />} label="Produtos" value={12} badge_value={"+3%"} />
           </div>
         </div>
       </div>

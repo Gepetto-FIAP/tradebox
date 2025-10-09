@@ -47,12 +47,15 @@
 }
 
 .chart_content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     padding: 10px 0 0 10px;
 }
 
 .chart_value {
     color: var(--color-primary);
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 200;
     margin-top: 3px;
     color: var(--color-text);
@@ -148,7 +151,7 @@
         "orders orders";
         height: auto;
         grid-template-rows: 2fr 3fr;
-        grid-template-columns: 3fr 4fr;
+        grid-template-columns: 3fr 5fr;
         padding: 30px;
         grid-gap: 30px;
         height: 100%;
@@ -198,7 +201,7 @@
     }
 
     .chart_value {
-        font-size: 2.4rem;
+        font-size: 2rem;
     }
 
     .card_label {
