@@ -20,7 +20,11 @@ export default function Seller() {
               <div className={styles.chart_value}>R$ 25.234,56</div>
             </div>
             <div className={styles.chart}>
-              <SalesChart colorStart={"#01b5fa70"} colorEnd={"transparent"} colorBorder={"#01b5fa"} />
+              <SalesChart 
+                colorStart="rgba(1, 181, 250, 0.3)" 
+                colorEnd="rgba(1, 181, 250, 0.05)" 
+                colorBorder="rgba(1, 181, 250, 1)" 
+              />
             </div>
           </div>
         </div>

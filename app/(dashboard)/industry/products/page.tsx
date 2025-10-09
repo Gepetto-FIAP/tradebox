@@ -52,7 +52,7 @@ export default function IndustryProducts() {
           </div>
         ))}
       </div>
-
+      <div style={{ height: 25 }} />
       <BottomNav />
     </div>
   );

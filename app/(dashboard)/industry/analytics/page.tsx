@@ -72,6 +72,15 @@ export default function IndustryAnalytics() {
       tension: 0.3,
     }],
   };
+  const lineOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `Quantidade: ${ctx.parsed.y}`,
+        },
+      },
+    },
+  };
 
   // Gráfico de barras: produtos mais vendidos
   const barData = {
@@ -83,6 +92,15 @@ export default function IndustryAnalytics() {
       borderColor: '#01b5fa',
       borderWidth: 1,
     }],
+  };
+  const barOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `Qtd: ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
   };
 
   // Gráfico de barras: faturamento por produto
@@ -99,6 +117,15 @@ export default function IndustryAnalytics() {
       borderColor: '#00384d',
       borderWidth: 1,
     }],
+  };
+  const revenueBarOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `R$ ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
   };
 
   return (
@@ -118,7 +145,7 @@ export default function IndustryAnalytics() {
         </div>
         <div className={styles.filters}>
           <input type="date" value={filter.date} onChange={e => setFilter(f => ({ ...f, date: e.target.value }))} className={styles.filterInput} />
-          <input type="text" placeholder="Industria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
+          <input type="text" placeholder="Indústria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
           <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
           <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
         </div>
@@ -127,7 +154,7 @@ export default function IndustryAnalytics() {
             <thead>
               <tr>
                 <th>Data</th>
-                <th>Industria</th>
+                <th>Indústria</th>
                 <th>Produto</th>
                 <th>Quantidade</th>
                 <th>Valor Total</th>
@@ -154,11 +181,11 @@ export default function IndustryAnalytics() {
         </div>
         <div style={{ height: 16 }} />
         <div className={styles.charts}>
-          <div className={styles.chartBox}><Line data={lineData} /></div>
-          <div className={styles.chartBox}><Bar data={barData} /></div>
-          <div className={styles.chartBox}><Bar data={revenueBarData} /></div>
+          <div className={styles.chartBox}><Line data={lineData} options={lineOptions} /></div>
+          <div className={styles.chartBox}><Bar data={barData} options={barOptions} /></div>
+          <div className={styles.chartBox}><Bar data={revenueBarData} options={revenueBarOptions} /></div>
         </div>
-        <div style={{ height: 50 }} />
+        <div style={{ height: 25 }} />
         <BottomNav/>
       </div>
     </div>
