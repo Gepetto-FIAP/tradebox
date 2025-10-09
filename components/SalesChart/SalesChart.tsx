@@ -13,6 +13,7 @@ type SalesChartProps = {
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     tooltip: { enabled: true },
     legend: { display: false },
