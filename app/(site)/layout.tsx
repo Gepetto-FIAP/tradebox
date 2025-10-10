@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import Header from '@/components/Header/Header';
+import styles from './layout.module.css'
 
 export default function RootLayout({
   children,
@@ -7,17 +8,13 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <header>
-      header
-    </header>
+    <Header />
 
-    <main>
+    <main className={styles.main}>
       {children}
     </main>
 
-    <footer>
-      footer
-    </footer>
+   
     </>
   );
 }

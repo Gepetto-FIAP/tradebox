@@ -8,8 +8,8 @@
   grid-template-columns: 1fr;
   gap: 16px;
   background: transparent;
-  min-height: 100vh;
   grid-auto-rows: auto;
+  overflow: auto;
 }
 
 /* Header */

@@ -1,5 +1,5 @@
 "use client";
-import SalesChart from '@/components/SalesChart';
+import SalesChart from '@/components/SalesChart/SalesChart';
 import styles from './analytics.module.css';
 import CardData from '@/components/CardData/CardData';
 import { BiCartAlt, BiDollar, BiLineChart, BiBasket } from 'react-icons/bi';
