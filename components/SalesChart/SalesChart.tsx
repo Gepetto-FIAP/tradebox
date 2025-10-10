@@ -1,6 +1,6 @@
 'use client';
 
-import { Chart, Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend, ScriptableContext, elements } from 'chart.js';
+import { Chart, Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend, ScriptableContext, elements, ChartOptions } from 'chart.js';
 import {Line} from 'react-chartjs-2'
 
 Chart.register(Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend);
@@ -11,14 +11,16 @@ type SalesChartProps = {
   colorBorder?: string; 
 };
 
-const options = {
-  responsive: true,
+const options: ChartOptions<'line'> = {
+  animation: false,
   maintainAspectRatio: false,
+  responsive: true,
   plugins: {
     tooltip: { enabled: true },
     legend: { display: false },
     title: { display: false },
-  },
+  },  
+  
   scales: {
     x: {
       display: false,
@@ -28,6 +30,7 @@ const options = {
     },
   },
 };
+
 
 const axisX = [15, 22, 17, 20, 24, 27, 24];
 const axisY = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
@@ -40,7 +43,7 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesC
     {
       backgroundColor: (context: ScriptableContext<"line">) => {
         const ctx = context.chart.ctx;
-        const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+        const gradient = ctx.createLinearGradient(0, 0, 0, 200);
         gradient.addColorStop(0, colorStart || "#fff");
         gradient.addColorStop(1, colorEnd || "#fff");
         return gradient;
@@ -58,12 +61,9 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesC
       pointBorderWidth: 0,
     },
   ],
+  
 };
 
 
-  return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <Line data={data} options={options} />
-    </div>
-  );
+  return <Line data={data} options={options} />;
 }

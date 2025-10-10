@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import styles from './analytics.module.css';
 import CardData from '@/components/CardData/CardData';
-import SalesChart from '@/components/SalesChart';
+import SalesChart from '@/components/SalesChart/SalesChart';
 import { 
   BiDollar, 
   BiTrendingUp, 

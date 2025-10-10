@@ -17,16 +17,19 @@ type CardDataProps = {
 export default function CardData({ icon, label, value, badge_value }: CardDataProps) {
   return (
     <div className={styles.card_data}>
-      <div className={styles.card_content_left}>
-        <div className={styles.card_icon}>{icon}</div>
-      </div>
-      <div className={styles.card_content_right}>
-        <div className={styles.card_label}>{label}</div>
-        <div className={styles.card_info}>
-          <div className={styles.card_value}>{value}</div>
-          <div className={styles.card_badge}>{badge_value}</div>
+      <div className={styles.card_content}>
+        <div className={styles.card_content_left}>
+          <div className={styles.card_icon}>{icon}</div>
+        </div>
+        <div className={styles.card_content_right}>
+          <div className={styles.card_label}>{label}</div>
+          <div className={styles.card_info}>
+            <div className={styles.card_value}>{value}</div>
+            <div className={styles.card_badge}>{badge_value}</div>
+          </div>
         </div>
       </div>
+
     </div>
   );
 }

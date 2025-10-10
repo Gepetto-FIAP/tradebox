@@ -84,7 +84,6 @@
 }
 
 .header_button:active {
-    transition-duration: .15s;
     filter: brightness(.5);
 }
 
@@ -106,7 +105,7 @@
 
 .header_button span {
     position: relative;
-    transition: .3s;
+    transition: .4s;
     left: 0%;
 }
 

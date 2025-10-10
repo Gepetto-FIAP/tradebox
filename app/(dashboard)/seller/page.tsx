@@ -1,4 +1,4 @@
-import SalesChart from '@/components/SalesChart/SalesChart'; //teste
+import SalesChart from '@/components/SalesChart/SalesChart'; 
 import styles from './page.module.css';
 import RecentOrders from '@/components/RecentOrders/RecentOrders';
 import CardData from '@/components/CardData/CardData';
@@ -20,11 +20,7 @@ export default function Seller() {
               <div className={styles.chart_value}>R$ 25.234,56</div>
             </div>
             <div className={styles.chart}>
-              <SalesChart 
-                colorStart="rgba(1, 181, 250, 0.3)" 
-                colorEnd="rgba(1, 181, 250, 0.05)" 
-                colorBorder="rgba(1, 181, 250, 1)" 
-              />
+              <SalesChart colorStart={"#01b5fa70"} colorEnd={"transparent"} colorBorder={"#01b5fa"} />
             </div>
           </div>
         </div>
