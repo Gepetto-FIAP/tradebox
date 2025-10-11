@@ -1,13 +1,12 @@
 .card_data {
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     border-radius: 8px;
     gap: 15px;
-    width: 200px;
-    min-width: 50%;
-    padding: 15px; 
+    min-width: max(200px, 40%);
+    padding: 15px;
     background: radial-gradient(circle at 0% 0%, rgba(1, 181, 250, 0.3) 0%, transparent 20%) ;
 }
 
@@ -42,7 +41,7 @@
 .card_content {
     display: flex;
     gap: 15px;
-    width: 100%;
+    width: 85%;
 }
 
 .card_icon {
@@ -121,8 +120,8 @@
 @media (min-width: 700px) {
     .card_data {
         min-width: 0px;
-        padding: 20px;
         width: auto;
+        padding: 0px;
     }
 
     .card_value {
@@ -151,6 +150,16 @@
 
     .card_data {
         flex-direction: column;
+    }
+
+    .card_value {
+        font-size: 1.8rem;
+    }
+    .chart_value {
+        font-size: 1.8rem;
+    }
+    .card_label {
+        font-size: 0.7rem;
     }
 
 }

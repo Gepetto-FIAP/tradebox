@@ -1,6 +1,6 @@
 import SalesChart from '@/components/SalesChart/SalesChart'; 
 import styles from './page.module.css';
-import RecentOrders from '@/components/RecentOrders/RecentOrders';
+import TrendingProducts from '@/components/TrendingProducts/TrendingProducts'; 
 import CardData from '@/components/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
 
@@ -28,10 +28,10 @@ export default function Seller() {
         <div className={styles.recent_orders_wrapper}>
           <div className={styles.orders_container}>
             <div className={styles.orders_content}>
-              <div className={styles.card_label}>Últimas vendas</div>
+              <div className={styles.card_label}>Produtos em alta</div>
             </div>
             <div className={styles.recent_orders}>
-              <RecentOrders/>
+              <TrendingProducts/>
             </div>
           </div>
         </div>
