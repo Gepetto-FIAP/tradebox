@@ -1,3 +1,4 @@
+import RecentOrders from '@/components/RecentOrders/RecentOrders';
 import styles from './page.module.css';
 
 export default function Store() {
@@ -7,7 +8,9 @@ export default function Store() {
       <div className={styles.history_label}>
         Histórico de vendas
       </div>
-
+      <div>
+        <RecentOrders/>
+      </div>
     </div>
     </>
   );
