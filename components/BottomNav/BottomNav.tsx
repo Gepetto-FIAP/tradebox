@@ -25,13 +25,25 @@ export default function BottomNav() {
     { href: '/seller/analytics', icon: BiLineChart, label: 'Análises' },
   ];
   
-  const activeIndex = nav_items.findIndex(item => item.href === pathname);
-
+// Função para verificar se um item está ativo
+  const isItemActive = (itemHref: string) => {
+    if (itemHref === '/seller' || itemHref === '/industry') {
+      // Para páginas home, verificação exata
+      return pathname === itemHref;
+    }
+    // Para outras páginas, verificar se começa com a rota base
+    return pathname?.startsWith(itemHref);
+  };
+  
+  // Encontrar o índice do item ativo para o slider
+  const activeIndex = nav_items.findIndex(item => isItemActive(item.href));
   return (
     <nav className={styles.nav}>
       <div className={styles.slider} style={{ left: `${activeIndex * 100/nav_items.length}%` }} />
       {nav_items.map((item, idx) => {
-        const isActive = pathname === item.href;
+        const isActive = isItemActive(item.href);
+
+        
         return (
           <Link key={item.href} href={item.href} className={`${styles.nav_item} ${isActive ? styles.active_item : ''}`}>
             <item.icon className={styles.icon}/>

@@ -1,53 +1,56 @@
-import { BiMoneyWithdraw } from "react-icons/bi";
+import Table from '../Table/Table';
 import styles from './RecentOrders.module.css';
 
-export default function RecentOrders() {
-  return (
-    <div>
-        <table className={styles.table}>
-            <thead className={styles.table_head}>
-                <tr>
-                    <th>Numero pedido</th>
-                    <th>Data </th>
-                    <th>Status</th>
-                    <th>Itens</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
+const products = [
+    {
+        idOrder: 1,
+        data: '2023-10-01',
+        itens: 3,
+        total: 100
+    },
+    {
+        idOrder: 2,
+        data: '2023-10-02',
+        itens: 1,
+        total: 50
+    },
+    {
+        idOrder: 3,
+        data: '2023-10-03',
+        itens: 2,
+        total: 75
+    },
+    {
+        idOrder: 4,
+        data: '2023-10-04',
+        itens: 1,
+        total: 50
+    }
+];
 
-            <tbody className={styles.table_body}>
-                <tr>
-                    <td>#1234</td>
-                    <td>01/10/2023 </td>
-                    <td><span className={styles.status_completed}>Concluído</span></td>
-                    <td>2</td>
-                    <td>R$ 150,00</td>
-                </tr>
-                <tr>
-                    <td>#1234</td>
-                    <td>01/10/2023 </td>
-                    <td><span className={styles.status_completed}>Concluído</span></td>
-                    <td>2</td>
-                    <td>R$ 150,00</td>
-                </tr>
-                <tr>
-                    <td>#1234</td>
-                    <td>01/10/2023 </td>
-                    <td><span className={styles.status_completed}>Concluído</span></td>
-                    <td>2</td>
-                    <td>R$ 150,00</td>
-                </tr>
-                <tr>
-                    <td>#1234</td>
-                    <td>01/10/2023 </td>
-                    <td><span className={styles.status_completed}>Concluído</span></td>
-                    <td>2</td>
-                    <td>R$ 150,00</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-  ); 
+const columns = [
+  {
+    key: 'idOrder',
+    header: 'Nº',
+    render: (value: number) => `#${value}`
+  },
+  {
+    key: 'data',
+    header: 'Data'
+  },
+  {
+    key: 'itens',
+    header: 'Itens'
+  },
+  {
+    key: 'total',
+    header: 'Total'
+  }
+];
+
+export default function RecentOrders() {
+  return <Table columns={columns} data={products} />;
+
 }
 
 

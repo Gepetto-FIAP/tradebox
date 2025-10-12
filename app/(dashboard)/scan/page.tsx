@@ -234,7 +234,8 @@ export default function CameraView() {
       style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
       onClick={() => consultarProduto("7894900700398 ")}
       >
-        Testar consulta
+        Testar consulta ... 
+
       </button>
 
       {!error && (

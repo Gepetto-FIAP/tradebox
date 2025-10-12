@@ -1,12 +1,12 @@
 /* Analytics Dashboard Styles */
 
 .analytics_container {
-  padding: 16px;
+  padding: 20px;
   max-width: 1800px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 30px;
   background: transparent;
   grid-auto-rows: auto;
   overflow: auto;
@@ -21,22 +21,9 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.header_title h1 {
-  font-size: 32px;
-  font-weight: 700;
-  color: white;
-  margin: 0 0 8px 0;
-}
-
-.header_title p {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-}
-
 .header_actions {
   display: flex;
-  gap: 16px;
+  gap: 15px;
   align-items: center;
 }
 
@@ -93,14 +80,18 @@
 .main_metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 30px;
+}
+
+.main_metrics > div, .secondary_metrics {
+  min-height: 90px; 
 }
 
 /* Main Charts */
 .main_charts {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
+  gap: 30px;
   height: 350px;
 }
 
@@ -185,6 +176,7 @@
   gap: 16px;
   align-items: start;
 }
+
 
 .secondary_metrics {
   display: grid;
@@ -345,10 +337,21 @@
 }
 
 /* Responsive Design */
+@media (min-width: 700px) { 
+  .analytics_container {
+    padding: 30px 50px 30px 30px;
+  }
+}
+
+@media (min-width: 700px) and (max-width: 1000px) { 
+  .analytics_container {
+    padding: 30px;
+  }
+}
+
 @media (max-width: 1400px) {
   .analytics_container {
     max-width: 1400px;
-    padding: 12px;
   }
   
   .main_charts {
@@ -368,7 +371,6 @@
 
 @media (max-width: 1200px) {
   .analytics_container {
-    padding: 10px;
     gap: 12px;
   }
   
@@ -396,7 +398,6 @@
 
 @media (max-width: 768px) {
   .analytics_container {
-    padding: 16px;
     gap: 16px;
   }
   
@@ -448,7 +449,6 @@
 
 @media (max-width: 480px) {
   .analytics_container {
-    padding: 12px;
     gap: 12px;
   }
   

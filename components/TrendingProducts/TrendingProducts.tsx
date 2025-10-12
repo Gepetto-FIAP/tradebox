@@ -1,17 +1,18 @@
 import styles from './TrendingProducts.module.css';
+import Table from '../Table/Table';
 
 const trendingProducts = [
     {
         name: "Feijão Carioca 1kg",
-        vendas: 100,
+        vendas: 95,
     },
     {
         name: "Arroz Integral 1kg",
-        vendas: 85,
+        vendas: 81,
     },
     {
         name: "Açúcar Cristal 1kg",
-        vendas: 75,
+        vendas: 79,
     },
     {
         name: "Farinha de Trigo 1kg",
@@ -41,12 +42,40 @@ const trendingProducts = [
         name: "Pão de Forma 500g",
         vendas: 45,
     }
-];  // esse objeto é temporário, depois buscar do banco de dados
+];  
+
+
+// o objeto acima é temporário, depois buscar do banco de dados
+// dados provenientes do db deverao seguir a estrutura acima para funcionar corretamente
+
+
+
+const columns = [
+    {
+        key: 'rank',
+        header: 'Rank',
+        render: (value: number) => `#${value}`
+    },
+    {
+        key: 'name',
+        header: 'Produto'
+    },
+    {
+        key: 'vendas',
+        header: 'Vendas'
+    }
+
+];
 
 export default function TrendingProducts() {
-    const sortedProducts = trendingProducts.sort((a, b) => b.vendas - a.vendas)
+    const sortedProducts = trendingProducts.sort((a, b) => b.vendas - a.vendas);
     const top3Products = sortedProducts.slice(0, 3);
-    
+
+    const productWithRank = sortedProducts.map((product, index) => ({
+        ...product,
+        rank: index + 1
+    }));
+
     return (
         <div className={styles.trending_container}>
             <div className={styles.trending_ranking}>
@@ -67,42 +96,7 @@ export default function TrendingProducts() {
                     </div>
                 ))}
             </div>
-
-            <div className={styles.trending_table_wrapper}>
-
-                <div className={styles.trending_table}>
-                    <div className={`${styles.trending_table_row} ${styles.trending_table_header}`}>
-                        <div className={styles.trending_table_col}>
-                            Rank
-                        </div>
-                        <div className={styles.trending_table_col}>
-                            Produto
-                        </div>
-                        <div className={styles.trending_table_col}>
-                            Vendas
-                        </div>
-                    </div>
-
-                    <div className={styles.trending_table_body}>
-                        {sortedProducts.map((product, index) => (
-                            <div key={index} className={styles.trending_table_row}>
-                                <div className={styles.trending_table_col}>
-                                    #{index + 1}
-                                </div>
-                                <div className={styles.trending_table_col}>
-                                    {product.name}
-                                </div>
-                                <div className={styles.trending_table_col}>
-                                    {product.vendas}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-
-
-                </div>
-            </div>
+            <Table columns={columns} data={productWithRank} />
         </div>
     );
 }
