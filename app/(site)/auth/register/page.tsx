@@ -85,16 +85,44 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     
-    // TODO: Implementar lógica de cadastro
-    console.log('Register data:', formData);
-    
-    // Simular delay de API
-    setTimeout(() => {
+    try {
+      // Mapear userType para categoria do banco
+      const categoria = formData.userType === 'retailer' ? 'VAREJISTA' : 'INDUSTRIA';
+      const tipo_pessoa = formData.documentType === 'cpf' ? 'PF' : 'PJ';
+      
+      // Chamar API de registro
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          nome: formData.name,
+          categoria,
+          tipo_pessoa,
+          documento: formData.document.replace(/\D/g, ''), // Remove formatação
+          telefone: formData.phone.replace(/\D/g, ''),
+          endereco: formData.address,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(data.message || 'Cadastro realizado com sucesso!');
+        // Redirecionar para o dashboard correto
+        window.location.href = data.redirectUrl || '/seller';
+      } else {
+        alert(data.message || 'Erro ao realizar cadastro');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Erro ao realizar cadastro. Tente novamente.');
+    } finally {
       setIsLoading(false);
-      alert('Cadastro realizado com sucesso!');
-      // Redirecionar para login após cadastro bem-sucedido com tipo de usuário
-      window.location.href = `/auth/login?userType=${formData.userType}`;
-    }, 2000);
+    }
   };
 
   return (
