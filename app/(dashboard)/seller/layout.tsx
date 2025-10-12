@@ -14,9 +14,9 @@ export default async function DashboardSellerLayout({
   return (
         <div className={styles.layout}>
             <div className={styles.header}>
-                <div className={styles.header_logo}>
-                    <span>Trade</span>
-                    <span>Box</span>
+                <div className={styles.greeting_wrapper}>
+                  <div className={styles.greeting}>Bom dia,</div>
+                  <div className={styles.name}>fulano!</div>
                 </div>
                 <LogoutButton variant="full" />
             </div>

@@ -4,6 +4,7 @@
     justify-content: end;
     width: 100%;
     padding-bottom: 0px;
+    overflow: auto;
 }
 
 .table {
@@ -11,16 +12,17 @@
     overflow: auto;
     display: flex;
     flex-direction: column;
+    min-width: max-content;
 }
 
 .table_header {
-    font-size: .9rem;
+    font-size: .8rem;
     color: var(--color-secondary);
     font-weight: 500;
 }
 
 .table_body {
-    font-size: .9rem;
+    font-size: .8rem;
     color: var(--color-text);
     font-weight: 100;
 }
@@ -30,15 +32,34 @@
     position: relative;
     line-height: 35px;
     transition: .3s;
+    padding: 0px 4px;
+    border-radius: 4px;
 }
 
-.table:has(input:focus) .table_row:not(:focus-within) {
+.table:has( input:focus) .table_row:not(:focus-within) {
     filter: blur(2px) brightness(.9);
     pointer-events: none;
 }
 
 .table_row:has(input:focus) {
     background: var(--color-primary-30);
+}
+
+.table_col input:hover {
+    background: var(--color-primary-10);
+    cursor: pointer;
+}
+
+.table_col input:focus {
+    outline-offset: -2px;
+    outline: 2px solid var(--color-primary);
+    cursor: text;
+}
+
+.table_col select:focus {
+    outline-offset: -2px;
+    outline: 2px solid var(--color-primary);
+    
 }
 
 .table_row div:first-child {
@@ -78,17 +99,6 @@
     white-space: nowrap;
 }
 
-.table_col input:hover {
-    background: var(--color-primary-10);
-    cursor: pointer;
-}
-
-.table_col input:focus {
-    outline-offset: -2px;
-    outline: 2px solid var(--color-primary);
-    cursor: text;
-}
-
 .table_col:last-child {
     border-right: none;
 }
@@ -125,7 +135,7 @@ input::-webkit-inner-spin-button {
     font-size: 1rem;
     border-radius: 54px;
     cursor: pointer;
-    transition: background .3s, color .3s;
+    transition: .3s;
     aspect-ratio: 1;
     height: 30px;
 }
@@ -143,6 +153,9 @@ input::-webkit-inner-spin-button {
     scale: 1.1;
 }
 
+.table_row:has(input:focus)  button {
+    opacity: 0;
+}
 
 .table_col > div {
     height: 100%;
@@ -159,3 +172,40 @@ input::-webkit-inner-spin-button {
     cursor: not-allowed;
 }
 
+.table_row select {
+    background: none;
+    border: 0;
+    color: currentColor;
+    font-family: Urbanist ,sans-serif;
+    font-weight: 100;
+    text-align: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.table_row select option {
+    background: var(--color-bg-dark);
+    color: var(--color-text);
+    font-weight: 200;
+    padding: 4px 8px;
+}
+
+.table_row select:hover {
+    background: var(--color-primary-10);
+}
+
+
+
+
+@media (pointer:none), (pointer:coarse) {
+    .table_wrapper {
+        scrollbar-width: none;
+    }
+}
