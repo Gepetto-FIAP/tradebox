@@ -1,0 +1,68 @@
+.logoutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.logoutButton:hover:not(:disabled) {
+  background: rgba(255, 59, 48, 0.2);
+  transform: translateY(-1px);
+}
+
+.logoutButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.logoutButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* Variante apenas ícone */
+.icon {
+  padding: 8px;
+  background: transparent;
+}
+
+.icon .text {
+  display: none;
+}
+
+/* Variante apenas texto */
+.text .icon {
+  display: none;
+}
+
+/* Variante completa (padrão) */
+.full {
+  /* Já configurado no .logoutButton */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .logoutButton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .icon {
+    font-size: 18px;
+  }
+}
+

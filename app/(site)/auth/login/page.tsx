@@ -39,16 +39,33 @@ import styles from './login.module.css';
     e.preventDefault();
     setIsLoading(true);
     
-    // TODO: Implementar lógica de autenticação
-    console.log('Login data:', formData);
-    
-    // Simular delay de API
-    setTimeout(() => {
+    try {
+      // Chamar API de login
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Redirecionar para o dashboard correto baseado na categoria do usuário
+        window.location.href = data.redirectUrl || '/seller';
+      } else {
+        alert(data.message || 'Erro ao realizar login');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Erro ao realizar login. Tente novamente.');
+    } finally {
       setIsLoading(false);
-      // Redirecionar para dashboard correto baseado no tipo de usuário
-      const redirectUrl = formData.userType === 'retailer' ? '/seller' : '/industry';
-      window.location.href = redirectUrl;
-    }, 2000);
+    }
   };
 
   return (

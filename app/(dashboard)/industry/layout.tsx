@@ -1,22 +1,30 @@
-export default function IndustryLayout({
+import LogoutButton from "@/components/LogoutButton/LogoutButton";
+import { requireIndustry } from "@/lib/authorization";
+import styles from './layout.module.css';
+
+export default async function IndustryLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Verificar se o usuário é indústria antes de renderizar
+  await requireIndustry();
+
   return (
-    <div>
-      <header style={{ 
-        padding: '10px 20px', 
-        background: 'rgba(255, 255, 255, 0.1)', 
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: '500'
-      }}>
-        TradeBox Indústria
+    <div className={styles.layout}>
+      <header className={styles.header}>
+        <div className={styles.header_content}>
+          <div className={styles.header_logo}>
+            <span>Trade</span>
+            <span>Box</span>
+          </div>
+          <span className={styles.header_subtitle}>Indústria</span>
+        </div>
+        <LogoutButton variant="full" />
       </header>
-      {children}
+      <main className={styles.main_content}>
+        {children}
+      </main>
     </div>
   );
 }
