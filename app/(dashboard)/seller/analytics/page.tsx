@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './analytics.module.css';
+import styles from './page.module.css';
 import CardData from '@/components/CardData/CardData';
 import SalesChart from '@/components/SalesChart/SalesChart';
 import { 
@@ -249,10 +249,7 @@ export default function Analytics() {
     <div className={styles.analytics_container}>
       {/* Header com filtros */}
       <div className={styles.analytics_header}>
-        <div className={styles.header_title}>
-          <h1>Analytics Dashboard</h1>
-          <p>Análise completa das suas vendas e performance</p>
-        </div>
+
         <div className={styles.header_actions}>
           <div className={styles.time_filters}>
             {['7d', '30d', '90d', '1y'].map((filter) => (

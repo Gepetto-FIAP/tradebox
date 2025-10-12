@@ -110,73 +110,8 @@
     order: 3;
 }
 
-.trending_table_wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    width: 100%;
-    padding-bottom: 0px;
-}
-
-.trending_table {
-    width: 100%;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.trending_table_header {
-    font-size: .9rem;
-    color: var(--color-secondary);
-    font-weight: 500;
-    padding-bottom: 20px;
-}
-
-.trending_table_body {
-    font-size: .9rem;
-    color: var(--color-text);
-    font-weight: 100;
-}
-
-.trending_table_row {
-    display: flex;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    position: relative;
-}
-
-.trending_table_row::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    width: 100%;
-    height: 1px;
-    background: radial-gradient(var(--color-border) 0%, transparent 55%);
-    opacity: 0.75;
-}
-
-.trending_table_row:last-child {
-    border-bottom: none;
-}
-
-.trending_table_col {
-    flex: 1;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.trending_table_col:last-child {
-    border-right: none;
-}
-
 @media (min-width: 1000px) {
     .trending_ranking {
         display: flex;
     }
-
 }

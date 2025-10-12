@@ -1,5 +1,5 @@
 .history_sell {
-    padding: 10px;
+    padding: 20px;
     border-radius: 8px;
     border: 2px solid var(--color-border);
     height: 100%;
@@ -10,4 +10,37 @@
     opacity: .75;
     font-size: .8em;
     font-weight: 300;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+    height: 100%;
+}
+
+.sell_options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 2px;
+}
+
+.sell_content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.history_table{
+    margin-top: 30px;
+}
+@media (min-width: 700px) {
+    .container {
+        padding: 30px 50px 30px 30px;
+        gap: 30px;
+    }
 }
