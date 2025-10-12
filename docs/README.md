@@ -4,9 +4,9 @@ Bem-vindo à documentação do projeto TradeBox! Aqui você encontrará toda a d
 
 ## 📂 Estrutura da Documentação
 
-### 🔐 Autenticação (`/auth`)
+### 🔐 Autenticação & Autorização (`/auth`)
 
-Documentação completa do sistema de autenticação e gerenciamento de usuários:
+Documentação completa do sistema de autenticação e controle de acesso:
 
 - **[IMPLEMENTACAO_AUTH.md](./auth/IMPLEMENTACAO_AUTH.md)** - Documentação técnica completa da implementação de autenticação
   - Arquitetura e estrutura
@@ -21,6 +21,13 @@ Documentação completa do sistema de autenticação e gerenciamento de usuário
   - Configuração de variáveis de ambiente
   - Criação de usuários de teste
   - Troubleshooting comum
+
+- **[AUTHORIZATION.md](./auth/AUTHORIZATION.md)** - Sistema de controle de acesso por categoria
+  - Regras de acesso por tipo de usuário
+  - Proteção de rotas
+  - Fluxo de autorização
+  - Matriz de permissões
+  - Exemplos práticos
 
 ### 🔌 Integrações (`/integrations`)
 
