@@ -140,7 +140,7 @@ export default function RegisterPage() {
             <div className={styles.toggleContainer}>
               <button
                 type="button"
-                onClick={() => setFormData({...formData, userType: 'retailer'})}
+                onClick={() => setFormData({...formData, userType: 'retailer', documentType: 'cpf', document: ''})}
                 className={`${styles.toggleButton} ${formData.userType === 'retailer' ? styles.active : ''}`}
               >
                 <div className={styles.toggleIcon}>🏪</div>
@@ -151,7 +151,7 @@ export default function RegisterPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setFormData({...formData, userType: 'industry'})}
+                onClick={() => setFormData({...formData, userType: 'industry', documentType: 'cnpj', document: ''})}
                 className={`${styles.toggleButton} ${formData.userType === 'industry' ? styles.active : ''}`}
               >
                 <div className={styles.toggleIcon}>🏭</div>

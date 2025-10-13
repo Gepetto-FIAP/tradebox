@@ -18,7 +18,7 @@ export interface User {
   updated_at: Date;
 }
 
-export interface JWTPayload {
+export interface AuthPayload {
   userId: number;
   email: string;
   categoria: UserCategory;
