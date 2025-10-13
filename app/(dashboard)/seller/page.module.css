@@ -7,7 +7,7 @@
     height: 100%;
     width: 100%;
     overflow-x: auto;
-    padding: 20px 0;
+    padding: 0 0 20px 0;
     gap: 20px;
     scrollbar-width: none;
 }
@@ -132,7 +132,7 @@
         height: auto;
         grid-template-rows: 3fr 5fr;
         grid-template-columns: 3fr 5fr;
-        padding: 30px 50px 30px 30px;
+        padding: 15px 50px 30px 30px;
         grid-gap: 30px;
         height: 100%;
     }
@@ -197,8 +197,7 @@
         padding: 30px;
     }
     .content {
-        padding: 30px;
-
+        padding: 15px 30px 30px;
     }
     .card_label {
         font-size: 0.7rem;

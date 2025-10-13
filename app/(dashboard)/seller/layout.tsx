@@ -18,6 +18,8 @@ export default async function DashboardSellerLayout({
                   <div className={styles.greeting}>Bom dia,</div>
                   <div className={styles.name}>fulano!</div>
                 </div>
+
+                
                 <LogoutButton variant="full" />
             </div>
             <main className={styles.main_content}>
