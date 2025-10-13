@@ -3,13 +3,17 @@ import styles from './page.module.css';
 import TrendingProducts from '@/components/TrendingProducts/TrendingProducts'; 
 import CardData from '@/components/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
+import { getCurrentUser } from '@/lib/auth';
 
-export default function Seller() {
+export default async function Seller() {
+  const user = await getCurrentUser();
+  const userName = user?.nome?.split(' ')[0] || 'Usuário';
+
   return (
     <>
       <div className={styles.header}>
         <div className={styles.greeting}>Bom dia,</div>
-        <div className={styles.name}>Fulano!</div>
+        <div className={styles.name}>{userName}!</div>
       </div>
       <div className={styles.content}> 
 

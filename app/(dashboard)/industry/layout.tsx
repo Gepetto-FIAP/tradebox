@@ -2,6 +2,8 @@ import LogoutButton from "@/components/LogoutButton/LogoutButton";
 import { requireIndustry } from "@/lib/authorization";
 import styles from './layout.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function IndustryLayout({
   children,
 }: {
