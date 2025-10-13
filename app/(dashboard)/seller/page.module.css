@@ -1,22 +1,4 @@
-.header {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-    padding: 20px 20px 0px;
-    color: var(--color-text);
-    mask-image: linear-gradient(to bottom, black 50%, transparent 125%);
-    
-}
 
-.greeting {
-    font-weight: 100;
-    font-size: 0.9rem;
-}
-
-.name {
-    font-weight: 100;
-    font-size: 1.8rem;
-}
 
 .content {
     display: flex;
@@ -25,7 +7,7 @@
     height: 100%;
     width: 100%;
     overflow-x: auto;
-    padding: 20px 0;
+    padding: 0 0 20px 0;
     gap: 20px;
     scrollbar-width: none;
 }
@@ -137,10 +119,6 @@
 }
 
 @media (min-width: 700px) {
-    .header {
-        padding: 30px 50px 30px 30px ;
-    }
-
     .cards_data_wrapper {
         padding-left: 0px;
         height: 100%;
@@ -154,7 +132,7 @@
         height: auto;
         grid-template-rows: 3fr 5fr;
         grid-template-columns: 3fr 5fr;
-        padding: 0px 50px 30px 30px;
+        padding: 15px 50px 30px 30px;
         grid-gap: 30px;
         height: 100%;
     }
@@ -219,8 +197,7 @@
         padding: 30px;
     }
     .content {
-        padding: 0px 30px 30px 30px;
-
+        padding: 15px 30px 30px;
     }
     .card_label {
         font-size: 0.7rem;

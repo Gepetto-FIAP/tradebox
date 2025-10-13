@@ -52,6 +52,7 @@ export default function LogoutButton({ variant = 'full', className = '' }: Logou
       title="Sair da conta"
     >
       <BiLogOut className={styles.icon} />
+      
       {(variant === 'full' || variant === 'text') && (
         <span className={styles.text}>
           {isLoading ? 'Saindo...' : 'Sair'}

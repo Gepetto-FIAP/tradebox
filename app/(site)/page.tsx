@@ -17,7 +17,7 @@ export default function Home() {
 
         <div className={styles.element_content}>
 
-          
+    
 
         </div>
       </div>

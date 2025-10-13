@@ -1,22 +1,23 @@
 .logoutButton {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
+  justify-content: space-between;
+  padding: 8px 12px;
+  gap: 4px;
   border: none;
-  border-radius: 8px;
-  background: rgba(255, 59, 48, 0.1);
-  color: #ff3b30;
-  font-size: 14px;
+  border-radius: 4px;
+  background: #c81e3220;
+  color: #c81e32;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
+  font-family: Urbanist, sans-serif;
+  height: min-content;
 }
 
 .logoutButton:hover:not(:disabled) {
-  background: rgba(255, 59, 48, 0.2);
+  background: #c81e3230;
   transform: translateY(-1px);
 }
 
@@ -30,16 +31,11 @@
 }
 
 .icon {
-  font-size: 20px;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
 /* Variante apenas ícone */
-.icon {
-  padding: 8px;
-  background: transparent;
-}
-
 .icon .text {
   display: none;
 }
@@ -57,12 +53,12 @@
 /* Responsividade */
 @media (max-width: 768px) {
   .logoutButton {
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
   }
   
   .icon {
-    font-size: 18px;
+    font-size: 0.9rem;
   }
 }
 

@@ -12,7 +12,6 @@ type SalesChartProps = {
 };
 
 const options: ChartOptions<'line'> = {
-  animation: false,
   maintainAspectRatio: false,
   responsive: true,
   plugins: {

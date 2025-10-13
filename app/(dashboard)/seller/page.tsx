@@ -11,12 +11,7 @@ export default async function Seller() {
 
   return (
     <>
-      <div className={styles.header}>
-        <div className={styles.greeting}>Bom dia,</div>
-        <div className={styles.name}>{userName}!</div>
-      </div>
       <div className={styles.content}> 
-
         <div className={styles.chart_wrapper}>
           <div className={styles.chart_container}>
             <div className={styles.chart_content}>
