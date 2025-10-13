@@ -1,11 +1,15 @@
 import styles from './page.module.css';
 import BottomNav from '@/components/BottomNav/BottomNav';
+import { getCurrentUser } from '@/lib/auth';
 
-export default function IndustryDashboard() {
+export default async function IndustryDashboard() {
+  const user = await getCurrentUser();
+  const userName = user?.nome?.split(' ')[0] || 'Usuário';
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Dashboard da Indústria</h1>
+        <h1 className={styles.title}>Olá, {userName}!</h1>
         <p className={styles.subtitle}>Gerencie sua produção e produtos</p>
       </div>
 
