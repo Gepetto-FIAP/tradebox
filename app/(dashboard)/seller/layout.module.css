@@ -22,7 +22,6 @@
     font-weight: 100;
     font-size: 1.8rem;
 
-    
 }
 
 .header {
@@ -34,7 +33,7 @@
 
 .main_content {
     flex: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-top: 0;
 }
 

@@ -40,7 +40,7 @@
 
 .card_content {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     width: 85%;
 }
 
@@ -48,7 +48,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5em;
+    font-size: 1.3em;
     padding: 5px;
     border-radius: 6px;
     color: var(--color-primary);
@@ -91,7 +91,7 @@
 }   
 
 .card_value {
-    font-size: 1.8rem;
+    font-size: 1.7em;
     font-weight: 200;
     color: var(--color-text);
 }
@@ -121,11 +121,11 @@
     .card_data {
         min-width: 0px;
         width: auto;
-        padding: 0px;
+        padding: 15px 0;
     }
 
     .card_value {
-        font-size: 2rem;
+        font-size: 2em;
     }
 
     .card_label {
@@ -151,10 +151,7 @@
     .card_data {
         flex-direction: column;
     }
-
-    .card_value {
-        font-size: 1.8rem;
-    }
+    
     .chart_value {
         font-size: 1.8rem;
     }

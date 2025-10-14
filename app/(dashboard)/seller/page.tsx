@@ -4,7 +4,10 @@ import TrendingProducts from '@/components/TrendingProducts/TrendingProducts';
 import CardData from '@/components/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
 
-export default function Seller() {
+
+
+
+export default async function Seller() {
   return (
     <>
       <div className={styles.content}> 

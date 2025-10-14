@@ -41,7 +41,6 @@ export default function Header() {
 
                     </ul>
                 </nav>
-                
                     
                 <button className={ styles.header_button }>
                     <span>
