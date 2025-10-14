@@ -5,6 +5,8 @@ import styles from './layout.module.css';
 import { getCurrentUser } from '@/lib/auth';
 
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardSellerLayout({
   children,
 }: Readonly<{
@@ -17,7 +19,6 @@ export default async function DashboardSellerLayout({
   const userName = user?.nome?.split(' ')[0] || 'Usuário';
 
   return (
-    
         <div className={styles.layout}>
             <div className={styles.header}>
                 <div className={styles.greeting_wrapper}>

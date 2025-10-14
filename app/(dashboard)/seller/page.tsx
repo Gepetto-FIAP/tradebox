@@ -3,11 +3,10 @@ import styles from './page.module.css';
 import TrendingProducts from '@/components/TrendingProducts/TrendingProducts'; 
 import CardData from '@/components/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
-
-
-
+import { getCurrentUser } from '@/lib/auth';
 
 export default async function Seller() {
+
   return (
     <>
       <div className={styles.content}> 
@@ -22,7 +21,6 @@ export default async function Seller() {
             </div>
           </div>
         </div>
-
         <div className={styles.recent_orders_wrapper}>
           <div className={styles.orders_container}>
             <div className={styles.orders_content}>
@@ -33,10 +31,7 @@ export default async function Seller() {
             </div>
           </div>
         </div>
-
         <div className={styles.cards_data_wrapper}>
-
-
           <div className={styles.cards_data}>
               <CardData icon={<BiCartAlt/>} label="Vendas" value={24} badge_value={"+5%"} />
               <CardData icon={<BiDollar />} label="Faturamento" value={"R$25K"} badge_value={"+10%"} />
@@ -47,4 +42,5 @@ export default async function Seller() {
       </div>
     </>
   );
+
 }

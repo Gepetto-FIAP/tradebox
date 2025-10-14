@@ -17,11 +17,6 @@ export default function RegisterPage() {
     userType: 'retailer' // retailer ou industry
   });
 
-  // Definir cor de fundo baseada no tipo de usuário
-  const backgroundGradient = formData.userType === 'retailer' 
-    ? 'linear-gradient(135deg, #00384d 0%, #01b5fa 100%)' // Azul escuro para varejista
-    : 'linear-gradient(135deg, #01b5fa 0%, #87ceeb 100%)'; // Azul claro para indústria
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -126,7 +121,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={styles.container} style={{ background: backgroundGradient }}>
+    <div className={styles.container} >
       <div className={styles.registerBox}>
         <h1 className={styles.title}>Cadastro - TradeBox</h1>
         <p className={styles.subtitle}>Crie sua conta na plataforma</p>
@@ -140,7 +135,7 @@ export default function RegisterPage() {
             <div className={styles.toggleContainer}>
               <button
                 type="button"
-                onClick={() => setFormData({...formData, userType: 'retailer'})}
+                onClick={() => setFormData({...formData, userType: 'retailer', documentType: 'cpf', document: ''})}
                 className={`${styles.toggleButton} ${formData.userType === 'retailer' ? styles.active : ''}`}
               >
                 <div className={styles.toggleIcon}>🏪</div>
@@ -151,7 +146,7 @@ export default function RegisterPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setFormData({...formData, userType: 'industry'})}
+                onClick={() => setFormData({...formData, userType: 'industry', documentType: 'cnpj', document: ''})}
                 className={`${styles.toggleButton} ${formData.userType === 'industry' ? styles.active : ''}`}
               >
                 <div className={styles.toggleIcon}>🏭</div>
