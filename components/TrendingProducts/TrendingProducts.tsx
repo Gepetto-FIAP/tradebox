@@ -43,8 +43,6 @@ const trendingProducts = [
         vendas: 45,
     }
 ];  
-
-
 // o objeto acima é temporário, depois buscar do banco de dados
 // dados provenientes do db deverao seguir a estrutura acima para funcionar corretamente
 

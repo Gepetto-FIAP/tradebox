@@ -13,11 +13,6 @@ import styles from './login.module.css';
     userType: 'retailer' // retailer ou industry
   });
 
-  // Definir cor de fundo baseada no tipo de usuário
-  const backgroundGradient = formData.userType === 'retailer' 
-    ? 'linear-gradient(135deg, #00384d 0%, #01b5fa 100%)' // Azul escuro para varejista
-    : 'linear-gradient(135deg, #01b5fa 0%, #87ceeb 100%)'; // Azul claro para indústria
-
   const [isLoading, setIsLoading] = useState(false);
 
   // Verificar se há parâmetro de tipo de usuário na URL
@@ -69,7 +64,7 @@ import styles from './login.module.css';
   };
 
   return (
-      <div className={styles.container} style={{ background: backgroundGradient }}>
+      <div className={styles.container} >
         <div className={styles.loginBox}>
           <h1 className={styles.title}>Login - TradeBox</h1>
           <p className={styles.subtitle}>

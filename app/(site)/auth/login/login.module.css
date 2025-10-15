@@ -1,40 +1,42 @@
 .container {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   transition: background 0.5s ease;
+  margin-top: 50px;
 }
 
 .loginBox {
-  background: white;
+  border: 1px solid var(--color-primary-60);
+  background: var(--color-primary-10);
   padding: 40px;
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
+  max-width: 620px;
 }
 
 .title {
   font-size: 28px;
-  font-weight: 700;
-  color: var(--color-bg-dark);
+  font-weight: 300;
+  color: var(--color-secondary);
   margin-bottom: 8px;
   text-align: center;
 }
 
 .subtitle {
-  color: var(--color-muted);
+  color: var(--color-secondary);
+  opacity: 0.75;
   text-align: center;
   margin-bottom: 32px;
   font-size: 16px;
+  font-weight: 100;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .userTypeToggle {
@@ -46,8 +48,14 @@
 }
 
 .toggleLabel {
-  font-weight: 500;
-  color: var(--color-bg-dark);
+  font-weight: 200;
+  color: var(--color-secondary);
+  font-size: 14px;
+}
+
+.label {
+  font-weight: 200;
+  color: var(--color-secondary);
   font-size: 14px;
 }
 
@@ -61,27 +69,28 @@
   display: flex;
   align-items: center;
   padding: 16px;
-  border: 2px solid #e5e5e5;
+  border: 1px solid var(--color-primary-30);
   border-radius: 8px;
-  background: white;
+  background: var(--color-primary-10);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
+  font-family: Urbanist, sans-serif;
 }
 
 .toggleButton:hover {
-  border-color: #c1c1c1;
+  border-color: var(--color-primary-60);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .toggleButton.active {
   border-color: var(--color-primary);
-  background: rgba(1, 181, 250, 0.05);
+  background: var(--color-primary-30);
   box-shadow: 0 0 0 3px rgba(1, 181, 250, 0.1);
 }
 
 .toggleIcon {
-  font-size: 20px;
+  font-size: 24px;
   margin-right: 12px;
   flex-shrink: 0;
 }
@@ -93,13 +102,14 @@
 }
 
 .toggleTitle {
-  font-weight: 600;
-  color: var(--color-bg-dark);
+  font-weight: 400;
+  color: var(--color-secondary);
   font-size: 14px;
 }
 
 .toggleSubtitle {
-  color: var(--color-muted);
+  color: var(--color-secondary);
+  opacity: 0.75;
   font-size: 12px;
 }
 
@@ -109,20 +119,15 @@
   gap: 8px;
 }
 
-.label {
-  font-weight: 500;
-  color: var(--color-bg-dark);
-  font-size: 14px;
-}
-
 .input {
   padding: 16px;
-  border: 2px solid #e5e5e5;
+  border: 1px solid var(--color-primary-30);
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-  background: white;
-  color: var(--color-bg-dark);
+  background: transparent;
+  color: var(--color-secondary);
+  font-family: Urbanist, sans-serif;
 }
 
 .input:focus {
@@ -132,13 +137,13 @@
 }
 
 .input::placeholder {
-  color: var(--color-muted);
+  color: var(--color-primary-60);
 }
 
 .submitButton {
   padding: 16px;
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-primary-60);
+  color: var(--color-secondary);
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -146,6 +151,7 @@
   cursor: pointer;
   transition: background 0.3s ease;
   margin-top: 8px;
+  font-family: Urbanist, sans-serif;
 }
 
 .submitButton:hover:not(:disabled) {
