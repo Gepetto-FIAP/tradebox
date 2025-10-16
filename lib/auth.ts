@@ -78,20 +78,20 @@ export async function getCurrentUser(): Promise<AuthPayload | null> {
  * Retorna a URL de redirecionamento baseada na categoria do usuário
  */
 export function getRedirectUrl(categoria: UserCategory): string {
-  return categoria === 'VAREJISTA' ? '/seller' : '/industry';
+  return categoria === 'retailer' ? '/seller' : '/industry';
 }
 
 /**
  * Converte categoria do banco para userType do frontend
  */
 export function categoriaToUserType(categoria: UserCategory): 'retailer' | 'industry' {
-  return categoria === 'VAREJISTA' ? 'retailer' : 'industry';
+  return categoria === 'retailer' ? 'retailer' : 'industry';
 }
 
 /**
  * Converte userType do frontend para categoria do banco
  */
 export function userTypeToCategoria(userType: 'retailer' | 'industry'): UserCategory {
-  return userType === 'retailer' ? 'VAREJISTA' : 'INDUSTRIA';
+  return userType === 'retailer' ? 'retailer' : 'industry';
 }
 
