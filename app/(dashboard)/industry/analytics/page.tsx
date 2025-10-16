@@ -1,6 +1,10 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { Line, Bar } from 'react-chartjs-2';
+import SalesChart from '@/components/SalesChart/SalesChart';
+import styles from './analytics.module.css';
+import CardData from '@/components/CardData/CardData';
+import { BiCartAlt, BiDollar, BiLineChart, BiBasket } from 'react-icons/bi';
+import { useState } from 'react';
+import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,215 +15,177 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from 'chart.js';
-import styles from './analytics.module.css';
-import CardData from '@/components/CardData/CardData';
-import { BiCartAlt, BiDollar, BiLineChart, BiBasket } from 'react-icons/bi';
 import BottomNav from '@/components/BottomNav/BottomNav';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
-// Types
-interface AnalyticsData {
-  summary: {
-    totalProducts: number;
-    totalRevenue: number;
-    activeRetailers: number;
-    totalSales: number;
-  };
-  salesByDay: Array<{ date: string; sales: number; revenue: number }>;
-  topProducts: Array<{ name: string; sales: number; revenue: number }>;
-  salesByRetailer: Array<{ retailer: string; sales: number; revenue: number }>;
+interface TableRow {
+  id: number;
+  date: string;
+  retailer: string;
+  product: string;
+  quantity: number;
+  total: number;
 }
 
-// Mock Data
-const mockData: AnalyticsData = {
-  summary: {
-    totalProducts: 245,
-    totalRevenue: 41789,
-    activeRetailers: 32,
-    totalSales: 1847
-  },
-  salesByDay: [
-    { date: '10/10', sales: 120, revenue: 4500 },
-    { date: '10/11', sales: 145, revenue: 5200 },
-    { date: '10/12', sales: 98, revenue: 3800 },
-    { date: '10/13', sales: 167, revenue: 6100 },
-    { date: '10/14', sales: 134, revenue: 4900 },
-    { date: '10/15', sales: 189, revenue: 7200 }
-  ],
-  topProducts: [
-    { name: 'Widget Premium', sales: 234, revenue: 12500 },
-    { name: 'Widget Standard', sales: 189, revenue: 8900 },
-    { name: 'Widget Eco', sales: 145, revenue: 6700 },
-    { name: 'Widget Pro', sales: 98, revenue: 5600 }
-  ],
-  salesByRetailer: [
-    { retailer: 'SuperMercado ABC', sales: 89, revenue: 4200 },
-    { retailer: 'Loja Premium', sales: 67, revenue: 3800 },
-    { retailer: 'Rede Varejo', sales: 123, revenue: 5900 },
-    { retailer: 'Mercado Central', sales: 45, revenue: 2100 }
-  ]
-};
+const initialData: TableRow[] = [
+  { id: 1, date: '2025-09-01', retailer: 'Fábrica A', product: 'Widget A', quantity: 10, total: 120 },
+  { id: 2, date: '2025-09-02', retailer: 'Fábrica B', product: 'Widget B', quantity: 5, total: 60 },
+  { id: 3, date: '2025-09-03', retailer: 'Fábrica C', product: 'Widget A', quantity: 8, total: 96 },
+  { id: 4, date: '2025-09-03', retailer: 'Fábrica E', product: 'Widget D', quantity: 12, total: 125 },
+  { id: 5, date: '2025-09-05', retailer: 'Fábrica A', product: 'Widget C', quantity: 11, total: 110 },
+  { id: 6, date: '2025-09-01', retailer: 'Fábrica A', product: 'Widget A', quantity: 5, total: 60 },
+  { id: 7, date: '2025-09-02', retailer: 'Fábrica B', product: 'Widget D', quantity: 16, total: 150 },
+  { id: 8, date: '2025-09-03', retailer: 'Fábrica C', product: 'Widget A', quantity: 8, total: 96 },
+  { id: 9, date: '2025-09-03', retailer: 'Fábrica B', product: 'Widget D', quantity: 14, total: 130 },
+  { id: 10, date: '2025-09-05', retailer: 'Fábrica E', product: 'Widget C', quantity: 14, total: 110 },
+];
 
 export default function IndustryAnalytics() {
-  const [data, setData] = useState<AnalyticsData>(mockData);
-  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState({ date: '', retailer: '', product: '' });
+  const filteredData: TableRow[] = initialData.filter(row =>
+    (!filter.date || row.date === filter.date) &&
+    (!filter.retailer || row.retailer.toLowerCase().includes(filter.retailer.toLowerCase())) &&
+    (!filter.product || row.product.toLowerCase().includes(filter.product.toLowerCase()))
+  );
 
-  // Fetch Analytics Data
-  const fetchAnalyticsData = async () => {
-    setLoading(true);
-    try {
-      // TODO: Descomentar quando a API estiver pronta
-      /*
-      const response = await fetch('/api/industry/analytics');
-      const result = await response.json();
-      if (result.success) {
-        setData(result.data);
-      } else {
-        console.error('Erro da API:', result.message);
-        setData(mockData); // Fallback para mock data
-      }
-      */
-      
-      // MODO DESENVOLVIMENTO: Usando mock data
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simula latência
-      setData(mockData);
-      
-    } catch (error) {
-      console.error('Erro ao carregar analytics:', error);
-      setData(mockData); // Fallback em caso de erro
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Indicadores para os cards
+  const totalUnits = filteredData.reduce((sum, r) => sum + r.quantity, 0);
+  const activeRetailers = new Set(filteredData.map(r => r.retailer)).size;
+  const productSales: Record<string, number> = {};
+  filteredData.forEach(r => {
+    productSales[r.product] = (productSales[r.product] || 0) + r.quantity;
+  });
+  const bestProduct = Object.entries(productSales).reduce((best, [prod, qty]) => qty > best.qty ? { prod, qty } : best, { prod: '', qty: 0 }).prod;
+  const totalRevenue = filteredData.reduce((sum, r) => sum + r.total, 0);
 
-  useEffect(() => {
-    fetchAnalyticsData();
-  }, []);
-
-  // Preparar dados para gráficos
-  const salesChartData = {
-    labels: data.salesByDay.map(item => item.date),
+  // Gráfico de linha: vendas por dia
+  const lineData = {
+    labels: filteredData.map(r => r.date),
     datasets: [{
-      label: 'Vendas por Dia',
-      data: data.salesByDay.map(item => item.sales),
+      label: 'Vendas por dia',
+      data: filteredData.map(r => r.quantity),
       borderColor: '#01b5fa',
-      backgroundColor: '#01b5fa30',
-      tension: 0.4,
-    }]
+      backgroundColor: '#01b5fa70',
+      tension: 0.3,
+    }],
   };
-
-  const productsChartData = {
-    labels: data.topProducts.map(item => item.name),
-    datasets: [{
-      label: 'Produtos Mais Vendidos',
-      data: data.topProducts.map(item => item.sales),
-      backgroundColor: ['#01b5fa', '#00384d', '#87ceeb', '#4a90e2'],
-      borderWidth: 0,
-    }]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
+  const lineOptions = {
     plugins: {
-      legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgba(0,0,0,0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff'
-      }
+        callbacks: {
+          label: (ctx: any) => `Quantidade: ${ctx.parsed.y}`,
+        },
+      },
     },
-    scales: {
-      y: { beginAtZero: true }
-    }
   };
 
-  if (loading) {
-    return (
-      <div className={styles.fullBg}>
-        <div className={styles.container}>
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            Carregando analytics...
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Gráfico de barras: produtos mais vendidos
+  const barData = {
+    labels: Object.keys(productSales),
+    datasets: [{
+      label: 'Produtos mais vendidos',
+      data: Object.values(productSales),
+      backgroundColor: '#01b5fa70',
+      borderColor: '#01b5fa',
+      borderWidth: 1,
+    }],
+  };
+  const barOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `Qtd: ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
+  };
+
+  // Gráfico de barras: faturamento por produto
+  const revenueByProduct: Record<string, number> = {};
+  filteredData.forEach(r => {
+    revenueByProduct[r.product] = (revenueByProduct[r.product] || 0) + r.total;
+  });
+  const revenueBarData = {
+    labels: Object.keys(revenueByProduct),
+    datasets: [{
+      label: 'Faturamento por produto',
+      data: Object.values(revenueByProduct),
+      backgroundColor: '#00384d70',
+      borderColor: '#00384d',
+      borderWidth: 1,
+    }],
+  };
+  const revenueBarOptions = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `R$ ${ctx.parsed.y} | Produto: ${ctx.label}`,
+        },
+      },
+    },
+  };
 
   return (
     <div className={styles.fullBg}>
       <div className={styles.container}>
-        {/* Header */}
         <div className={styles.header}>
-          <div className={styles.greeting}>Analytics Indústria</div>
-          <div className={styles.name}>Dashboard Completo</div>
+          <div className={styles.greeting}>Dashboard Indústria</div>
+          <div className={styles.name}>Bem-vindo!</div>
         </div>
-
-        {/* KPIs Cards */}
         <div className={styles.cards_data_wrapper}>
           <div className={styles.cards_data}>
-            <CardData 
-              icon={<BiCartAlt />} 
-              label="Produtos" 
-              value={data.summary.totalProducts} 
-            />
-            <CardData 
-              icon={<BiDollar />} 
-              label="Faturamento" 
-              value={`R$ ${(data.summary.totalRevenue / 1000).toFixed(1)}k`} 
-            />
-            <CardData 
-              icon={<BiLineChart />} 
-              label="Vendas" 
-              value={data.summary.totalSales} 
-            />
+            <CardData icon={<BiCartAlt />} label="Produtos Cadastrados" value={245} />
+            <CardData icon={<BiDollar />} label="Faturamento" value={"R$ 41.789"} />
+            <CardData icon={<BiLineChart />} label="Linhas de Produção" value={8} />
+            <CardData icon={<BiBasket />} label="Parceiros" value={32} />
           </div>
         </div>
-
-        {/* Charts Section */}
-        <div className={styles.charts}>
-          <div className={styles.chartBox}>
-            <h3>Vendas por Dia</h3>
-            <div style={{ height: '250px' }}>
-              <Line data={salesChartData} options={chartOptions} />
-            </div>
-          </div>
-          
-          <div className={styles.chartBox}>
-            <h3>Top Produtos</h3>
-            <div style={{ height: '250px' }}>
-              <Bar data={productsChartData} options={chartOptions} />
-            </div>
-          </div>
+        <div className={styles.filters}>
+          <input type="date" value={filter.date} onChange={e => setFilter(f => ({ ...f, date: e.target.value }))} className={styles.filterInput} />
+          <input type="text" placeholder="Indústria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
+          <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
+          <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
         </div>
-        <section>
-
-          <div className={styles.tableWrapper}>
-            <h3>🏪 Top Varejistas</h3>
-            <table className={styles.table}>
-              <thead>
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Indústria</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Valor Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.length === 0 ? (
                 <tr>
-                  <th>Varejista</th>
-                  <th>Vendas</th>
-                  <th>Faturamento</th>
+                  <td colSpan={5} className={styles.emptyRow}>Nenhum resultado encontrado.</td>
                 </tr>
-              </thead>
-              <tbody>
-                {data.salesByRetailer.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.retailer}</td>
-                    <td>{item.sales} unidades</td>
-                    <td>R$ {item.revenue.toLocaleString()}</td>
+              ) : (
+                filteredData.map((row) => (
+                  <tr key={row.id + '-' + row.date + '-' + row.product}>
+                    <td>{row.date}</td>
+                    <td>{row.retailer}</td>
+                    <td>{row.product}</td>
+                    <td>{row.quantity}</td>
+                    <td>R$ {row.total.toFixed(2)}</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <div style={{ height: 40 }} />
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ height: 16 }} />
+        <div className={styles.charts}>
+          <div className={styles.chartBox}><Line data={lineData} options={lineOptions} /></div>
+          <div className={styles.chartBox}><Bar data={barData} options={barOptions} /></div>
+          <div className={styles.chartBox}><Bar data={revenueBarData} options={revenueBarOptions} /></div>
+        </div>
+        <div style={{ height: 25 }} />
         <BottomNav/>
       </div>
     </div>

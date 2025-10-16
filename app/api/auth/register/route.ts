@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validação: Indústrias devem ter CNPJ (PJ)
-    if (body.categoria === 'industry' && body.tipo_pessoa !== 'PJ') {
+    if (body.categoria === 'INDUSTRIA' && body.tipo_pessoa !== 'PJ') {
       return NextResponse.json<AuthResponse>(
         { success: false, message: 'Indústrias devem ser cadastradas como Pessoa Jurídica (CNPJ)' },
         { status: 400 }

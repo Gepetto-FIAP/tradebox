@@ -23,14 +23,14 @@ export async function checkRouteAccess(requiredCategory: UserCategory): Promise<
  * Verifica se o usuário é varejista
  */
 export async function requireRetailer(): Promise<void> {
-  await checkRouteAccess('retailer');
+  await checkRouteAccess('VAREJISTA');
 }
 
 /**
  * Verifica se o usuário é indústria
  */
 export async function requireIndustry(): Promise<void> {
-  await checkRouteAccess('industry');
+  await checkRouteAccess('INDUSTRIA');
 }
 
 /**
