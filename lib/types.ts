@@ -1,6 +1,6 @@
 // Tipos para autenticação do TradeBox
 
-export type UserCategory = 'retailer' | 'industry';
+export type UserCategory = 'VAREJISTA' | 'INDUSTRIA';
 export type PersonType = 'PF' | 'PJ';
 export type UserType = 'retailer' | 'industry';
 
