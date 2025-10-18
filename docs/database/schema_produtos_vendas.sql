@@ -192,7 +192,7 @@ CREATE TABLE itens_venda (
     CONSTRAINT fk_item_venda FOREIGN KEY (venda_id) 
         REFERENCES vendas(id) ON DELETE CASCADE,
     CONSTRAINT fk_item_produto FOREIGN KEY (produto_id) 
-        REFERENCES produtos(id) ON DELETE RESTRICT
+        REFERENCES produtos(id)
 );
 
 -- ==========================================

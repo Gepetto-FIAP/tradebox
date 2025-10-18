@@ -39,6 +39,21 @@ Documentação das integrações com APIs externas:
   - Exemplos de uso
   - Troubleshooting
 
+### 🚀 APIs REST (`/api`)
+
+Documentação completa das APIs REST do sistema:
+
+- **[README_SELLER_API.md](./api/README_SELLER_API.md)** - APIs do módulo vendedor
+  - Products API (CRUD completo + busca por GTIN)
+  - Sales API (criar e listar vendas)
+  - Categories API (listar categorias)
+  - Industries API (listar indústrias)
+  - Dashboard APIs (métricas, trending, analytics)
+  - Padrões de request/response
+  - Autenticação e autorização
+  - Tratamento de erros
+  - Exemplos de uso completos
+
 ### 🗄️ Banco de Dados (`/database`)
 
 Scripts e schemas do banco de dados Oracle:
@@ -81,7 +96,8 @@ Para começar rapidamente, consulte os seguintes documentos nesta ordem:
 2. **Configurar Banco de Dados - Produtos e Vendas**: Execute o script [`/database/schema_produtos_vendas.sql`](./database/schema_produtos_vendas.sql)
 3. **Configurar Autenticação**: Siga o [`/auth/QUICK_START_AUTH.md`](./auth/QUICK_START_AUTH.md)
 4. **Entender Schema de Produtos**: Leia [`/database/README_SCHEMA_PRODUTOS.md`](./database/README_SCHEMA_PRODUTOS.md)
-5. **Entender Integrações**: Leia [`/integrations/gtin.md`](./integrations/gtin.md)
+5. **Explorar as APIs REST**: Consulte [`/api/README_SELLER_API.md`](./api/README_SELLER_API.md)
+6. **Entender Integrações**: Leia [`/integrations/gtin.md`](./integrations/gtin.md)
 
 ## 📖 Documentação Principal
 
@@ -91,6 +107,7 @@ Para informações gerais sobre o projeto, consulte o [README.md](../README.md) 
 
 - **Problemas com Autenticação?** → Veja o [troubleshooting de auth](./auth/QUICK_START_AUTH.md#-troubleshooting-rápido)
 - **Problemas com Banco?** → Verifique o [schema SQL](./database/schema_usuarios_simplificado.sql)
+- **Problemas com APIs?** → Consulte a [documentação das APIs](./api/README_SELLER_API.md)
 - **Problemas com GTIN?** → Consulte a [documentação GTIN](./integrations/gtin.md)
 
 ## 🏗️ Estrutura do Projeto
@@ -101,10 +118,22 @@ tradebox/
 │   ├── (dashboard)/       # Rotas do dashboard
 │   ├── (site)/            # Rotas públicas
 │   └── api/               # API Routes
+│       ├── products/      # APIs de produtos
+│       ├── sales/         # APIs de vendas
+│       ├── categories/    # APIs de categorias
+│       ├── industries/    # APIs de indústrias
+│       └── dashboard/     # APIs de métricas
 ├── components/            # Componentes React
 ├── lib/                   # Utilitários e helpers
+│   ├── auth.ts           # Autenticação JWT
+│   ├── db.ts             # Conexão Oracle
+│   ├── types.ts          # TypeScript types
+│   ├── api-middleware.ts # Middleware de APIs
+│   ├── validators.ts     # Validadores de input
+│   └── queries.ts        # Query builders
 ├── docs/                  # 📚 Documentação (você está aqui!)
 │   ├── auth/             # Docs de autenticação
+│   ├── api/              # Docs das APIs REST
 │   ├── integrations/     # Docs de integrações
 │   └── database/         # Scripts de banco
 └── README.md             # Documentação principal
