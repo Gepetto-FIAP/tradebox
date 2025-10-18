@@ -1,0 +1,436 @@
+/* ========================================
+   ANALYTICS PAGE - LAYOUT RESPONSIVO
+   ======================================== */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(15px, 2vw, 40px);
+  gap: clamp(20px, 2vw, 35px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--color-secondary);
+}
+
+.loadingIcon {
+  font-size: 24px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   GRID DE MÉTRICAS
+   ======================================== */
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ========================================
+   GRID DE GRÁFICOS E CARDS
+   ======================================== */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 2.2vw, 50px);
+  width: 100%;
+}
+
+.chartCard {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: clamp(320px, 32vh, 600px);
+  min-height: 280px;
+  width: 100%;
+}
+
+.chartCard:hover {
+  border-color: var(--color-primary-30);
+}
+
+.chartCard h3 {
+  color: var(--color-secondary);
+  font-weight: 300; 
+  font-size: clamp(0.85em, 0.95vw, 1.2em);
+  opacity: 0.75;
+  padding: clamp(12px, 1.3vw, 20px) clamp(15px, 1.6vw, 24px);
+  margin: 0;
+  flex-shrink: 0;
+  background: rgba(0, 56, 77, 0.3);
+}
+
+.chartContainer {
+  flex: 1;
+  position: relative;
+  padding: clamp(12px, 1.5vw, 28px);
+  filter: brightness(0.9) opacity(0.75);
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: clamp(240px, 28vh, 480px);
+}
+
+.chartCard:hover .chartContainer {
+  filter: brightness(1) opacity(1);
+}
+
+/* Card de Resumo */
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: var(--color-bg-dark);
+  height: clamp(320px, 32vh, 600px);
+  min-height: 280px;
+  width: 100%;
+}
+
+.summaryCard:hover {
+  border-color: var(--color-primary-30);
+}
+
+.summaryCard h3 {
+  color: var(--color-secondary);
+  font-weight: 300; 
+  font-size: clamp(0.85em, 0.95vw, 1.2em);
+  opacity: 0.75;
+  padding: clamp(12px, 1.3vw, 20px) clamp(15px, 1.6vw, 24px);
+  margin: 0;
+  flex-shrink: 0;
+  background: rgba(0, 56, 77, 0.3);
+}
+
+.summaryContent {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.8vw, 14px);
+  padding: clamp(10px, 1.2vw, 22px);
+  flex: 1;
+  justify-content: space-evenly;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.5vw, 8px);
+  padding: clamp(8px, 1vw, 16px) clamp(12px, 1.3vw, 20px);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: var(--color-primary);
+  min-height: clamp(60px, 7vh, 90px);
+  max-height: clamp(80px, 8.5vh, 105px);
+  flex: 1;
+  overflow: visible;
+  justify-content: center;
+}
+
+.summaryItem:hover {
+  border-color: var(--color-primary-30);
+  transform: translateY(-2px);
+}
+
+.summaryLabel {
+  color: var(--color-secondary);
+  font-weight: 300; 
+  font-size: clamp(0.7em, 0.78vw, 0.9em);
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: visible;
+  line-height: 1.2;
+}
+
+.summaryValue {
+  color: var(--color-text);
+  font-size: clamp(1.4rem, 1.75vw, 2.6rem);
+  font-weight: 200;
+  white-space: nowrap;
+  overflow: visible;
+  line-height: 1.1;
+}
+
+/* ========================================
+   RESPONSIVIDADE - BREAKPOINTS
+   ======================================== */
+
+/* Tablet - 2 colunas */
+@media (min-width: 700px) {
+  .container {
+    padding: clamp(20px, 2vw, 45px);
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(15px, 1.8vw, 35px);
+  }
+
+  .chartsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(25px, 2.5vw, 50px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(320px, 32vh, 550px);
+  }
+}
+
+/* Desktop - 2 colunas melhoradas */
+@media (min-width: 900px) {
+  .container {
+    padding: clamp(25px, 2.5vw, 55px) clamp(30px, 3vw, 65px);
+    max-width: 98vw;
+    margin: 0 auto;
+  }
+
+  .metricsGrid {
+    gap: clamp(20px, 2vw, 45px);
+  }
+
+  .chartsGrid {
+    gap: clamp(30px, 3vw, 60px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(340px, 34vh, 600px);
+  }
+
+  .summaryValue {
+    font-size: clamp(1.8rem, 2vw, 3.5rem);
+  }
+}
+
+/* Desktop Grande - 3 colunas para gráficos */
+@media (min-width: 1400px) {
+  .container {
+    padding: clamp(30px, 3vw, 65px) clamp(40px, 3.5vw, 75px);
+    max-width: 98vw;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(25px, 2.5vw, 55px);
+  }
+
+  .chartsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(35px, 3.5vw, 70px);
+  }
+
+  .chartCard:nth-child(4),
+  .summaryCard {
+    grid-column: span 1;
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(360px, 36vh, 650px);
+  }
+
+  .summaryValue {
+    font-size: clamp(1.9rem, 2.2vw, 4rem);
+  }
+}
+
+/* Extra Large - 4 colunas ou otimização para zoom out */
+@media (min-width: 1800px) {
+  .container {
+    max-width: 98vw;
+    padding: clamp(35px, 3.5vw, 75px) clamp(50px, 4vw, 90px);
+  }
+
+  .metricsGrid {
+    gap: clamp(30px, 3vw, 65px);
+  }
+
+  .chartsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(40px, 4vw, 80px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(380px, 38vh, 700px);
+  }
+
+  .chartCard h3,
+  .summaryCard h3 {
+    font-size: clamp(0.9em, 1vw, 1.3em);
+    padding: clamp(14px, 1.5vw, 22px) clamp(16px, 1.7vw, 26px);
+  }
+
+  .summaryValue {
+    font-size: clamp(2rem, 2.3vw, 4.5rem);
+  }
+}
+
+/* Ultra Wide - Mantém proporção em zoom out extremo */
+@media (min-width: 2200px) {
+  .container {
+    max-width: 98vw;
+    padding: clamp(40px, 4vw, 85px) clamp(60px, 5vw, 105px);
+  }
+
+  .metricsGrid {
+    gap: clamp(35px, 3.5vw, 75px);
+  }
+
+  .chartsGrid {
+    gap: clamp(45px, 4.5vw, 95px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(400px, 40vh, 750px);
+  }
+
+  .summaryValue {
+    font-size: clamp(2.2rem, 2.5vw, 5rem);
+  }
+
+  .chartCard h3,
+  .summaryCard h3 {
+    font-size: clamp(0.95em, 1.1vw, 1.4em);
+  }
+}
+
+/* Super Ultra Wide - Zoom out abaixo de 100% */
+@media (min-width: 2600px) {
+  .container {
+    max-width: 98vw;
+    padding: clamp(45px, 4.5vw, 95px) clamp(70px, 5.5vw, 115px);
+  }
+
+  .metricsGrid {
+    gap: clamp(40px, 4vw, 85px);
+  }
+
+  .chartsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(50px, 5vw, 105px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(420px, 42vh, 800px);
+  }
+
+  .summaryValue {
+    font-size: clamp(2.4rem, 2.7vw, 5.5rem);
+  }
+
+  .chartCard h3,
+  .summaryCard h3 {
+    font-size: clamp(1em, 1.2vw, 1.5em);
+    padding: clamp(16px, 1.7vw, 26px) clamp(18px, 1.9vw, 30px);
+  }
+}
+
+/* Extreme Wide - Zoom out extremo */
+@media (min-width: 3200px) {
+  .container {
+    max-width: 98vw;
+    padding: clamp(50px, 5vw, 105px) clamp(80px, 6vw, 125px);
+  }
+
+  .metricsGrid {
+    gap: clamp(45px, 4.5vw, 95px);
+  }
+
+  .chartsGrid {
+    gap: clamp(55px, 5.5vw, 115px);
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: clamp(450px, 44vh, 850px);
+  }
+
+  .summaryValue {
+    font-size: clamp(2.6rem, 2.9vw, 6rem);
+  }
+}
+
+/* Mobile - Layout compacto e otimizado */
+@media (max-width: 699px) {
+  .container {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .metricsGrid {
+    gap: 8px;
+  }
+
+  .chartsGrid {
+    gap: 12px;
+  }
+
+  .chartCard,
+  .summaryCard {
+    height: 300px;
+  }
+
+  .chartCard h3,
+  .summaryCard h3 {
+    font-size: 0.8em;
+    padding: 10px 12px;
+  }
+
+  .chartContainer {
+    padding: 10px;
+  }
+
+  .summaryContent {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .summaryItem {
+    padding: 12px 14px;
+  }
+
+  .summaryLabel {
+    font-size: 0.75em;
+  }
+
+  .summaryValue {
+    font-size: 1.5rem;
+  }
+}

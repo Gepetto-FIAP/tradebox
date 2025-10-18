@@ -1,1 +1,3 @@
-// (Remover arquivo de tipagem customizada, pois @types/file-saver já está instalado)
+declare module 'file-saver' {
+  export function saveAs(blob: Blob, filename?: string): void;
+}
