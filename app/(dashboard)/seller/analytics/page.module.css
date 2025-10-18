@@ -341,7 +341,7 @@
 /* Responsive Design */
 @media (min-width: 700px) { 
   .analytics_container {
-    padding: 30px 50px 30px 30px;
+    padding: 15px 50px 30px 30px;
   }
 }
 

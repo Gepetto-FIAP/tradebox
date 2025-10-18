@@ -2,6 +2,8 @@ import BottomNav from "@/components/BottomNav/BottomNav";
 import LogoutButton from "@/components/LogoutButton/LogoutButton";
 import { requireRetailer } from "@/lib/authorization";
 import styles from './layout.module.css';
+import { getCurrentUser } from '@/lib/auth';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -13,14 +15,16 @@ export default async function DashboardSellerLayout({
   // Verificar se o usuário é varejista antes de renderizar
   await requireRetailer();
 
+  const user = await getCurrentUser();
+  const userName = user?.nome?.split(' ')[0] || 'Usuário';
+
   return (
         <div className={styles.layout}>
             <div className={styles.header}>
                 <div className={styles.greeting_wrapper}>
                   <div className={styles.greeting}>Bom dia,</div>
-                  <div className={styles.name}>fulano!</div>
+                  <div className={styles.name}>{userName}!</div>
                 </div>
-
                 
                 <LogoutButton variant="full" />
             </div>
