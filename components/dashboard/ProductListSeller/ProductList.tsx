@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Table from '@/components/Table/Table';
-import Modal from '@/components/Modal/Modal';
+import Table from '@/components/ui/Table/Table';
 import { BiTrashAlt, BiLoader, BiExpand } from 'react-icons/bi';
 import styles from './ProductList.module.css';
 
@@ -14,7 +13,7 @@ const mockProducts = [
     price: 29.99,
     stock: 100,
     gtin: '1234567890123',
-    industry: 'Unilever'
+    industry: 1
   },
   { 
     id: 2,
@@ -22,7 +21,7 @@ const mockProducts = [
     price: 49.99,
     stock: 50,
     gtin: '2345678901234',
-    industry: 'Procter & Gamble'
+    industry: 2
   },
   { 
     id: 3,
@@ -38,7 +37,7 @@ const mockProducts = [
     price: 39.99,
     stock: 150,
     gtin: '4567890123456',
-    industry: 'Nestlé'
+    industry: 3
   },
   { 
     id: 5,
@@ -65,18 +64,13 @@ const industries = [
   }
 ];
 
-interface Industry {
-  id: number;
-  name: string;
-}
-
 interface Product {
   id: number;
   name: string;
   price: number;
   stock: number;
   gtin: string;
-  industry: string | null;
+  industry: number | null;
 }
 
 
@@ -214,9 +208,10 @@ export default function ProductList() {
   };
 
   const handleIndustryChange = (productId: number, value: string) => {
-    if (value) {
-      updateProduct(productId, 'industry', value);
-    }
+    const num = value === '' ? null : parseInt(value, 10);
+    updateProduct(productId, 'industry', num as any);
+
+    handleInputChange(productId, 'industry', value);
   };
 
 
@@ -305,16 +300,15 @@ export default function ProductList() {
       render: (value: string, row: Product) => (
         <select
           title={value || 'Selecione uma indústria'}
-          value={editingValues[`${row.id}-industry`] || ''}
+          value={editingValues[`${row.id}-industry`] ?? ''}
           onChange={(e) => {
-            handleInputChange(row.id, 'industry', e.target.value);
             handleIndustryChange(row.id, e.target.value); // Select pode salvar imediatamente
           }}         
           disabled={updating === row.id}
         >
           <option value="">Selecione uma indústria</option>
           {industries.map(industry => (
-            <option key={industry.id} value={industry.name}>
+            <option key={industry.id} value={industry.id}>
               {industry.name}
             </option>
           ))}

@@ -1,5 +1,5 @@
 import styles from './TrendingProducts.module.css';
-import Table from '../Table/Table';
+import Table from '../../ui/Table/Table';
 import TrendingRanking from '../TrendingRanking/TredingRanking';
 
 const trendingProducts = [

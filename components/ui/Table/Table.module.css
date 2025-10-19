@@ -62,12 +62,14 @@
     
 }
 
-.table_row div:first-child {
+.table_row div:first-child, .table_row div:first-child input {
     text-align: left;
 }
 
-.table_row div:last-child {
+.table_row div:last-child, .table_row div:last-child input {
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .table_row:last-child::before {
@@ -164,7 +166,7 @@ input::-webkit-inner-spin-button {
     align-items: center;
 }
 
-.table_row:has(button:disabled) {
+.table_row:has(input:disabled) {
     filter: brightness(0.5);
 }
 

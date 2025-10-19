@@ -6,7 +6,7 @@ import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
 
 import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
-import MoneyInput from '@/components/InputMoney/InputMoney';
+import MoneyInput from '@/components/ui/InputMoney/InputMoney';
 
 
 // Aspect ratio and crop size factor

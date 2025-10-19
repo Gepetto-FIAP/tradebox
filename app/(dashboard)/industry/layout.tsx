@@ -1,8 +1,8 @@
-import LogoutButton from "@/components/LogoutButton/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton/LogoutButton";
 import { requireIndustry } from "@/lib/authorization";
 import styles from './layout.module.css';
 import { getCurrentUser } from '@/lib/auth';
-import BottomNav from '@/components/BottomNav/BottomNav';
+import BottomNav from '@/components/layout/BottomNav/BottomNav';
 
 export const dynamic = 'force-dynamic';
 

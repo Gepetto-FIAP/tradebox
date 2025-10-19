@@ -1,17 +1,15 @@
 .content {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-areas: 
+    "sellers profit"
+    "cards cards";
+    grid-template-rows: 4fr 2fr;
+    grid-template-columns: 3fr auto;
     gap: 30px;
     height: 100%;
 }
 
-.top_section {
-    display: flex;
-    gap: 30px;
-    height: 64%;
-}
-
-.table {
+.sellers_wrapper {
     border: 2px solid var(--color-border);
     border-radius: 8px;
     flex-direction: column;
@@ -19,6 +17,7 @@
     height: 100%;
     display: flex;
     padding: 20px;
+    gap: 20px;
     overflow: hidden;
 }
 
@@ -30,9 +29,48 @@
     padding: 2px 4px 2px 0px;
 }
 
-
 .cards_data_wrapper > div {
     height: max-content;
     width: 24%;
     padding: 20px 0;
 }
+
+.table_header {
+    color: var(--color-secondary);
+    opacity: .75;
+    font-size: .8em;
+    font-weight: 300;
+}
+
+@media (max-width: 700px) {
+    .content {
+        padding: 0 20px;
+        row-gap: 20px;
+        column-gap: 0px;
+        grid-template-areas: "profit"
+                             "sellers"
+                             "cards"
+    }
+
+    .sellers_wrapper {
+        width: 100%;
+        height: max-content;
+        overflow: hidden;
+    }
+
+    .cards_data_wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cards_data_wrapper > div {
+        width: 100%;
+        min-width: max-content;
+    }
+   
+}
+
+
+.profit_wrapper { grid-area: profit; }
+.sellers_wrapper { grid-area: sellers; }
+.cards_data_wrapper { grid-area: cards; }

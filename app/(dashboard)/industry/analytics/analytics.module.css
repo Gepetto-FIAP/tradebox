@@ -1,7 +1,5 @@
 .fullBg {
-  min-height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #01b5fa 0%, #00384d 100%);
   position: absolute;
   top: 0;
   left: 0;

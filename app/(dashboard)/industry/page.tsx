@@ -1,8 +1,8 @@
-import ProfitCard from '@/components/ProfitCard/ProfitCard';
+import ProfitCard from '@/components/dashboard/ProfitCard/ProfitCard';
 import styles from './page.module.css';
 import { getCurrentUser } from '@/lib/auth';
-import Table from '@/components/Table/Table';
-import CardData from '@/components/CardData/CardData';
+import Table from '@/components/ui/Table/Table';
+import CardData from '@/components/dashboard/CardData/CardData';
 import { BiStoreAlt, BiBasket, BiLineChart, BiDollar } from "react-icons/bi";
 
 export default async function IndustryDashboard() {
@@ -66,21 +66,23 @@ export default async function IndustryDashboard() {
     
     <div className={styles.content}>
 
-      <div className={styles.top_section}>
-        <div className={styles.table}>
+        <div className={styles.sellers_wrapper}>
+          <div className={styles.table_header}>
+            Vendedores em alta
+          </div>
           <Table columns={columns} data={sellersWithRank} />
         </div>
-        <div>
+
+        
+        <div className={styles.profit_wrapper}>
           <ProfitCard totalsByPeriod={totalsByPeriod} />
         </div>
-      </div>
 
       <div className={styles.cards_data_wrapper}>
         <CardData icon={<BiStoreAlt />} label="Sellers" value={12} badge_value={"+5%"} />
         <CardData icon={<BiBasket />} label="Produtos" value={22} badge_value={"+5%"} />
         <CardData icon={<BiDollar />} label="Faturamento" value={"90k"} badge_value={"+5%"} />
         <CardData icon={<BiLineChart />} label="Campanhas" value={2} badge_value={"+5%"} />
-
       </div>
 
     </div>

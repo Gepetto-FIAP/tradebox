@@ -1,5 +1,5 @@
-import BottomNav from "@/components/BottomNav/BottomNav";
-import LogoutButton from "@/components/LogoutButton/LogoutButton";
+import BottomNav from "@/components/layout/BottomNav/BottomNav";
+import LogoutButton from "@/components/ui/LogoutButton/LogoutButton";
 import { requireRetailer } from "@/lib/authorization";
 import styles from './layout.module.css';
 import { getCurrentUser } from '@/lib/auth';

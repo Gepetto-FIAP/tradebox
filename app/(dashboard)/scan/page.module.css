@@ -4,6 +4,10 @@
     align-items: center;
     font-family: 'sans-serif';
     height: 100dvh;
+    backdrop-filter: brightness(0.6);
+    background: radial-gradient(at 0% 0%, 
+                rgb(0 0 0 / 0%) 0%,
+                rgb(0 0 0 / 60%) 70%);
 }
 
 .cam_wrapper {
