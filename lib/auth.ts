@@ -37,6 +37,9 @@ export async function verifyToken(token: string): Promise<AuthPayload | null> {
  * Define o cookie de autenticação
  */
 export async function setAuthCookie(token: string): Promise<void> {
+  console.log('[AUTH] Definindo cookie de autenticação...');
+  console.log('[AUTH] Token:', token.substring(0, 20) + '...');
+  
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -45,6 +48,8 @@ export async function setAuthCookie(token: string): Promise<void> {
     maxAge: COOKIE_MAX_AGE,
     path: '/',
   });
+  
+  console.log('[AUTH] Cookie definido com nome:', COOKIE_NAME);
 }
 
 /**
@@ -63,13 +68,19 @@ export async function getCurrentUser(): Promise<AuthPayload | null> {
     const cookieStore = await cookies();
     const token = cookieStore.get(COOKIE_NAME)?.value;
     
+    console.log('[AUTH] Cookie encontrado:', token ? 'SIM' : 'NÃO');
+    
     if (!token) {
+      console.log('[AUTH] Nenhum token encontrado no cookie');
       return null;
     }
     
-    return await verifyToken(token);
+    const user = await verifyToken(token);
+    console.log('[AUTH] Usuário decodificado do token:', user);
+    
+    return user;
   } catch (error) {
-    console.error('Error getting current user:', error);
+    console.error(' [AUTH] Erro ao obter usuário atual:', error);
     return null;
   }
 }

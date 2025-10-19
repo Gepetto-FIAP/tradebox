@@ -35,12 +35,15 @@ import styles from './login.module.css';
     setIsLoading(true);
     
     try {
+      console.log('[LOGIN] Enviando requisição de login...');
+      
       // Chamar API de login
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // IMPORTANTE: Inclui cookies na requisição
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
@@ -48,15 +51,22 @@ import styles from './login.module.css';
       });
 
       const data = await response.json();
+      console.log('[LOGIN] Resposta da API:', data);
 
       if (data.success) {
+        console.log('[LOGIN] Login bem-sucedido! Redirecionando para:', data.redirectUrl);
+        
+        // Aguardar um pouco para garantir que o cookie foi setado
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         // Redirecionar para o dashboard correto baseado na categoria do usuário
         window.location.href = data.redirectUrl || '/seller';
       } else {
+        console.error('[LOGIN] Erro no login:', data.message);
         alert(data.message || 'Erro ao realizar login');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('[LOGIN] Erro na requisição:', error);
       alert('Erro ao realizar login. Tente novamente.');
     } finally {
       setIsLoading(false);
