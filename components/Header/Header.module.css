@@ -44,6 +44,7 @@
     letter-spacing: -1px;
     cursor: pointer;
     transition: .4s;
+    text-decoration: none;
 }
 
 .header_logo span:first-child {
@@ -80,6 +81,7 @@
     overflow: hidden;
     transition: .3s;
     scale: 100%;
+    text-decoration: none;
 }
 
 .header_button:active {

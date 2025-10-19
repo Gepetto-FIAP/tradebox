@@ -7,14 +7,14 @@ export default function Header() {
     return (
         <header className={ styles.header }>
             <div className={ styles.header_container }>
-                <div className={styles.header_logo}>
+                <Link href="/" className={styles.header_logo}>
                     <span>
                         Trade
                     </span>
                     <span>
                         Box
                     </span>
-                </div>
+                </Link>
 
                 <nav>
                     <ul className={ styles.header_items }>
@@ -42,14 +42,14 @@ export default function Header() {
                     </ul>
                 </nav>
                     
-                <button className={ styles.header_button }>
+                <Link href="/auth/register" className={ styles.header_button }>
                     <span>
                         <BiRightArrowAlt/>
                     </span>
                     <span>
                         Iniciar
                     </span>
-                </button>
+                </Link>
             </div>
         </header>
     )

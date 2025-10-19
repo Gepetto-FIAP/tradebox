@@ -15,16 +15,13 @@ export default function Home() {
           </div>
           
           <h1 className={styles.hero_title}>
-            Gestão Completa,{' '}
-            <span className={styles.highlight_text}>Resultados Máximos</span>
-            <br />
-            <span className={styles.subtitle_text}>para seu Varejo e Indústria</span>
+            <span className={styles.highlight_text}>Gestão Inteligente</span>
+            {' '}para Varejo e Indústria
           </h1>
           
           <p className={styles.hero_description}>
-            Junte-se às empresas que transformaram sua gestão com TradeBox. 
-            Analytics em tempo real, scanner GTIN integrado e dashboards completos 
-            para impulsionar suas vendas.
+            Analytics em tempo real, scanner GTIN e dashboards completos. 
+            Tudo que você precisa para crescer.
           </p>
           
           <div className={styles.hero_cta}>
@@ -37,25 +34,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats Bar */}
-        <div className={styles.stats_bar}>
-          <div className={styles.stats_container}>
-            <div className={styles.stat_item}>
-              <div className={styles.stat_number}>1000+</div>
-              <div className={styles.stat_label}>produtos cadastrados</div>
-            </div>
-            <div className={styles.stat_divider}></div>
-            <div className={styles.stat_item}>
-              <div className={styles.stat_number}>500+</div>
-              <div className={styles.stat_label}>empresas ativas</div>
-            </div>
-            <div className={styles.stat_divider}></div>
-            <div className={styles.stat_item}>
-              <div className={styles.stat_number}>10k+</div>
-              <div className={styles.stat_label}>vendas processadas</div>
-            </div>
-          </div>
-        </div>
+
       </section>
 
       {/* Product Preview Section - DASHBOARDS (MOVED UP!) */}
@@ -220,20 +199,6 @@ export default function Home() {
             </div>
             <h3>Analytics em Tempo Real</h3>
             <p>Visualize receita, ticket médio, produtos mais vendidos e crescimento com gráficos interativos e insights acionáveis.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
-          </div>
-
-          <div className={styles.feature_card}>
-            <div className={styles.feature_icon}>
-              <BiBarcode />
-            </div>
-            <h3>Scanner GTIN</h3>
-            <p>Leia códigos de barras e consulte informações de produtos instantaneamente com integração à base de dados global.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
           </div>
 
           <div className={styles.feature_card}>
@@ -242,9 +207,6 @@ export default function Home() {
             </div>
             <h3>Gestão de Produtos</h3>
             <p>Controle completo do catálogo, estoque, preços e informações detalhadas de cada produto.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
           </div>
 
           <div className={styles.feature_card}>
@@ -253,31 +215,6 @@ export default function Home() {
             </div>
             <h3>Insights & Tendências</h3>
             <p>Identifique padrões de vendas, produtos em alta e oportunidades de crescimento com IA.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
-          </div>
-
-          <div className={styles.feature_card}>
-            <div className={styles.feature_icon}>
-              <BiStore />
-            </div>
-            <h3>Múltiplas Lojas</h3>
-            <p>Gerencie várias unidades em um único painel com visão consolidada de todas as operações.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
-          </div>
-
-          <div className={styles.feature_card}>
-            <div className={styles.feature_icon}>
-              <BiBuildings />
-            </div>
-            <h3>Catálogo Global</h3>
-            <p>Acesse e contribua com o maior banco de dados de produtos GTIN do mercado brasileiro.</p>
-            <Link href="/auth/register" className={styles.feature_link}>
-              Explorar →
-            </Link>
           </div>
         </div>
       </section>
@@ -286,9 +223,8 @@ export default function Home() {
       <section className={styles.cta_section}>
         <div className={styles.cta_content}>
           <h2>Pronto para transformar sua gestão?</h2>
-          <p>Junte-se a mais de 500 empresas que já confiam no TradeBox</p>
-          <Link href="/auth/register" className={styles.btn_cta_large}>
-            Criar Conta Gratuita
+            <Link href="/auth/register" className={styles.btn_cta_large}>
+            Criar Conta
           </Link>
         </div>
       </section>
