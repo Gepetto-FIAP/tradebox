@@ -9,8 +9,8 @@ export default function Home() {
       </div>
 
       <div className={styles.heading}>
-        <h1>teste </h1>
-        <p> </p>
+        <h1>titulo do site  </h1>
+        <p>descricao do site</p>
       </div>
 
       <div className={styles.element}>

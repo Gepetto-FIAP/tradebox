@@ -119,7 +119,7 @@
 
 @media (min-width: 700px) {
     .card_data {
-        min-width: 0px;
+        min-width: 0;
         width: auto;
         padding: 15px 0;
     }

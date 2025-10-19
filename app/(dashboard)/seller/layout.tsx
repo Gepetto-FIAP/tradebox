@@ -12,28 +12,30 @@ export default async function DashboardSellerLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Verificar se o usuário é varejista antes de renderizar
+
   await requireRetailer();
 
   const user = await getCurrentUser();
   const userName = user?.nome?.split(' ')[0] || 'Usuário';
 
   return (
-        <div className={styles.layout}>
-            <div className={styles.header}>
-                <div className={styles.greeting_wrapper}>
-                  <div className={styles.greeting}>Bom dia,</div>
-                  <div className={styles.name}>{userName}!</div>
-                </div>
-                
-                <LogoutButton variant="full" />
-            </div>
-            <main className={styles.main_content}>
-                {children}
-            </main>
-            <div className={styles.nav_wrapper}>
-                <BottomNav/>
-            </div>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.layout}>
+          <div className={styles.header}>
+              <div className={styles.greeting_wrapper}>
+                <div className={styles.greeting}>Bom dia,</div>
+                <div className={styles.name}>{userName}!</div>
+              </div>
+              <LogoutButton variant="full" />
+          </div>
+          <main className={styles.main_content}>
+              {children}
+          </main>
+          <div className={styles.nav_wrapper}>
+              <BottomNav/>
+          </div>
+      </div>
+    </div>
+
   );
 }

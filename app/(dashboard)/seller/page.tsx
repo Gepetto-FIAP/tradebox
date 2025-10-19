@@ -3,11 +3,11 @@ import styles from './page.module.css';
 import TrendingProducts from '@/components/TrendingProducts/TrendingProducts'; 
 import CardData from '@/components/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
-import { getCurrentUser } from '@/lib/auth';
+
 
 export default async function Seller() {
 
-  return (
+  return ( 
     <>
       <div className={styles.content}> 
         <div className={styles.chart_wrapper}>

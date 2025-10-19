@@ -1,5 +1,6 @@
 import styles from './TrendingProducts.module.css';
 import Table from '../Table/Table';
+import TrendingRanking from '../TrendingRanking/TredingRanking';
 
 const trendingProducts = [
     {
@@ -46,8 +47,6 @@ const trendingProducts = [
 // o objeto acima é temporário, depois buscar do banco de dados
 // dados provenientes do db deverao seguir a estrutura acima para funcionar corretamente
 
-
-
 const columns = [
     {
         key: 'rank',
@@ -62,7 +61,6 @@ const columns = [
         key: 'vendas',
         header: 'Vendas'
     }
-
 ];
 
 export default function TrendingProducts() {
@@ -76,24 +74,7 @@ export default function TrendingProducts() {
 
     return (
         <div className={styles.trending_container}>
-            <div className={styles.trending_ranking}>
-                {top3Products.map((product, index) => (
-                    <div data-rank={index + 1} key={index} className={styles.trending_ranking_product} style={{ height: `${(product.vendas / sortedProducts[0].vendas) * 100}%` }}>
-                        <div className={styles.trending_ranking_circle}>
-                            <span>
-                                #{index + 1}
-                            </span>
-                            <div className={styles.trending_ranking_circle_product_name}>
-                                {product.name}
-                            </div>
-                        </div>
-                        <div className={styles.trending_ranking_bar}> 
-                            <p>{product.vendas}</p>
-                            <span>vendas</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <TrendingRanking top3={top3Products} />
             <Table columns={columns} data={productWithRank} />
         </div>
     );
