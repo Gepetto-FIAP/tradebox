@@ -15,7 +15,7 @@ import { validateGTIN } from '@/lib/validators';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { gtin: string } }
+  { params }: { params: Promise<{ gtin: string }> }
 ) {
   // Verificar se é vendedor
   const authResult = await requireVendedor();
@@ -24,7 +24,9 @@ export async function GET(
   }
   
   const { vendedorId } = authResult;
-  const gtin = params.gtin;
+  
+  // Await params (Next.js 15)
+  const { gtin } = await params;
   
   // Validar GTIN
   const gtinValidation = validateGTIN(gtin);
