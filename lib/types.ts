@@ -77,6 +77,7 @@ export interface Product {
   nome: string;
   descricao?: string;
   preco_base: number;
+  preco_custo: number;  // Preço de custo pago à indústria
   estoque: number;
   ativo: 'Y' | 'N';
   created_at: Date;
@@ -87,6 +88,9 @@ export interface ProductWithDetails extends Product {
   vendedor_nome?: string;
   industria_nome?: string;
   categoria_nome?: string;
+  // Campos calculados de margem
+  lucro_unitario?: number;      // preco_base - preco_custo
+  margem_percentual?: number;   // ((preco_base - preco_custo) / preco_custo) * 100
 }
 
 export interface Customer {
@@ -144,6 +148,7 @@ export interface CreateProductRequest {
   nome: string;
   descricao?: string;
   preco_base: number;
+  preco_custo?: number;  // Opcional no cadastro inicial
   estoque?: number;
   categoria_id?: number;
   industria_id?: number;
@@ -157,6 +162,12 @@ export interface UpdateProductRequest {
   categoria_id?: number;
   industria_id?: number;
   ativo?: 'Y' | 'N';
+  // preco_custo não está aqui - vendedor não pode alterar
+}
+
+// Novo: Request específico para indústria atualizar preço de custo
+export interface UpdatePrecoCustoRequest {
+  preco_custo: number;
 }
 
 export interface CreateSaleItemRequest {
@@ -248,5 +259,60 @@ export interface IndustryPartner {
   qtd_produtos: number;
   qtd_vendas: number;
   receita_gerada: number;
+}
+
+// ==========================================
+// Tipos para Análises de Margem e Lucro
+// ==========================================
+
+export interface ProfitableProduct {
+  produto_id: number;
+  nome: string;
+  gtin: string;
+  qtd_vendas: number;
+  qtd_vendida: number;
+  receita_total: number;
+  custo_total: number;
+  lucro_total: number;
+  margem_media: number;
+}
+
+export interface ProfitAnalysisBySale {
+  venda_id: number;
+  data_venda: Date;
+  receita_total: number;
+  custo_total: number;
+  lucro_total: number;
+  margem_percentual: number;
+}
+
+export interface MarginByIndustry {
+  industria: string;
+  qtd_produtos: number;
+  margem_media: number;
+  receita_gerada: number;
+  custo_total: number;
+  lucro_total: number;
+}
+
+export interface LowMarginAlert {
+  produto_id: number;
+  nome: string;
+  preco_custo: number;
+  preco_base: number;
+  lucro_unitario: number;
+  margem_percentual: number;
+}
+
+export interface PriceSuggestion {
+  produto_id: number;
+  nome: string;
+  gtin: string;
+  vendedor: string;
+  preco_custo_atual: number;
+  preco_base: number;
+  margem_atual: number;
+  preco_custo_sugerido: number;  // Para margem alvo
+  margem_alvo: number;
 }
 

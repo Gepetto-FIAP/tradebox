@@ -55,6 +55,41 @@ export async function getVendedorId(): Promise<number | null> {
 }
 
 /**
+ * Middleware para verificar se usuário é indústria (INDUSTRIA)
+ */
+export async function requireIndustria(): Promise<{ industriaId: number } | NextResponse> {
+  const authResult = await requireAuth();
+  
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
+  const { user } = authResult;
+  
+  if (user.categoria !== 'INDUSTRIA') {
+    return NextResponse.json(
+      { success: false, error: 'Acesso negado', message: 'Apenas indústrias podem acessar este recurso' },
+      { status: 403 }
+    );
+  }
+  
+  return { industriaId: user.userId };
+}
+
+/**
+ * Extrai industria_id do usuário autenticado
+ */
+export async function getIndustriaId(): Promise<number | null> {
+  const user = await getCurrentUser();
+  
+  if (!user || user.categoria !== 'INDUSTRIA') {
+    return null;
+  }
+  
+  return user.userId;
+}
+
+/**
  * Cria response de erro padronizado
  */
 export function errorResponse(

@@ -54,6 +54,16 @@ Documentação completa das APIs REST do sistema:
   - Tratamento de erros
   - Exemplos de uso completos
 
+- **[README_INDUSTRY_API.md](./api/README_INDUSTRY_API.md)** - APIs do módulo indústria
+  - Products API (visualizar produtos associados)
+  - Sellers API (listar vendedores parceiros)
+  - Sales API (visualizar vendas dos produtos)
+  - Dashboard APIs (métricas, performance de vendedores, performance de produtos, analytics)
+  - Análise de parceiros e produtos
+  - KPIs e métricas importantes
+  - Casos de uso e exemplos
+  - Segurança e privacidade
+
 ### 🗄️ Banco de Dados (`/database`)
 
 Scripts e schemas do banco de dados Oracle:
@@ -88,16 +98,32 @@ Scripts e schemas do banco de dados Oracle:
   - Exemplos de fluxos
   - Regras de negócio
 
+
+### ✨ Funcionalidades (`/features`)
+
+Documentação de funcionalidades específicas do sistema:
+
+- **[PRECO_CUSTO.md](./features/PRECO_CUSTO.md)** - Análise de Margem e Lucro
+  - Campo preco_custo e controle de acesso
+  - APIs de atualização (indústria) e análise (vendedor)
+  - Cálculos de margem e lucro
+  - Estratégias de trade marketing
+  - Dashboards de rentabilidade
+  - Insights e recomendações de preço
+  - Casos de uso práticos
+
 ## 🚀 Início Rápido
 
 Para começar rapidamente, consulte os seguintes documentos nesta ordem:
 
 1. **Configurar Banco de Dados - Usuários**: Execute o script [`/database/schema_usuarios_simplificado.sql`](./database/schema_usuarios_simplificado.sql)
 2. **Configurar Banco de Dados - Produtos e Vendas**: Execute o script [`/database/schema_produtos_vendas.sql`](./database/schema_produtos_vendas.sql)
-3. **Configurar Autenticação**: Siga o [`/auth/QUICK_START_AUTH.md`](./auth/QUICK_START_AUTH.md)
-4. **Entender Schema de Produtos**: Leia [`/database/README_SCHEMA_PRODUTOS.md`](./database/README_SCHEMA_PRODUTOS.md)
-5. **Explorar as APIs REST**: Consulte [`/api/README_SELLER_API.md`](./api/README_SELLER_API.md)
-6. **Entender Integrações**: Leia [`/integrations/gtin.md`](./integrations/gtin.md)
+3. **Adicionar Campo de Preço de Custo**: Execute o script [`/database/ALTER_ADD_PRECO_CUSTO.sql`](./database/ALTER_ADD_PRECO_CUSTO.sql)
+4. **Configurar Autenticação**: Siga o [`/auth/QUICK_START_AUTH.md`](./auth/QUICK_START_AUTH.md)
+5. **Entender Schema de Produtos**: Leia [`/database/README_SCHEMA_PRODUTOS.md`](./database/README_SCHEMA_PRODUTOS.md)
+6. **Explorar as APIs REST**: Consulte [`/api/README_SELLER_API.md`](./api/README_SELLER_API.md) e [`/api/README_INDUSTRY_API.md`](./api/README_INDUSTRY_API.md)
+7. **Entender Análise de Margem**: Leia [`/features/PRECO_CUSTO.md`](./features/PRECO_CUSTO.md)
+8. **Entender Integrações**: Leia [`/integrations/gtin.md`](./integrations/gtin.md)
 
 ## 📖 Documentação Principal
 
@@ -109,6 +135,7 @@ Para informações gerais sobre o projeto, consulte o [README.md](../README.md) 
 - **Problemas com Banco?** → Verifique o [schema SQL](./database/schema_usuarios_simplificado.sql)
 - **Problemas com APIs?** → Consulte a [documentação das APIs](./api/README_SELLER_API.md)
 - **Problemas com GTIN?** → Consulte a [documentação GTIN](./integrations/gtin.md)
+- **Dúvidas sobre Margem e Lucro?** → Leia a [documentação de preço de custo](./features/PRECO_CUSTO.md)
 
 ## 🏗️ Estrutura do Projeto
 
@@ -135,6 +162,7 @@ tradebox/
 │   ├── auth/             # Docs de autenticação
 │   ├── api/              # Docs das APIs REST
 │   ├── integrations/     # Docs de integrações
+│   ├── features/         # Docs de funcionalidades específicas
 │   └── database/         # Scripts de banco
 └── README.md             # Documentação principal
 ```
