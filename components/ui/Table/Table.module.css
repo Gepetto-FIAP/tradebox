@@ -56,12 +56,6 @@
     cursor: text;
 }
 
-.table_col select:focus {
-    outline-offset: -2px;
-    outline: 2px solid var(--color-primary);
-    
-}
-
 .table_row div:first-child, .table_row div:first-child input {
     text-align: left;
 }
@@ -203,6 +197,11 @@ input::-webkit-inner-spin-button {
     background: var(--color-primary-10);
 }
 
+.table_col select:focus {
+    outline-offset: -2px;
+    outline: 2px solid var(--color-primary);
+    
+}
 
 
 

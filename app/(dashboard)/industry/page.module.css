@@ -70,7 +70,6 @@
    
 }
 
-
 .profit_wrapper { grid-area: profit; }
 .sellers_wrapper { grid-area: sellers; }
 .cards_data_wrapper { grid-area: cards; }

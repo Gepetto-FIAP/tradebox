@@ -65,13 +65,13 @@ export async function GET(request: NextRequest) {
     });
     
     const products = (result.rows || []).map((row: any) => ({
-      produto_id: row.PRODUTO_ID,
-      gtin: row.GTIN,
-      nome: row.NOME,
-      qtd_vendedores: row.QTD_VENDEDORES,
-      qtd_vendas: row.QTD_VENDAS,
-      qtd_vendida: row.QTD_VENDIDA,
-      receita: row.RECEITA
+      produto_id: row[0],
+      gtin: row[1],
+      nome: row[2],
+      qtd_vendedores: row[3],
+      qtd_vendas: row[4],
+      qtd_vendida: row[5],
+      receita: row[6]
     }));
     
     return successResponse({ products });

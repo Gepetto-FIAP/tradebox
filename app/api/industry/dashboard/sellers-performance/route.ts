@@ -13,6 +13,7 @@ import { validatePeriodo } from '@/lib/validators';
  * Retorna performance dos vendedores
  * Query params: ?periodo=30d&limit=10
  */
+
 export async function GET(request: NextRequest) {
   // Verificar se é indústria
   const authResult = await requireIndustria();
@@ -65,12 +66,12 @@ export async function GET(request: NextRequest) {
     });
     
     const sellers = (result.rows || []).map((row: any) => ({
-      vendedor_id: row.VENDEDOR_ID,
-      vendedor: row.VENDEDOR,
-      qtd_produtos: row.QTD_PRODUTOS,
-      qtd_vendas: row.QTD_VENDAS,
-      produtos_vendidos: row.PRODUTOS_VENDIDOS,
-      receita: row.RECEITA
+      vendedor_id: row[0],
+      vendedor: row[1],
+      qtd_produtos: row[2],
+      qtd_vendas: row[3],
+      produtos_vendidos: row[4],
+      receita: row[5]
     }));
     
     return successResponse({ sellers });

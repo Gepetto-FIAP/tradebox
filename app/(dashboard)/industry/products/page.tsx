@@ -6,7 +6,7 @@ export default function IndustryProducts() {
     <div className={styles.content}>
       <div className={styles.products}>
         <div className={styles.table_header}>
-          Produtos do setor
+          Produtos 
         </div>
         <div className={styles.products_table}>
           <ProductListIndustry />

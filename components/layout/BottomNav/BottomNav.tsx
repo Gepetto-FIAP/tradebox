@@ -9,15 +9,12 @@ import { BiHome, BiLineChart, BiStore, BiBasket , BiPackage, BiCog } from "react
 export default function BottomNav() {
   const pathname = usePathname();
   
-  // Determinar o tipo de navegação baseado na rota atual
   const isIndustry = pathname?.startsWith('/industry');
   
-  // Configurar itens de navegação baseado no tipo de usuário
   const nav_items = isIndustry ? [
     { href: '/industry', icon: BiHome, label: 'Home' },
     { href: '/industry/products', icon: BiPackage, label: 'Produtos' },
     { href: '/industry/analytics', icon: BiLineChart, label: 'Relatórios' },
-    { href: '/industry/settings', icon: BiCog, label: 'Config' },
   ] : [
     { href: '/seller', icon: BiHome, label: 'Home' },
     { href: '/seller/sell', icon: BiBasket , label: 'Vender' },
@@ -25,25 +22,21 @@ export default function BottomNav() {
     { href: '/seller/analytics', icon: BiLineChart, label: 'Análises' },
   ];
   
-// Função para verificar se um item está ativo
   const isItemActive = (itemHref: string) => {
     if (itemHref === '/seller' || itemHref === '/industry') {
-      // Para páginas home, verificação exata
       return pathname === itemHref;
     }
-    // Para outras páginas, verificar se começa com a rota base
     return pathname?.startsWith(itemHref);
   };
   
-  // Encontrar o índice do item ativo para o slider
   const activeIndex = nav_items.findIndex(item => isItemActive(item.href));
   return (
     <nav className={styles.nav}>
-      <div className={styles.slider} style={{ left: `${activeIndex * 100/nav_items.length}%` }} />
+      <div className={styles.slider} style={{ left: `${activeIndex * 100/nav_items.length}%`, width: `calc(100% / ${nav_items.length})` }} />
+      
       {nav_items.map((item, idx) => {
         const isActive = isItemActive(item.href);
-
-        
+      
         return (
           <Link key={item.href} href={item.href} className={`${styles.nav_item} ${isActive ? styles.active_item : ''}`}>
             <item.icon className={styles.icon}/>
@@ -55,6 +48,5 @@ export default function BottomNav() {
   );
 }
 
-// Export nomeado para compatibilidade
 export { default as BottomNav } from './BottomNav';
 

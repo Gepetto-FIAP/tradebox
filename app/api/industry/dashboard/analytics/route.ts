@@ -13,6 +13,7 @@ import { validatePeriodo } from '@/lib/validators';
  * Retorna dados completos de analytics para indústria
  * Query params: ?periodo=30d
  */
+
 export async function GET(request: NextRequest) {
   // Verificar se é indústria
   const authResult = await requireIndustria();
