@@ -6,7 +6,8 @@ import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
 
 import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
-import MoneyInput from '@/components/InputMoney/InputMoney';
+import MoneyInput from '@/components/ui/InputMoney/InputMoney';
+import Button from '@/components/ui/Button/Button';
 
 
 // Aspect ratio and crop size factor
@@ -230,11 +231,12 @@ export default function CameraView() {
 
   return (
     <div className={styles.container_scan}>
+      
       <button 
       style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
       onClick={() => consultarProduto("7894900700398 ")}
       >
-        Testar consulta ... 
+        Testar Consulta
 
       </button>
 
@@ -366,37 +368,56 @@ export default function CameraView() {
           </div>
         </div>
         <div className={styles.basket_content}>
-          {
-            cart.map((cartItem, index) => (
-              <div key={index} className={styles.basket_item}>
-                <div className={styles.basket_product_image}>
-                  <img src={cartItem.imageBase64} alt={cartItem.nome} />
-                </div>
-                <div className={styles.basket_product_info}>
-                  <div className={styles.basket_product_name}>
-                    {cartItem.nome}
+          <div className={styles.basket_items_list}>
+            {
+              cart.map((cartItem, index) => (
+                <div key={index} className={styles.basket_item}>
+                  <div className={styles.basket_product_image}>
+                    <img src={cartItem.imageBase64} alt={cartItem.nome} />
                   </div>
-                  <div className={styles.basket_product_quantity}>
-                    <button onClick={() => updateCartItemQuantity(index, cartItem.quantity - 1)}>-</button>
-                    <div>
-                      {cartItem.quantity}
+                  <div className={styles.basket_product_info}>
+                    <div className={styles.basket_product_name}>
+                      {cartItem.nome}
                     </div>
-                    <button onClick={() => updateCartItemQuantity(index, cartItem.quantity + 1)}>+</button>
+                    <div className={styles.basket_product_quantity}>
+                      <button onClick={() => updateCartItemQuantity(index, cartItem.quantity - 1)}>-</button>
+                      <div>
+                        {cartItem.quantity}
+                      </div>
+                      <button onClick={() => updateCartItemQuantity(index, cartItem.quantity + 1)}>+</button>
+                    </div>
                   </div>
-                </div>
-                <div className={styles.basket_product_price}> 
-                  <div className={styles.basket_product_total}>
-                    {(cartItem.productValue * cartItem.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
+                  <div className={styles.basket_product_price}> 
+                    <div className={styles.basket_product_total}>
+                      {(cartItem.productValue * cartItem.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
+                    </div>
+                    <div className={styles.basket_product_subtotal}>
+                      {cartItem.productValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
+                    </div>
                   </div>
-                  <div className={styles.basket_product_subtotal}>
-                    {cartItem.productValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})}
-                  </div>
-                </div>
 
+                </div>
+              ))
+            }
+          </div>
+
+          <div className={styles.basket_checkout}>
+            <button 
+            onClick={ () => {
+              alert("Carrinho: \n" + JSON.stringify(cleanCart, null, 2));
+            }}
+            className={styles.checkout_button}>
+              <div className={styles.checkout_button_text}>
+                Finalizar Venda
               </div>
-            ))
-          }
+              <div className={styles.checkout_button_icon}>
+                <BiChevronRight />
+              </div>
+            </button>
+          </div>
         </div>
+
+
       </div>
 
     </div>

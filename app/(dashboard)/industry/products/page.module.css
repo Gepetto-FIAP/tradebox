@@ -1,0 +1,38 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.products {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+}
+
+.products_table {
+    display: flex;
+    align-items: start;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.table_header {
+    font-size: .8rem;
+    color: var(--color-secondary);
+    opacity: .75;
+    font-weight: 300;
+
+}
+
+@media (max-width: 700px) {
+    .content {
+        padding: 0 20px;
+    }
+}

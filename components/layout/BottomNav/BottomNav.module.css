@@ -1,0 +1,128 @@
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.05);
+  margin-top: 20px;
+}
+
+.slider {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  width: 25%;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 10px;
+  transition: left .3s cubic-bezier(.1,0,.2,1);
+  z-index: 0;
+}
+
+.nav_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  padding: 5px;
+  position: relative;
+  border-radius: 10px;
+  text-decoration: none;
+  z-index: 1;
+  gap: 2px;
+  flex: 1 1 0px;
+  overflow: hidden;
+  transition: .3s;
+}
+
+.label {
+  text-decoration: none;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 300;
+}
+
+.icon {
+  font-size: 1.3rem;
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+
+.active_item .label {
+  font-weight: 500;
+}
+
+.active_item .icon {
+  color: var(--color-primary);
+}
+
+.active_item .label {
+  color: var(--color-primary);
+}
+
+
+@media (min-width: 700px) {
+  .nav {
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    margin-top: 0px;
+  }
+
+  .nav_item {
+    flex-direction: row;
+    flex: none;
+    gap: 10px;
+    width: 100%;
+    justify-content: start;
+  }
+
+  .slider {
+    display: none;
+  }
+
+  .active_item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 20%;
+    z-index: -1;
+  }
+
+  .active_item {
+    padding: 5px 10px;
+    background: var(--color-primary);
+  }
+
+  .active_item .label, .active_item .icon {
+    color: var(--color-text);
+  }
+
+  .active_item .label {
+    font-weight: 500;
+  }
+}
+
+@media (min-width: 1001px) {
+  .nav {
+    border: 2px solid var(--color-border);
+    padding: 20px;
+  }
+
+  .label {
+    font-size: .9rem;
+  }
+  
+  
+}

@@ -1,5 +1,5 @@
 import { requireAuth } from "@/lib/authorization";
-import LogoutButton from "@/components/LogoutButton/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton/LogoutButton";
 
 export const dynamic = 'force-dynamic';
 

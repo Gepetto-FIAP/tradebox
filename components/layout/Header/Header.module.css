@@ -1,0 +1,123 @@
+.header {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    margin-top: 25px;
+} 
+
+.header_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border: 1px solid var(--color-border);
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+.header_items {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.header_items a {
+    font-size: .85rem;
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--color-secondary);
+    opacity: .7;
+    transition: .3s;
+}
+
+.header_items a:hover {
+    color: var(--color-primary);
+    opacity: 1;
+}
+
+
+.header_logo {
+    font-size: 1.35rem;
+    color: var(--color-text);
+    mask-image: linear-gradient(to bottom, black 0%, transparent 115%);
+    line-height: 1;
+    letter-spacing: -1px;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.header_logo span:first-child {
+    font-weight: 600;
+}
+
+.header_logo span:last-child {
+    font-weight: 400;
+}
+
+.header_logo:hover {
+    color: var(--color-primary);
+}
+
+
+.header_button {
+    position: relative;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background: none;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary-60);
+    background: transparent;
+    cursor: pointer;
+    font-size: .8rem;
+    font-weight: 500;
+    font-family: Urbanist, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    transition: .3s;
+    scale: 100%;
+}
+
+.header_button:active {
+    scale: 101%;
+    filter: brightness(90%);
+    background: var(--color-primary-30);
+    color: var(--color-secondary);
+    border: 1px solid var(--color-primary);
+}
+
+.header_button:hover:not(:active) {
+    scale: 105%;
+    background: var(--color-primary-30);
+    color: var(--color-secondary);
+    border: 1px solid var(--color-primary);
+}
+
+.header_button span:first-child{
+    display: flex;
+    font-size: 1rem;
+    scale: 100%;
+}
+
+.header_button:hover span:first-child{
+    scale: 125%;
+}
+
+.header_button span {
+    position: relative;
+    transition: .4s;
+    left: 0%;
+}
+
+.header_button:hover span:last-child {
+    left: 100%;
+    
+}
+
+.header_button:hover span:first-child {
+    left: 40%;
+}

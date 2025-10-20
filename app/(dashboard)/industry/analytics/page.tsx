@@ -1,192 +1,142 @@
 "use client";
-import SalesChart from '@/components/SalesChart/SalesChart';
-import styles from './analytics.module.css';
-import CardData from '@/components/CardData/CardData';
-import { BiCartAlt, BiDollar, BiLineChart, BiBasket } from 'react-icons/bi';
-import { useState } from 'react';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js';
-import BottomNav from '@/components/BottomNav/BottomNav';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
+import { useState } from "react";
+import styles from './page.module.css';
+import PerformanceChart from '@/components/dashboard/PerformanceChart/PerformanceChart';
+import { BiBell , BiLike, BiDislike  } from 'react-icons/bi';
+import Button from "@/components/ui/Button/Button";
 
-interface TableRow {
-  id: number;
-  date: string;
-  retailer: string;
-  product: string;
-  quantity: number;
-  total: number;
-}
+const PERIODS = [
+  { label: "Últimos 7 dias", value: "7d" },
+  { label: "Últimos 30 dias", value: "30d" },
+  { label: "Últimos 90 dias", value: "90d" },
+];
 
-const initialData: TableRow[] = [
-  { id: 1, date: '2025-09-01', retailer: 'Fábrica A', product: 'Widget A', quantity: 10, total: 120 },
-  { id: 2, date: '2025-09-02', retailer: 'Fábrica B', product: 'Widget B', quantity: 5, total: 60 },
-  { id: 3, date: '2025-09-03', retailer: 'Fábrica C', product: 'Widget A', quantity: 8, total: 96 },
-  { id: 4, date: '2025-09-03', retailer: 'Fábrica E', product: 'Widget D', quantity: 12, total: 125 },
-  { id: 5, date: '2025-09-05', retailer: 'Fábrica A', product: 'Widget C', quantity: 11, total: 110 },
-  { id: 6, date: '2025-09-01', retailer: 'Fábrica A', product: 'Widget A', quantity: 5, total: 60 },
-  { id: 7, date: '2025-09-02', retailer: 'Fábrica B', product: 'Widget D', quantity: 16, total: 150 },
-  { id: 8, date: '2025-09-03', retailer: 'Fábrica C', product: 'Widget A', quantity: 8, total: 96 },
-  { id: 9, date: '2025-09-03', retailer: 'Fábrica B', product: 'Widget D', quantity: 14, total: 130 },
-  { id: 10, date: '2025-09-05', retailer: 'Fábrica E', product: 'Widget C', quantity: 14, total: 110 },
+const insights = [
+  {
+    id: 1,
+    title: "O seller A vende o produto X 39% mais que a média",
+    text: "Isso indica que o seller A está se destacando na venda do produto X em comparação com outros sellers."
+  },
+  {
+    id: 2,
+    title: "O produto Y teve um aumento de 25% nas vendas na última semana",
+    text: "Esse aumento pode ser atribuído a uma campanha de marketing eficaz ou a uma mudança na demanda do mercado."
+  },
+  {
+    id: 3,
+    title: "O seller B está com um estoque baixo do produto Z",
+    text: "Recomenda-se entrar em contato com o seller B para evitar rupturas de estoque e perda de vendas."
+  },
+  {
+    id: 4,
+    title: "O produto W tem uma margem de lucro de 45%",
+    text: "Esse produto é altamente lucrativo e deve ser promovido para maximizar os ganhos."
+  },
+  {
+    id: 5,
+    title: "O seller C teve uma queda de 15% nas vendas no último mês",
+    text: "É importante investigar as causas dessa queda e implementar estratégias para recuperar as vendas."
+  },
+  {
+    id: 6,
+    title: "O seller D teve um aumento de 20% nas vendas no último mês",  
+    text: "Parabéns ao seller D pelo excelente desempenho! Continue assim para manter o crescimento."
+  }
 ];
 
 export default function IndustryAnalytics() {
-  const [filter, setFilter] = useState({ date: '', retailer: '', product: '' });
-  const filteredData: TableRow[] = initialData.filter(row =>
-    (!filter.date || row.date === filter.date) &&
-    (!filter.retailer || row.retailer.toLowerCase().includes(filter.retailer.toLowerCase())) &&
-    (!filter.product || row.product.toLowerCase().includes(filter.product.toLowerCase()))
-  );
-
-  // Indicadores para os cards
-  const totalUnits = filteredData.reduce((sum, r) => sum + r.quantity, 0);
-  const activeRetailers = new Set(filteredData.map(r => r.retailer)).size;
-  const productSales: Record<string, number> = {};
-  filteredData.forEach(r => {
-    productSales[r.product] = (productSales[r.product] || 0) + r.quantity;
-  });
-  const bestProduct = Object.entries(productSales).reduce((best, [prod, qty]) => qty > best.qty ? { prod, qty } : best, { prod: '', qty: 0 }).prod;
-  const totalRevenue = filteredData.reduce((sum, r) => sum + r.total, 0);
-
-  // Gráfico de linha: vendas por dia
-  const lineData = {
-    labels: filteredData.map(r => r.date),
-    datasets: [{
-      label: 'Vendas por dia',
-      data: filteredData.map(r => r.quantity),
-      borderColor: '#01b5fa',
-      backgroundColor: '#01b5fa70',
-      tension: 0.3,
-    }],
-  };
-  const lineOptions = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => `Quantidade: ${ctx.parsed.y}`,
-        },
-      },
-    },
-  };
-
-  // Gráfico de barras: produtos mais vendidos
-  const barData = {
-    labels: Object.keys(productSales),
-    datasets: [{
-      label: 'Produtos mais vendidos',
-      data: Object.values(productSales),
-      backgroundColor: '#01b5fa70',
-      borderColor: '#01b5fa',
-      borderWidth: 1,
-    }],
-  };
-  const barOptions = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => `Qtd: ${ctx.parsed.y} | Produto: ${ctx.label}`,
-        },
-      },
-    },
-  };
-
-  // Gráfico de barras: faturamento por produto
-  const revenueByProduct: Record<string, number> = {};
-  filteredData.forEach(r => {
-    revenueByProduct[r.product] = (revenueByProduct[r.product] || 0) + r.total;
-  });
-  const revenueBarData = {
-    labels: Object.keys(revenueByProduct),
-    datasets: [{
-      label: 'Faturamento por produto',
-      data: Object.values(revenueByProduct),
-      backgroundColor: '#00384d70',
-      borderColor: '#00384d',
-      borderWidth: 1,
-    }],
-  };
-  const revenueBarOptions = {
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => `R$ ${ctx.parsed.y} | Produto: ${ctx.label}`,
-        },
-      },
-    },
-  };
+  const [periodoProducts, setPeriodoProducts] = useState("30d");
+  const [periodoSellers, setPeriodoSellers] = useState("30d");
 
   return (
-    <div className={styles.fullBg}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div className={styles.greeting}>Dashboard Indústria</div>
-          <div className={styles.name}>Bem-vindo!</div>
-        </div>
-        <div className={styles.cards_data_wrapper}>
-          <div className={styles.cards_data}>
-            <CardData icon={<BiCartAlt />} label="Produtos Cadastrados" value={245} />
-            <CardData icon={<BiDollar />} label="Faturamento" value={"R$ 41.789"} />
-            <CardData icon={<BiLineChart />} label="Linhas de Produção" value={8} />
-            <CardData icon={<BiBasket />} label="Parceiros" value={32} />
+    <div className={styles.content}>
+      <div className={styles.product_chart_wrapper}>
+        <div className={styles.chart_header}>
+          <div className={styles.chart_label}>
+            Desempenho dos Produtos
           </div>
+
+          <select value={periodoProducts} onChange={e => setPeriodoProducts(e.target.value)}>
+            {PERIODS.map(p => (
+              <option key={p.value} value={p.value}>{p.label}</option>
+            ))}
+          </select>
+
         </div>
-        <div className={styles.filters}>
-          <input type="date" value={filter.date} onChange={e => setFilter(f => ({ ...f, date: e.target.value }))} className={styles.filterInput} />
-          <input type="text" placeholder="Indústria" value={filter.retailer} onChange={e => setFilter(f => ({ ...f, retailer: e.target.value }))} className={styles.filterInput} />
-          <input type="text" placeholder="Produto" value={filter.product} onChange={e => setFilter(f => ({ ...f, product: e.target.value }))} className={styles.filterInput} />
-          <button className={styles.filterButton} onClick={() => setFilter({ date: '', retailer: '', product: '' })}>Limpar filtros</button>
+
+        <div className={styles.bar_chart}>
+          <PerformanceChart 
+          periodo={periodoProducts}
+          limit={12}
+          dataKey="products" 
+          apiPath="/api/industry/dashboard/products-performance" 
+          borderColor="#01b5fa" 
+          bgColor="#01b5fa30" />
         </div>
-        <div className={styles.tableWrapper}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Indústria</th>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Valor Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className={styles.emptyRow}>Nenhum resultado encontrado.</td>
-                </tr>
-              ) : (
-                filteredData.map((row) => (
-                  <tr key={row.id + '-' + row.date + '-' + row.product}>
-                    <td>{row.date}</td>
-                    <td>{row.retailer}</td>
-                    <td>{row.product}</td>
-                    <td>{row.quantity}</td>
-                    <td>R$ {row.total.toFixed(2)}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+      </div>
+
+      <div className={styles.sellers_chart_wrapper}>
+        
+        <div className={styles.chart_header}>
+          <div className={styles.chart_label}>
+            Desempenho dos Vendedores
+          </div>
+
+          <select value={periodoSellers} onChange={e => setPeriodoSellers(e.target.value)}>
+            {PERIODS.map(p => (
+              <option key={p.value} value={p.value}>{p.label}</option>
+            ))}
+          </select>
+
         </div>
-        <div style={{ height: 16 }} />
-        <div className={styles.charts}>
-          <div className={styles.chartBox}><Line data={lineData} options={lineOptions} /></div>
-          <div className={styles.chartBox}><Bar data={barData} options={barOptions} /></div>
-          <div className={styles.chartBox}><Bar data={revenueBarData} options={revenueBarOptions} /></div>
+        
+        <div className={styles.bar_chart}>
+          <PerformanceChart 
+          periodo={periodoSellers}
+          limit={12}
+          dataKey="sellers" 
+          apiPath="/api/industry/dashboard/sellers-performance" 
+          borderColor="#01b5fa60" 
+          bgColor="#01b5fa10" />
         </div>
-        <div style={{ height: 25 }} />
-        <BottomNav/>
+
+      </div>
+
+      <div className={styles.ai_insights_wrapper}>
+        <div className={styles.chart_label}>
+          Insights de IA
+        </div>
+
+        <div className={styles.ai_insights}>
+          {insights.map(insight => (
+            <div key={insight.id} className={styles.ai_insight}>
+              <div className={styles.ai_insight_icon}>
+                <BiBell /> 
+              </div>
+
+              <div className={styles.ai_insight_content}>
+                <div className={styles.ai_insight_title}>
+                  {insight.title}
+                </div>
+                <div className={styles.ai_insight_text}>
+                  {insight.text}
+                </div>
+              </div>
+
+              <div className={styles.ai_insight_actions}>
+                <div className={styles.ai_insight_action}>
+                  <BiLike />
+                </div>
+                <div className={styles.ai_insight_action}>
+                  <BiDislike/>
+                </div>
+              </div>
+            </div>
+          ))}
+
+        </div>
+
       </div>
     </div>
   );

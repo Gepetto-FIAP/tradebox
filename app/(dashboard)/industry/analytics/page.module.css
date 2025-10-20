@@ -1,0 +1,190 @@
+.content {
+  display: grid;
+  gap: 30px;
+  grid-template-areas: "product_chart ai_insights"
+                        "sellers_chart ai_insights";
+  grid-template-columns: 1fr  1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.product_chart_wrapper, .sellers_chart_wrapper, .ai_insights_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chart_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.ai_insights_wrapper {
+  grid-area: ai_insights;
+}
+
+.product_chart_wrapper {
+  grid-area: product_chart;
+}
+
+.sellers_chart_wrapper {
+  grid-area: sellers_chart;
+}
+
+.bar_chart > div {
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.chart_label {
+    font-size: .8rem;
+    color: var(--color-secondary);
+    opacity: .75;
+    font-weight: 300;
+}
+
+.chart_header select {
+    background: none;
+    border: 0;
+    color: var(--color-secondary);
+    font-family: Urbanist ,sans-serif;
+    font-weight: 100;
+    font-size: 0.8rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    outline: 1px solid var(--color-border);
+    border-radius: 4px;
+    transition: .4s;
+}
+
+.chart_header select option {
+    background: var(--color-bg-dark);
+    color: var(--color-text);
+    font-weight: 200;
+    padding: 4px 8px;
+}
+
+.chart_header select:hover {
+    background: var(--color-primary-10);
+}
+
+.chart_header select:focus {
+    outline-color: var(--color-primary);
+}
+
+.ai_insights {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.ai_insight {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid var(--color-primary-30);
+    border-radius: 6px;
+    background: var(--color-primary-10);
+    color: var(--color-secondary);
+    transition: .3s;
+}
+
+.ai_insight:hover {
+    background: var(--color-primary-60);
+    cursor: pointer;
+}
+
+.ai_insight_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--color-secondary);
+    height: min-content;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.ai_insight_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    overflow: hidden;
+    gap: 8px;
+    width: 100%;
+}
+
+.ai_insight_title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ai_insight_text {
+    font-size: 0.9rem;
+    font-weight: 100;
+    color: var(--color-secondary);
+    opacity: 90%;
+    line-height: 1;
+}
+
+.ai_insight_actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: var(--color-secondary);
+}
+
+.ai_insight_action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1rem;
+    border: 1px solid var(--color-primary-30);
+    color: var(--color-primary);
+    height: min-content;
+    padding: 5px;
+    border-radius: 20px;
+    transition: .3s;
+}
+
+.ai_insight_action:hover {
+    background: var(--color-primary-30);
+    border-color: var(--color-primary);
+}
+
+.ai_insight_action:active {
+    color: var(--color-secondary);
+    background: var(--color-primary);
+}
+
+@media (max-width: 700px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .product_chart_wrapper, .sellers_chart_wrapper, .ai_insights_wrapper {
+    min-height: max-content;
+  }
+}

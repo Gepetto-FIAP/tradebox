@@ -1,0 +1,6 @@
+.trending_container {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  height: 100%;
+}
