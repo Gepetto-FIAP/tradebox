@@ -13,11 +13,18 @@ const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 dias
  * Cria um token JWT para o usuário
  */
 export async function createToken(payload: AuthPayload): Promise<string> {
-  return await new SignJWT(payload as any)
+  console.log('🔐 [AUTH] Criando token JWT com payload:', payload);
+  console.log('🔐 [AUTH] Categoria no payload:', payload.categoria);
+  console.log('🔐 [AUTH] Tipo da categoria:', typeof payload.categoria);
+  
+  const token = await new SignJWT(payload as any)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
     .sign(JWT_SECRET);
+  
+  console.log('✅ [AUTH] Token criado com sucesso');
+  return token;
 }
 
 /**
@@ -25,10 +32,18 @@ export async function createToken(payload: AuthPayload): Promise<string> {
  */
 export async function verifyToken(token: string): Promise<AuthPayload | null> {
   try {
+    console.log('🔐 [AUTH] Verificando token JWT...');
+    console.log('🔐 [AUTH] Token (primeiros 20 chars):', token.substring(0, 20));
+    
     const { payload } = await jwtVerify(token, JWT_SECRET);
+    
+    console.log('✅ [AUTH] Token válido! Payload:', payload);
     return payload as unknown as AuthPayload;
   } catch (error) {
-    console.error('Token verification failed:', error);
+    console.error('❌ [AUTH] Token inválido ou expirado:', error);
+    if (error instanceof Error) {
+      console.error('❌ [AUTH] Mensagem de erro:', error.message);
+    }
     return null;
   }
 }
@@ -68,19 +83,43 @@ export async function getCurrentUser(): Promise<AuthPayload | null> {
     const cookieStore = await cookies();
     const token = cookieStore.get(COOKIE_NAME)?.value;
     
-    console.log('[AUTH] Cookie encontrado:', token ? 'SIM' : 'NÃO');
+    console.log('🍪 [AUTH] Cookie encontrado:', token ? 'SIM' : 'NÃO');
+    console.log('🍪 [AUTH] Nome do cookie:', COOKIE_NAME);
     
     if (!token) {
-      console.log('[AUTH] Nenhum token encontrado no cookie');
+      console.log('❌ [AUTH] Nenhum token encontrado no cookie');
       return null;
     }
     
     const user = await verifyToken(token);
-    console.log('[AUTH] Usuário decodificado do token:', user);
+    
+    if (!user) {
+      console.log('❌ [AUTH] Token inválido - retornando null');
+      return null;
+    }
+    
+    // Validar estrutura do payload
+    if (!user.userId || !user.email || !user.categoria) {
+      console.error('❌ [AUTH] Payload incompleto:', user);
+      return null;
+    }
+    
+    // Garantir que categoria é um valor válido
+    if (user.categoria !== 'retailer' && user.categoria !== 'industry') {
+      console.error('❌ [AUTH] Categoria inválida:', user.categoria);
+      return null;
+    }
+    
+    console.log('✅ [AUTH] Usuário válido:', {
+      userId: user.userId,
+      email: user.email,
+      categoria: user.categoria,
+      nome: user.nome
+    });
     
     return user;
   } catch (error) {
-    console.error(' [AUTH] Erro ao obter usuário atual:', error);
+    console.error('❌ [AUTH] Erro ao obter usuário atual:', error);
     return null;
   }
 }

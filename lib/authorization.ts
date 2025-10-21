@@ -1,11 +1,16 @@
 import { redirect } from 'next/navigation';
 import { getCurrentUser, getRedirectUrl } from './auth';
 import { UserCategory } from './types';
+import { headers } from 'next/headers';
 
 /**
  * Verifica se o usuário tem permissão para acessar uma rota específica
  */
 export async function checkRouteAccess(requiredCategory: UserCategory): Promise<void> {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || headersList.get('referer') || 'unknown';
+  
+  console.log('🌐 [AUTHORIZATION] URL atual:', pathname);
   console.log('[AUTHORIZATION] Verificando acesso à rota:', requiredCategory);
   const user = await getCurrentUser();
 
@@ -19,11 +24,15 @@ export async function checkRouteAccess(requiredCategory: UserCategory): Promise<
 
   console.log('[AUTHORIZATION] Categoria do usuário:', user.categoria);
   console.log('[AUTHORIZATION] Categoria requerida:', requiredCategory);
+  console.log('[AUTHORIZATION] Comparação (===):', user.categoria === requiredCategory);
+  console.log('[AUTHORIZATION] Tipo da categoria do usuário:', typeof user.categoria);
+  console.log('[AUTHORIZATION] Tipo da categoria requerida:', typeof requiredCategory);
 
   // Se é categoria diferente da requerida, redireciona para dashboard correto
   if (user.categoria !== requiredCategory) {
     const redirectUrl = getRedirectUrl(user.categoria);
-    console.log('[AUTHORIZATION] Categoria incorreta! Redirecionando para:', redirectUrl);
+    console.log('⚠️ [AUTHORIZATION] Categoria incorreta! Redirecionando para:', redirectUrl);
+    console.log('⚠️ [AUTHORIZATION] Isso pode causar loop se o redirect for para a mesma página!');
     redirect(redirectUrl);
   }
 
