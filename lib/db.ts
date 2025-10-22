@@ -7,7 +7,7 @@ export const mockUsers = [
     EMAIL: 'demo@varejista.com',
     PASSWORD_HASH: '$2b$10$5c3oFuJvdbg.X9hg54gfwO/Dhkfd5Elv8GhlxP2/dnROzcxb5taCG', // password123
     NOME: 'João Silva - Varejista Demo',
-    CATEGORIA: 'retailer' as const,
+    CATEGORIA: 'VAREJISTA' as const,
     TIPO_PESSOA: 'PF',
     DOCUMENTO: '12345678901',
     ATIVO: 'Y'
@@ -17,7 +17,7 @@ export const mockUsers = [
     EMAIL: 'demo@industria.com',
     PASSWORD_HASH: '$2b$10$5c3oFuJvdbg.X9hg54gfwO/Dhkfd5Elv8GhlxP2/dnROzcxb5taCG', // password123
     NOME: 'Indústria ABC S/A - Demo',
-    CATEGORIA: 'industry' as const,
+    CATEGORIA: 'INDUSTRIA' as const,
     TIPO_PESSOA: 'PJ',
     DOCUMENTO: '12345678000195',
     ATIVO: 'Y'
