@@ -207,6 +207,15 @@
     }
 }
 
+/* Modo Auth - apenas logo centralizada */
+.header_container.auth_mode {
+    justify-content: center;
+}
+
+.header_container.auth_mode .header_logo {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+}
+
 /* Mobile Pequeno (max 480px) */
 @media (max-width: 480px) {
     .header_container {
