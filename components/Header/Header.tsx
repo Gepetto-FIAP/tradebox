@@ -19,23 +19,28 @@ export default function Header() {
                 <nav>
                     <ul className={ styles.header_items }>
                         <li>
-                            <Link href="#section1">
-                                Sessao um
+                            <Link href="#home">
+                                Home
                             </Link>
                         </li>
                         <li>
-                            <Link href="#section2">
-                                Sessao dois
+                            <Link href="#dashboards">
+                                Dashboards
                             </Link>
                         </li>
                         <li>
-                            <Link href="#section3">
-                                Sessao tres
+                            <Link href="#solucoes">
+                                Soluções
                             </Link>
                         </li>
                         <li>
-                            <Link href="#section3">
-                                Sessao tres
+                            <Link href="#recursos">
+                                Recursos
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="#equipe">
+                                Equipe
                             </Link>
                         </li>
 

@@ -841,6 +841,135 @@
 }
 
 /* ========================================
+   TEAM SECTION
+   ======================================== */
+
+.team_section {
+  width: 100%;
+  padding: 100px 40px;
+  background: linear-gradient(180deg, rgba(0, 20, 35, 0.3) 0%, rgba(0, 40, 60, 0.2) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.team_section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(1, 181, 250, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.team_grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px;
+  max-width: 1600px;
+  margin: 60px auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.team_card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(1, 181, 250, 0.15);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.team_card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(1, 181, 250, 0.05) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.team_card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 16px 48px rgba(0, 229, 255, 0.2);
+  border-color: rgba(1, 181, 250, 0.4);
+}
+
+.team_card:hover::before {
+  opacity: 1;
+}
+
+.team_image_wrapper {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 24px;
+  border: 3px solid rgba(1, 181, 250, 0.3);
+  transition: all 0.4s ease;
+  background: rgba(1, 181, 250, 0.1);
+}
+
+.team_card:hover .team_image_wrapper {
+  border-color: rgba(1, 181, 250, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.team_image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.team_card:hover .team_image {
+  transform: scale(1.1);
+}
+
+.team_info {
+  position: relative;
+  z-index: 1;
+}
+
+.team_info h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.team_role {
+  font-size: 1rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+.team_description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 
@@ -896,6 +1025,10 @@
   .features_grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .team_grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 /* Telas Médias (769px - 1440px) */
@@ -911,6 +1044,11 @@
   .benefits_grid {
     padding: 0 30px;
   }
+
+  .team_grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
 }
 
 /* Tablets e Monitores Pequenos (769px - 1200px) - Dashboards em coluna */
@@ -919,6 +1057,10 @@
     grid-template-columns: 1fr;
     gap: 50px;
     max-width: 900px;
+  }
+
+  .team_grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1002,7 +1144,8 @@
 
   .comparison_grid,
   .benefits_grid,
-  .testimonials_grid {
+  .testimonials_grid,
+  .team_grid {
     grid-template-columns: 1fr;
     gap: 24px;
     padding: 0 20px;
@@ -1021,7 +1164,8 @@
 
   .comparison_section,
   .benefits_section,
-  .testimonials_section {
+  .testimonials_section,
+  .team_section {
     padding: 60px 20px;
   }
 

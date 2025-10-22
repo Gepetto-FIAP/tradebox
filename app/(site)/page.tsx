@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className={styles.home_content}>
       {/* Hero Section */}
-      <section className={styles.hero}>
+      <section id="home" className={styles.hero}>
         <div className={styles.hero_overlay}></div>
         <div className={styles.hero_container}>
           <div className={styles.hero_badge}>
@@ -38,7 +38,7 @@ export default function Home() {
       </section>
 
       {/* Product Preview Section - DASHBOARDS (MOVED UP!) */}
-      <section className={styles.preview_section}>
+      <section id="dashboards" className={styles.preview_section}>
         <div className={styles.section_header}>
           <h2>Dashboards Poderosos em Ação</h2>
           <p>Visualize e gerencie tudo em interfaces modernas e intuitivas</p>
@@ -102,7 +102,7 @@ export default function Home() {
       </section>
 
       {/* Comparison Section - Varejista vs Indústria */}
-      <section className={styles.comparison_section}>
+      <section id="solucoes" className={styles.comparison_section}>
         <div className={styles.section_header}>
           <h2>Escolha a melhor solução para você</h2>
           <p>Recursos específicos para cada tipo de negócio</p>
@@ -152,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className={styles.benefits_section}>
+      <section id="recursos" className={styles.benefits_section}>
         <div className={styles.section_header}>
           <h2>Por que escolher o TradeBox?</h2>
           <p>Benefícios que fazem a diferença no seu dia a dia</p>
@@ -215,6 +215,86 @@ export default function Home() {
             </div>
             <h3>Insights & Tendências</h3>
             <p>Identifique padrões de vendas, produtos em alta e oportunidades de crescimento com IA.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section id="equipe" className={styles.team_section}>
+        <div className={styles.section_header}>
+          <h2>Conheça Nossa Equipe</h2>
+          <p>Profissionais dedicados que tornaram este projeto realidade</p>
+        </div>
+        
+        <div className={styles.team_grid}>
+          <div className={styles.team_card}>
+            <div className={styles.team_image_wrapper}>
+              <img 
+                src="/images/team/antonio.png"
+                alt="Antonio"
+                className={styles.team_image}
+              />
+            </div>
+            <div className={styles.team_info}>
+              <h3>Antonio</h3>
+              <p className={styles.team_role}>Desenvolvedor</p>
+            </div>
+          </div>
+
+          <div className={styles.team_card}>
+            <div className={styles.team_image_wrapper}>
+              <img 
+                src="/images/team/eduardo.png"
+                alt="Eduardo"
+                className={styles.team_image}
+              />
+            </div>
+            <div className={styles.team_info}>
+              <h3>Eduardo</h3>
+              <p className={styles.team_role}>Desenvolvedor</p>
+            </div>
+          </div>
+
+          <div className={styles.team_card}>
+            <div className={styles.team_image_wrapper}>
+              <img 
+                src="/images/team/guilherme.png"
+                alt="Guilherme"
+                className={styles.team_image}
+              />
+            </div>
+            <div className={styles.team_info}>
+              <h3>Guilherme</h3>
+              <p className={styles.team_role}>Desenvolvedor</p>
+            </div>
+          </div>
+
+          <div className={styles.team_card}>
+            <div className={styles.team_image_wrapper}>
+              <img 
+                src="/images/team/higor.png"
+                alt="Higor"
+                className={styles.team_image}
+              />
+            </div>
+            <div className={styles.team_info}>
+              <h3>Higor</h3>
+              <p className={styles.team_role}>Desenvolvedor</p>
+            </div>
+          </div>
+
+          <div className={styles.team_card}>
+            <div className={styles.team_image_wrapper}>
+              <img 
+                src="/images/team/luiz.png"
+                alt="Luiz"
+                className={styles.team_image}
+              />
+            </div>
+            <div className={styles.team_info}>
+              <h3>Luiz</h3>
+              <p className={styles.team_role}>Desenvolvedor</p>
+            </div>
           </div>
         </div>
       </section>
