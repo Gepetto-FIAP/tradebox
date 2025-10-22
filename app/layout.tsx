@@ -1,6 +1,6 @@
 import "./styles/globals.css";
 import { Urbanist } from "next/font/google";
-import ThemeColorMeta from "@/components/ThemeColorMeta/ThemeColorMeta";
+import ThemeColorMeta from "@/components/layout/ThemeColorMeta/ThemeColorMeta";
 
 const urbanist = Urbanist({
   subsets: ["latin"],

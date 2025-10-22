@@ -1,7 +1,9 @@
 'use client';
 
-import styles from './analytics.module.css';
-import CardData from '@/components/CardData/CardData';
+import { useState } from 'react';
+import styles from './page.module.css';
+import CardData from '@/components/dashboard/CardData/CardData';
+import SalesChart from '@/components/dashboard/SalesChart/SalesChart';
 import { BiDollar, BiCart, BiUser, BiRefresh } from 'react-icons/bi';
 import { 
   Chart as ChartJS, 

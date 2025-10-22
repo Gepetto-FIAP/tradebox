@@ -1,4 +1,4 @@
-import Header from '@/components/Header/Header';
+import Header from '@/components/layout/Header/Header';
 import styles from './layout.module.css'
 
 export default function RootLayout({

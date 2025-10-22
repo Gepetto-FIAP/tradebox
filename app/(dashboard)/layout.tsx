@@ -7,9 +7,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className={styles.dashboard}>
-      <div className={styles.dashboard_content}>
-        {children} 
-      </div>
+      {children} 
     </div>
   );
 }

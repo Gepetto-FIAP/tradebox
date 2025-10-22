@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import Button from '@/components/Button/Button';
+import Button from '@/components/ui/Button/Button';
 import type { ReactNode } from 'react';
 import { BiBarcodeReader, BiPlus, BiUpload} from "react-icons/bi";
 
