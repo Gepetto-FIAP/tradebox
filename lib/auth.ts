@@ -105,7 +105,7 @@ export async function getCurrentUser(): Promise<AuthPayload | null> {
     }
     
     // Garantir que categoria é um valor válido
-    if (user.categoria !== 'retailer' && user.categoria !== 'industry') {
+    if (user.categoria !== 'VAREJISTA' && user.categoria !== 'INDUSTRIA') {
       console.error('❌ [AUTH] Categoria inválida:', user.categoria);
       return null;
     }
