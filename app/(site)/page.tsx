@@ -22,7 +22,7 @@ export default function Home() {
     
 
         </div>
-      </section>
+      </div>
 
       {/* CTA Final */}
       <section className={styles.cta_section}>
