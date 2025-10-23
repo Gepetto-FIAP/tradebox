@@ -29,13 +29,36 @@
     text-decoration: none;
     color: var(--color-secondary);
     opacity: .7;
-    transition: .3s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.header_items a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
 }
 
 .header_items a:hover {
     color: var(--color-primary);
     opacity: 1;
+    transform: translateY(-2px);
+}
+
+.header_items a:hover::after {
+    width: 100%;
+}
+
+.header_items a:active {
+    transform: translateY(0);
 }
 
 
