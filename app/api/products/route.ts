@@ -191,24 +191,34 @@ export async function POST(request: NextRequest) {
     
     connection = await connectOracle();
     
-    // Verificar se GTIN já existe para este vendedor
+    // Verificar se GTIN + INDÚSTRIA já existe para este vendedor
+    // Permite o mesmo GTIN de indústrias diferentes
     const checkQuery = `
       SELECT COUNT(*) as count
       FROM produtos
-      WHERE vendedor_id = :vendedor_id AND gtin = :gtin
+      WHERE vendedor_id = :vendedor_id 
+        AND gtin = :gtin
+        AND (industria_id = :industria_id OR (:industria_id IS NULL AND industria_id IS NULL))
     `;
     
     const checkResult = await connection.execute(
       checkQuery, 
-      { vendedor_id: vendedorId, gtin },
+      { 
+        vendedor_id: vendedorId, 
+        gtin,
+        industria_id: industria_id || null
+      },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     
     const count = (checkResult.rows?.[0] as any)?.COUNT || 0;
     if (count > 0) {
+      const industryMsg = industria_id 
+        ? 'desta indústria' 
+        : 'sem indústria associada';
       return errorResponse(
-        'GTIN duplicado',
-        'Você já possui um produto cadastrado com este código de barras',
+        'Produto duplicado',
+        `Você já possui este produto (GTIN: ${gtin}) cadastrado ${industryMsg}. Para cadastrar o mesmo produto de outra indústria, selecione uma indústria diferente.`,
         400
       );
     }

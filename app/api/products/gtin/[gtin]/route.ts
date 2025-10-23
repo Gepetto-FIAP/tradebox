@@ -7,10 +7,12 @@ import {
   handleOracleError 
 } from '@/lib/api-middleware';
 import { validateGTIN } from '@/lib/validators';
+const oracledb = require('oracledb');
 
 /**
  * GET /api/products/gtin/[gtin]
- * Busca produto por GTIN (código de barras)
+ * Busca produto(s) por GTIN (código de barras)
+ * Pode retornar múltiplos produtos se o mesmo GTIN estiver cadastrado para diferentes indústrias
  * Usado durante scan para venda ou edição
  */
 export async function GET(
@@ -49,6 +51,7 @@ export async function GET(
         p.nome,
         p.descricao,
         p.preco_base,
+        p.preco_custo,
         p.estoque,
         p.ativo,
         p.created_at,
@@ -61,24 +64,29 @@ export async function GET(
       WHERE p.gtin = :gtin 
         AND p.vendedor_id = :vendedor_id
         AND p.ativo = 'Y'
+      ORDER BY p.created_at DESC
     `;
     
-    const result = await connection.execute(query, {
-      gtin,
-      vendedor_id: vendedorId
-    });
+    const result = await connection.execute(
+      query, 
+      {
+        gtin,
+        vendedor_id: vendedorId
+      },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     
     if (!result.rows || result.rows.length === 0) {
       return successResponse({ 
         found: false,
-        product: null,
+        products: [],
+        count: 0,
         message: 'Produto não encontrado no seu catálogo'
       });
     }
     
-    const row: any = result.rows[0];
-    
-    const product = {
+    // Mapear todos os produtos encontrados
+    const products = (result.rows as any[]).map(row => ({
       id: row.ID,
       vendedor_id: row.VENDEDOR_ID,
       industria_id: row.INDUSTRIA_ID,
@@ -87,17 +95,25 @@ export async function GET(
       nome: row.NOME,
       descricao: row.DESCRICAO,
       preco_base: row.PRECO_BASE,
+      preco_custo: row.PRECO_CUSTO,
       estoque: row.ESTOQUE,
       ativo: row.ATIVO,
       created_at: row.CREATED_AT,
       updated_at: row.UPDATED_AT,
       categoria_nome: row.CATEGORIA_NOME,
       industria_nome: row.INDUSTRIA_NOME
-    };
+    }));
+    
+    // Se houver múltiplos produtos (mesmo GTIN, diferentes indústrias)
+    const message = products.length > 1
+      ? `Encontrados ${products.length} produtos com este GTIN de diferentes indústrias`
+      : 'Produto encontrado';
     
     return successResponse({ 
       found: true,
-      product 
+      products,
+      count: products.length,
+      message
     });
     
   } catch (error) {

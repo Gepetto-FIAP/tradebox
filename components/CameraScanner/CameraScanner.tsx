@@ -24,6 +24,7 @@ export default function CameraScanner({
 
   useEffect(() => {
     let mounted = true;
+    let hasDetected = false; // Flag para evitar múltiplas detecções
 
     async function startScanner() {
       if (!videoRef.current) return;
@@ -54,8 +55,9 @@ export default function CameraScanner({
           undefined, // undefined usa a câmera padrão
           videoRef.current,
           (result, error) => {
-            if (result) {
+            if (result && !hasDetected) {
               // Código detectado!
+              hasDetected = true; // Marcar como detectado para evitar múltiplas chamadas
               const code = result.getText();
               console.log('Código detectado:', code);
               
@@ -109,7 +111,7 @@ export default function CameraScanner({
       mounted = false;
       cleanup();
     };
-  }, [onDetected]);
+  }, []); // Remover onDetected das dependências para evitar loop
 
   function handleClose() {
     if (readerRef.current) {

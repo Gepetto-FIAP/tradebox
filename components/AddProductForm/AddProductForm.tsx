@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, FormEvent, useRef } from 'react';
+import { useState, useEffect, FormEvent, useRef, useCallback } from 'react';
 import { BiBarcode, BiSearch, BiScan } from 'react-icons/bi';
 import styles from './AddProductForm.module.css';
 import CameraScanner from '../CameraScanner/CameraScanner';
@@ -90,17 +90,19 @@ export default function AddProductForm({ onSuccess, onCancel }: AddProductFormPr
     }
   }
 
-  function handleOpenCameraScanner() {
+  const handleOpenCameraScanner = useCallback(() => {
     setShowCameraScanner(true);
     setError('');
-  }
+  }, []);
 
-  function handleCameraDetected(code: string) {
+  const handleCameraDetected = useCallback((code: string) => {
+    console.log('Camera detected code:', code);
     setShowCameraScanner(false);
     setGtinSearch(code);
-    // Automaticamente buscar dados do produto
+    
+    // Usar a função de busca existente
     searchByGTINCode(code);
-  }
+  }, []);
 
   async function searchByGTINCode(code: string) {
     if (!code.trim()) {
@@ -112,22 +114,12 @@ export default function AddProductForm({ onSuccess, onCancel }: AddProductFormPr
     setError('');
 
     try {
-      // Primeiro tenta buscar no banco (produto já cadastrado)
-      const productRes = await fetch(`/api/products/gtin/${code}`);
-      const productData = await productRes.json();
-
-      if (productData.success && productData.product) {
-        setError('Este produto já está cadastrado na sua loja');
-        setLoading(false);
-        return;
-      }
-
-      // Se não encontrou, busca na API GTIN
+      // Buscar dados do produto na API GTIN externa
       const gtinRes = await fetch(`/api/gtin?code=${code}`);
       const gtinData = await gtinRes.json();
 
       if (gtinData.success && gtinData.product) {
-        // Preenche formulário com dados da API
+        // Preenche formulário com dados da API externa
         const product: GTINProduct = gtinData.product;
         setFormData({
           gtin: product.gtin,
