@@ -8,8 +8,8 @@ import { BiRightArrowAlt } from "react-icons/bi";
 
 export default function Header() {
     const pathname = usePathname();
-    
-    // Verificar se est├í nas p├íginas de autentica├º├úo
+
+    // Verificar se está nas páginas de autenticação
     const isAuthPage = pathname?.startsWith('/auth');
 
     return (
@@ -24,7 +24,7 @@ export default function Header() {
                     </span>
                 </Link>
 
-                {/* Mostrar navega├º├úo apenas se N├âO estiver nas p├íginas de auth */}
+                {/* Mostrar navegação apenas se NÃO estiver nas páginas de auth */}
                 {!isAuthPage && (
                     <>
                         <nav>
@@ -41,7 +41,7 @@ export default function Header() {
                                 </li>
                                 <li>
                                     <Link href="/#solucoes">
-                                        Solu├º├╡es
+                                        Soluções
                                     </Link>
                                 </li>
                                 <li>

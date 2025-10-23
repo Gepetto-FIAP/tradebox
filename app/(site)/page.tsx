@@ -11,22 +11,22 @@ export default function Home() {
         <div className={styles.hero_overlay}></div>
         <div className={styles.hero_container}>
           <div className={styles.hero_badge}>
-            <span>≡ƒÜÇ Conectando Varejistas e Ind├║strias</span>
+            <span>🚀 Conectando Varejistas e Indústrias</span>
           </div>
           
           <h1 className={styles.hero_title}>
-            <span className={styles.highlight_text}>Gest├úo Inteligente</span>
-            {' '}para Varejo e Ind├║stria
+            <span className={styles.highlight_text}>Gestão Inteligente</span>
+            {' '}para Varejo e Indústria
           </h1>
           
           <p className={styles.hero_description}>
             Analytics em tempo real, scanner GTIN e dashboards completos. 
-            Tudo que voc├¬ precisa para crescer.
+            Tudo que você precisa para crescer.
           </p>
           
           <div className={styles.hero_cta}>
             <Link href="/auth/register" className={styles.btn_primary}>
-              Come├ºar Gratuitamente
+              Começar Gratuitamente
             </Link>
             <Link href="/auth/login" className={styles.btn_secondary}>
               Fazer Login
@@ -40,7 +40,7 @@ export default function Home() {
       {/* Product Preview Section - DASHBOARDS (MOVED UP!) */}
       <section id="dashboards" className={styles.preview_section}>
         <div className={styles.section_header}>
-          <h2>Dashboards Poderosos em A├º├úo</h2>
+          <h2>Dashboards Poderosos em Ação</h2>
           <p>Visualize e gerencie tudo em interfaces modernas e intuitivas</p>
         </div>
         
@@ -51,7 +51,7 @@ export default function Home() {
               <BiStore className={styles.preview_icon} />
               <div>
                 <h3>Dashboard Varejista</h3>
-                <p>Analytics em tempo real com gr├íficos interativos</p>
+                <p>Analytics em tempo real com gráficos interativos</p>
               </div>
             </div>
             <div className={styles.preview_image_wrapper}>
@@ -65,10 +65,10 @@ export default function Home() {
               />
             </div>
             <div className={styles.preview_features}>
-              <span>≡ƒôè Gr├íficos Interativos</span>
-              <span>≡ƒÆ░ Receita Total</span>
-              <span>≡ƒôê Crescimento</span>
-              <span>≡ƒö¥ Top Produtos</span>
+              <span>📊 Gráficos Interativos</span>
+              <span>💰 Receita Total</span>
+              <span>📈 Crescimento</span>
+              <span>🏆 Top Produtos</span>
             </div>
           </div>
 
@@ -77,14 +77,14 @@ export default function Home() {
             <div className={styles.preview_header}>
               <BiBuildings className={styles.preview_icon} />
               <div>
-                <h3>Dashboard Ind├║stria</h3>
-                <p>Gest├úo completa de produtos e distribui├º├úo</p>
+                <h3>Dashboard Indústria</h3>
+                <p>Gestão completa de produtos e distribuição</p>
               </div>
             </div>
             <div className={styles.preview_image_wrapper}>
               <Image 
                 src="/images/dashboard_industry.png"
-                alt="Dashboard Industry - Gest├úo de Produtos"
+                alt="Dashboard Industry - Gestão de Produtos"
                 width={1200}
                 height={800}
                 className={styles.preview_image}
@@ -92,20 +92,20 @@ export default function Home() {
               />
             </div>
             <div className={styles.preview_features}>
-              <span>≡ƒôª Cat├ílogo Completo</span>
-              <span>≡ƒôè Analytics Avan├ºado</span>
-              <span>≡ƒîÉ Distribui├º├úo</span>
-              <span>≡ƒÄ» Insights</span>
+              <span>📦 Catálogo Completo</span>
+              <span>📊 Analytics Avançado</span>
+              <span>🌍 Distribuição</span>
+              <span>💡 Insights</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Comparison Section - Varejista vs Ind├║stria */}
+      {/* Comparison Section - Varejista vs Indústria */}
       <section id="solucoes" className={styles.comparison_section}>
         <div className={styles.section_header}>
-          <h2>Escolha a melhor solu├º├úo para voc├¬</h2>
-          <p>Recursos espec├¡ficos para cada tipo de neg├│cio</p>
+          <h2>Escolha a melhor solução para você</h2>
+          <p>Recursos específicos para cada tipo de negócio</p>
         </div>
         
         <div className={styles.comparison_grid}>
@@ -114,38 +114,38 @@ export default function Home() {
             <div className={styles.comparison_header}>
               <BiStore className={styles.comparison_icon} />
               <h3>Para Varejistas</h3>
-              <p>Ferramentas completas para gest├úo de vendas</p>
+              <p>Ferramentas completas para gestão de vendas</p>
             </div>
             <ul className={styles.comparison_list}>
               <li><BiCheckCircle /> Scanner GTIN para leitura de produtos</li>
-              <li><BiCheckCircle /> Registro r├ípido de vendas</li>
+              <li><BiCheckCircle /> Registro rápido de vendas</li>
               <li><BiCheckCircle /> Analytics de desempenho em tempo real</li>
-              <li><BiCheckCircle /> Gr├íficos de receita e crescimento</li>
+              <li><BiCheckCircle /> Gráficos de receita e crescimento</li>
               <li><BiCheckCircle /> Top produtos mais vendidos</li>
-              <li><BiCheckCircle /> Hist├│rico completo de transa├º├╡es</li>
+              <li><BiCheckCircle /> Histórico completo de transações</li>
             </ul>
             <Link href="/auth/register?type=seller" className={styles.comparison_btn}>
-              Come├ºar como Varejista
+              Começar como Varejista
             </Link>
           </div>
 
-          {/* Ind├║stria */}
+          {/* Indústria */}
           <div className={styles.comparison_card}>
             <div className={styles.comparison_header}>
               <BiBuildings className={styles.comparison_icon} />
-              <h3>Para Ind├║strias</h3>
-              <p>Controle total do seu cat├ílogo de produtos</p>
+              <h3>Para Indústrias</h3>
+              <p>Controle total do seu catálogo de produtos</p>
             </div>
             <ul className={styles.comparison_list}>
               <li><BiCheckCircle /> Cadastro completo de produtos</li>
-              <li><BiCheckCircle /> Gest├úo de c├│digos GTIN</li>
-              <li><BiCheckCircle /> Analytics de distribui├º├úo no mercado</li>
-              <li><BiCheckCircle /> Visualiza├º├úo de vendas por regi├úo</li>
-              <li><BiCheckCircle /> M├⌐tricas de performance de produtos</li>
-              <li><BiCheckCircle /> Integra├º├úo com base de dados global</li>
+              <li><BiCheckCircle /> Gestão de códigos GTIN</li>
+              <li><BiCheckCircle /> Analytics de distribuição no mercado</li>
+              <li><BiCheckCircle /> Visualização de vendas por região</li>
+              <li><BiCheckCircle /> Métricas de performance de produtos</li>
+              <li><BiCheckCircle /> Integração com base de dados global</li>
             </ul>
             <Link href="/auth/register?type=industry" className={styles.comparison_btn}>
-              Come├ºar como Ind├║stria
+              Começar como Indústria
             </Link>
           </div>
         </div>
@@ -155,7 +155,7 @@ export default function Home() {
       <section id="recursos" className={styles.benefits_section}>
         <div className={styles.section_header}>
           <h2>Por que escolher o TradeBox?</h2>
-          <p>Benef├¡cios que fazem a diferen├ºa no seu dia a dia</p>
+          <p>Benefícios que fazem a diferença no seu dia a dia</p>
         </div>
         
         <div className={styles.benefits_grid}>
@@ -163,8 +163,8 @@ export default function Home() {
             <div className={styles.benefit_icon}>
               <BiRocket />
             </div>
-            <h3>R├ípido e F├ícil</h3>
-            <p>Interface intuitiva que n├úo requer treinamento. Comece a usar em minutos.</p>
+            <h3>Rápido e Fácil</h3>
+            <p>Interface intuitiva que não requer treinamento. Comece a usar em minutos.</p>
           </div>
 
           <div className={styles.benefit_card}>
@@ -172,15 +172,15 @@ export default function Home() {
               <BiLineChart />
             </div>
             <h3>Analytics Poderosos</h3>
-            <p>Visualize m├⌐tricas em tempo real e tome decis├╡es baseadas em dados concretos.</p>
+            <p>Visualize métricas em tempo real e tome decisões baseadas em dados concretos.</p>
           </div>
 
           <div className={styles.benefit_card}>
             <div className={styles.benefit_icon}>
               <BiShield />
             </div>
-            <h3>Seguro e Confi├ível</h3>
-            <p>Seus dados protegidos com criptografia e backup autom├ítico di├írio.</p>
+            <h3>Seguro e Confiável</h3>
+            <p>Seus dados protegidos com criptografia e backup automático diário.</p>
           </div>
         </div>
       </section>
@@ -188,8 +188,8 @@ export default function Home() {
       {/* Features Grid */}
       <section className={styles.features}>
         <div className={styles.section_header}>
-          <h2>Recursos completos em um s├│ lugar</h2>
-          <p>Tudo que voc├¬ precisa para gerenciar seu neg├│cio</p>
+          <h2>Recursos completos em um só lugar</h2>
+          <p>Tudo que você precisa para gerenciar seu negócio</p>
         </div>
         
         <div className={styles.features_grid}>
@@ -198,23 +198,23 @@ export default function Home() {
               <BiLineChart />
             </div>
             <h3>Analytics em Tempo Real</h3>
-            <p>Visualize receita, ticket m├⌐dio, produtos mais vendidos e crescimento com gr├íficos interativos e insights acion├íveis.</p>
+            <p>Visualize receita, ticket médio, produtos mais vendidos e crescimento com gráficos interativos e insights acionáveis.</p>
           </div>
 
           <div className={styles.feature_card}>
             <div className={styles.feature_icon}>
               <BiPackage />
             </div>
-            <h3>Gest├úo de Produtos</h3>
-            <p>Controle completo do cat├ílogo, estoque, pre├ºos e informa├º├╡es detalhadas de cada produto.</p>
+            <h3>Gestão de Produtos</h3>
+            <p>Controle completo do catálogo, estoque, preços e informações detalhadas de cada produto.</p>
           </div>
 
           <div className={styles.feature_card}>
             <div className={styles.feature_icon}>
               <BiTrendingUp />
             </div>
-            <h3>Insights & Tend├¬ncias</h3>
-            <p>Identifique padr├╡es de vendas, produtos em alta e oportunidades de crescimento com IA.</p>
+            <h3>Insights & Tendências</h3>
+            <p>Identifique padrões de vendas, produtos em alta e oportunidades de crescimento com IA.</p>
           </div>
         </div>
       </section>
@@ -222,7 +222,7 @@ export default function Home() {
       {/* Team Section */}
       <section id="equipe" className={styles.team_section}>
         <div className={styles.section_header}>
-          <h2>Conhe├ºa Nossa Equipe</h2>
+          <h2>Conheça Nossa Equipe</h2>
           <p>Profissionais dedicados que tornaram este projeto realidade</p>
         </div>
         
@@ -302,7 +302,7 @@ export default function Home() {
       {/* CTA Final */}
       <section className={styles.cta_section}>
         <div className={styles.cta_content}>
-          <h2>Pronto para transformar sua gest├úo?</h2>
+          <h2>Pronto para transformar sua gestão?</h2>
             <Link href="/auth/register" className={styles.btn_cta_large}>
             Criar Conta
           </Link>
