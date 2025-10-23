@@ -103,6 +103,14 @@ Scripts e schemas do banco de dados Oracle:
 
 Documentação de funcionalidades específicas do sistema:
 
+- **[CADASTRO_PRODUTOS.md](./features/CADASTRO_PRODUTOS.md)** - Cadastro de Produtos via Scan ou Manual
+  - Fluxo de cadastro com código de barras
+  - Integração com API GTIN
+  - Cadastro manual completo
+  - Validações client/server-side
+  - Experiência do usuário
+  - Compatibilidade com leitores de código de barras
+
 - **[PRECO_CUSTO.md](./features/PRECO_CUSTO.md)** - Análise de Margem e Lucro
   - Campo preco_custo e controle de acesso
   - APIs de atualização (indústria) e análise (vendedor)

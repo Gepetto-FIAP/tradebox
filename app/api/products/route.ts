@@ -7,6 +7,7 @@ import {
   handleOracleError 
 } from '@/lib/api-middleware';
 import { validateProductData, validatePagination } from '@/lib/validators';
+const oracledb = require('oracledb');
 
 /**
  * GET /api/products
@@ -51,6 +52,7 @@ export async function GET(request: NextRequest) {
         p.nome,
         p.descricao,
         p.preco_base,
+        p.preco_custo,
         p.estoque,
         p.ativo,
         p.created_at,
@@ -86,7 +88,11 @@ export async function GET(request: NextRequest) {
     binds.offset = offset;
     binds.limit = limit;
     
-    const result = await connection.execute(query, binds);
+    const result = await connection.execute(
+      query, 
+      binds,
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     
     // Query para contar total
     let countQuery = `
@@ -104,7 +110,11 @@ export async function GET(request: NextRequest) {
       countQuery += ` AND p.categoria_id = :categoria_id`;
     }
     
-    const countResult = await connection.execute(countQuery, binds);
+    const countResult = await connection.execute(
+      countQuery, 
+      binds,
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const total = (countResult.rows?.[0] as any)?.TOTAL || 0;
     
     // Converter rows para formato esperado
@@ -117,6 +127,7 @@ export async function GET(request: NextRequest) {
       nome: row.NOME,
       descricao: row.DESCRICAO,
       preco_base: row.PRECO_BASE,
+      preco_custo: row.PRECO_CUSTO,
       estoque: row.ESTOQUE,
       ativo: row.ATIVO,
       created_at: row.CREATED_AT,
@@ -162,6 +173,7 @@ export async function POST(request: NextRequest) {
     
     // Validar dados
     const validation = validateProductData(body);
+    
     if (!validation.valid) {
       return errorResponse('Dados inválidos', validation.error, 400);
     }
@@ -170,7 +182,8 @@ export async function POST(request: NextRequest) {
       gtin, 
       nome, 
       descricao, 
-      preco_base, 
+      preco_base,
+      preco_custo,  // Adicionar preco_custo
       estoque = 0, 
       categoria_id, 
       industria_id 
@@ -185,10 +198,11 @@ export async function POST(request: NextRequest) {
       WHERE vendedor_id = :vendedor_id AND gtin = :gtin
     `;
     
-    const checkResult = await connection.execute(checkQuery, {
-      vendedor_id: vendedorId,
-      gtin
-    });
+    const checkResult = await connection.execute(
+      checkQuery, 
+      { vendedor_id: vendedorId, gtin },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     
     const count = (checkResult.rows?.[0] as any)?.COUNT || 0;
     if (count > 0) {
@@ -207,9 +221,11 @@ export async function POST(request: NextRequest) {
         WHERE id = :industria_id AND categoria = 'INDUSTRIA' AND ativo = 'Y'
       `;
       
-      const industryResult = await connection.execute(checkIndustryQuery, {
-        industria_id
-      });
+      const industryResult = await connection.execute(
+        checkIndustryQuery, 
+        { industria_id },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      );
       
       const industryCount = (industryResult.rows?.[0] as any)?.COUNT || 0;
       if (industryCount === 0) {
@@ -231,6 +247,7 @@ export async function POST(request: NextRequest) {
         nome,
         descricao,
         preco_base,
+        preco_custo,
         estoque,
         ativo
       ) VALUES (
@@ -241,6 +258,7 @@ export async function POST(request: NextRequest) {
         :nome,
         :descricao,
         :preco_base,
+        :preco_custo,
         :estoque,
         'Y'
       ) RETURNING id INTO :id
@@ -254,8 +272,9 @@ export async function POST(request: NextRequest) {
       nome,
       descricao: descricao || null,
       preco_base,
+      preco_custo: preco_custo || 0,
       estoque,
-      id: { type: require('oracledb').NUMBER, dir: require('oracledb').BIND_OUT }
+      id: { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }
     };
     
     const insertResult = await connection.execute(insertQuery, binds, { autoCommit: true });
@@ -272,6 +291,7 @@ export async function POST(request: NextRequest) {
         p.nome,
         p.descricao,
         p.preco_base,
+        p.preco_custo,
         p.estoque,
         p.ativo,
         p.created_at,
@@ -284,7 +304,11 @@ export async function POST(request: NextRequest) {
       WHERE p.id = :product_id
     `;
     
-    const selectResult = await connection.execute(selectQuery, { product_id: productId });
+    const selectResult = await connection.execute(
+      selectQuery, 
+      { product_id: productId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const row: any = selectResult.rows?.[0];
     
     const product = {
@@ -296,6 +320,7 @@ export async function POST(request: NextRequest) {
       nome: row.NOME,
       descricao: row.DESCRICAO,
       preco_base: row.PRECO_BASE,
+      preco_custo: row.PRECO_CUSTO,
       estoque: row.ESTOQUE,
       ativo: row.ATIVO,
       created_at: row.CREATED_AT,
