@@ -1,55 +1,72 @@
+﻿
+'use client';
 
 import styles from './Header.module.css'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { BiRightArrowAlt } from "react-icons/bi";
 
 export default function Header() {
+    const pathname = usePathname();
+    
+    // Verificar se est├í nas p├íginas de autentica├º├úo
+    const isAuthPage = pathname?.startsWith('/auth');
+
     return (
         <header className={ styles.header }>
-            <div className={ styles.header_container }>
-                <div className={styles.header_logo}>
+            <div className={`${styles.header_container} ${isAuthPage ? styles.auth_mode : ''}`}>
+                <Link href="/" className={styles.header_logo}>
                     <span>
                         Trade
                     </span>
                     <span>
                         Box
                     </span>
-                </div>
+                </Link>
 
-                <nav>
-                    <ul className={ styles.header_items }>
-                        <li>
-                            <Link href="#section1">
-                                Sessao um
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#section2">
-                                Sessao dois
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#section3">
-                                Sessao tres
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#section3">
-                                Sessao tres
-                            </Link>
-                        </li>
-
-                    </ul>
-                </nav>
-                    
-                <button className={ styles.header_button }>
-                    <span>
-                        <BiRightArrowAlt/>
-                    </span>
-                    <span>
-                        Iniciar
-                    </span>
-                </button>
+                {/* Mostrar navega├º├úo apenas se N├âO estiver nas p├íginas de auth */}
+                {!isAuthPage && (
+                    <>
+                        <nav>
+                            <ul className={ styles.header_items }>
+                                <li>
+                                    <Link href="/#home">
+                                        Home
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#dashboards">
+                                        Dashboards
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#solucoes">
+                                        Solu├º├╡es
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#recursos">
+                                        Recursos
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/#equipe">
+                                        Equipe
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav>
+                            
+                        <Link href="/auth/register" className={ styles.header_button }>
+                            <span>
+                                <BiRightArrowAlt/>
+                            </span>
+                            <span>
+                                Iniciar
+                            </span>
+                        </Link>
+                    </>
+                )}
             </div>
         </header>
     )
