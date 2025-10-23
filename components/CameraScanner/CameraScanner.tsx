@@ -52,7 +52,7 @@ export default function CameraScanner({
 
         // Começar a decodificar do stream de vídeo
         codeReader.decodeFromVideoDevice(
-          undefined, // undefined usa a câmera padrão
+          null, // null usa a câmera padrão
           videoRef.current,
           (result, error) => {
             if (result && !hasDetected) {
