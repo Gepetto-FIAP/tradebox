@@ -8,6 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
+    
     <Header />
 
     <main className={styles.main}>

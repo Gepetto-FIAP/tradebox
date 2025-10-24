@@ -1,8 +1,8 @@
-.home_content {
+.content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    height: 100dvh;
 }
 
 .heading {
@@ -34,4 +34,123 @@
     filter: brightness(.5);
     opacity: .75;
     border: 1px solid var(--color-primary);
+}
+
+section#hero {
+    display: flex;
+    flex-direction: column;
+}
+
+section#hero .grid_blur {
+    position: absolute;
+    opacity: 0.15;
+    width: 100%;
+    height: 100%;
+    max-height: 100dvh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+section.content > div {
+    margin: 0 auto;
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+
+}
+
+.hero .highlight {
+    color: var(--color-primary);
+}
+
+.hero_title {
+    max-width: 800px;
+    text-align: center;
+    letter-spacing: -.02em;
+    margin: 0 0 30px;
+    font-size: max(2.6rem, min(7vw, 3.8rem));
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--color-secondary);
+}
+
+.hero_description {
+    max-width: 600px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.15;
+    opacity: .75;
+    color: var(--color-text);
+
+
+}
+
+.hero_element {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 75%;
+    width: 100%;
+    height: 510px;
+
+
+}
+
+.element {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    padding: 24px;
+    background: radial-gradient(at 0 0, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .5) 100%);
+}
+
+.element::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    height: 100% ;
+    border-radius: 12px;
+    background: var(--color-bg-dark);
+    filter: brightness(.8) grayscale(0.2);
+    z-index: -1;
+}
+
+.element::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -12px;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    border-radius: 24px;
+    background: var(--color-primary-30);
+    z-index: -1;
+    opacity: .1;
+    border: 1px solid var(--color-primary);
+}
+
+.profit_preview {
+    width: min-content;
 }
