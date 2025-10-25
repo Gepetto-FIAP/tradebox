@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Button from '@/components/ui/Button/Button';
 import Modal from '@/components/ui/Modal/Modal';
-import AddProductForm from '@/components/AddProductForm/AddProductForm';
+import AddProductForm from '@/components/dashboard/AddProductForm/AddProductForm';
 import styles from './page.module.css';
 import { BiCartAdd } from "react-icons/bi";
 import ProductList from '@/components/dashboard/ProductListSeller/ProductList';

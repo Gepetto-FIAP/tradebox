@@ -14,9 +14,8 @@
   --theme-color: #002431; /*meta theme color*/
   --color-background: #000e14;
 
-  --breakpoint: 1000px;
   --container-width: 90%;
-  --container-max-width: 1100px;
+  --container-max-width: 1000px;
 }
 
 * {
