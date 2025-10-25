@@ -1,7 +1,7 @@
-import SalesChart from '@/components/dashboard/SalesChart/SalesChart'; 
+import SalesChart from '@/components/dashboard/Charts/SalesChart/SalesChart'; 
 import styles from './page.module.css';
-import TrendingProducts from '@/components/dashboard/TrendingProducts/TrendingProducts'; 
-import CardData from '@/components/dashboard/CardData/CardData';
+import TrendingProducts from '@/components/dashboard/Tables/TrendingProducts/TrendingProducts'; 
+import CardData from '@/components/dashboard/Cards/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
 
 
@@ -22,6 +22,7 @@ export default async function Seller() {
               colorStart={"#01b5fa70"} 
               colorEnd={"transparent"} 
               colorBorder={"#01b5fa"}
+              value={"R$ 15.449,12"}
               axis={axisData}
               />
             

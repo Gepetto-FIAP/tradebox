@@ -74,16 +74,16 @@ export async function GET(request: NextRequest) {
     
     // Converter rows para formato esperado
     const sales = (result.rows || []).map((row: any) => ({
-      id: row.ID,
-      vendedor_id: row.VENDEDOR_ID,
-      cliente_id: row.CLIENTE_ID,
-      data_venda: row.DATA_VENDA,
-      valor_total: row.VALOR_TOTAL,
-      quantidade_itens: row.QUANTIDADE_ITENS,
-      status: row.STATUS,
-      observacoes: row.OBSERVACOES,
-      created_at: row.CREATED_AT,
-      cliente_nome: row.CLIENTE_NOME
+      id: row[0],
+      vendedor_id: row[1],
+      cliente_id: row[2],
+      data_venda: row[3],
+      valor_total: row[4],
+      quantidade_itens: row[5],
+      status: row[6],
+      observacoes: row[7],
+      created_at: row[8],
+      cliente_nome: row[9]
     }));
     
     return successResponse({ sales, total: sales.length });

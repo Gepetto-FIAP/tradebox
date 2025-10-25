@@ -14,11 +14,11 @@ export default function LayoutSell({ children }: { children: ReactNode }) {
           Escanear produto
         </Button>
 
-        <Button href="/seller/sell/manual" icon={<BiPlus/>}>
+        <Button href="#" icon={<BiPlus/>}>
           Inserir manualmente
         </Button>
 
-        <Button href="/seller/sell/bulk" icon={<BiUpload/>}>
+        <Button href="#" icon={<BiUpload/>}>
           Carregar em massa
         </Button>
       </div>

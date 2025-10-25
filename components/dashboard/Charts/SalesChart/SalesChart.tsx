@@ -10,6 +10,7 @@ type SalesChartProps = {
   colorStart?: string;
   colorEnd?: string;
   colorBorder?: string;
+  value?: string | number;
   axis: {
     x: number[];
     y: string[];
@@ -35,8 +36,7 @@ const options: ChartOptions<'line'> = {
   },
 };
 
-export default function SalesChart({ colorStart, colorEnd, colorBorder, axis }: SalesChartProps) {
-
+export default function SalesChart({ colorStart, colorEnd, colorBorder, axis, value }: SalesChartProps) {
   const data = {
   labels: axis.y,
   datasets: [
@@ -69,8 +69,12 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder, axis }: 
     <>
     <div className={styles.chart_container}>
       <div className={styles.chart_content}>
-        <div className={styles.card_label}>Vendas nos últimos 7 dias</div>
-        <div className={styles.chart_value}>R$ 25.234,56</div>
+        <div className={styles.card_label}>
+          Vendas nos últimos 7 dias
+        </div>
+        <div className={styles.chart_value}>
+          {value}
+        </div>
       </div>
       <div className={styles.chart}>
         <Line data={data} options={options} />

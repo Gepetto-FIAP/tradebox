@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import Button from '@/components/ui/Button/Button';
 import Modal from '@/components/ui/Modal/Modal';
-import AddProductForm from '@/components/dashboard/AddProductForm/AddProductForm';
+import AddProductForm from '@/components/dashboard/Others/AddProductForm/AddProductForm';
 import styles from './page.module.css';
 import { BiCartAdd } from "react-icons/bi";
-import ProductList from '@/components/dashboard/ProductListSeller/ProductList';
+import ProductList from '@/components/dashboard/Tables/ProductListSeller/ProductList';
 
 export default function Store() {
   const [isModalOpen, setIsModalOpen] = useState(false);

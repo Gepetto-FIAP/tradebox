@@ -1,8 +1,8 @@
-import ProfitCard from '@/components/dashboard/ProfitCard/ProfitCard';
+import ProfitCard from '@/components/dashboard/Cards/ProfitCard/ProfitCard';
 import styles from './page.module.css';
 import { getCurrentUser } from '@/lib/auth';
 import Table from '@/components/ui/Table/Table';
-import CardData from '@/components/dashboard/CardData/CardData';
+import CardData from '@/components/dashboard/Cards/CardData/CardData';
 import { BiStoreAlt, BiBasket, BiLineChart, BiDollar } from "react-icons/bi";
 
 export default async function IndustryDashboard() {

@@ -2,9 +2,9 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { BiStore, BiBuildings, BiLineChart, BiPackage, BiTrendingUp, BiCheckCircle, BiRocket, BiShield, BiSupport, BiCartAlt } from 'react-icons/bi';
-import CardData from '@/components/dashboard/CardData/CardData';
-import ProfitCard from '@/components/dashboard/ProfitCard/ProfitCard';
-import SalesChart from '@/components/dashboard/SalesChart/SalesChart';
+import CardData from '@/components/dashboard/Cards/CardData/CardData';
+import ProfitCard from '@/components/dashboard/Cards/ProfitCard/ProfitCard';
+import SalesChart from '@/components/dashboard/Charts/SalesChart/SalesChart';
 
 export default function Home() {
   return (
@@ -48,9 +48,9 @@ export default function Home() {
           <div className={styles.charts_container}>
             <div className={styles.chart_card} id={styles.cards}>
               <div className={styles.chart}>
-                <CardData icon={<BiCartAlt />} label="Vendas" value={24} badge_value={"+5%"} />
-                <CardData icon={<BiCartAlt />} label="Faturamento" value={48} badge_value={"+15%"} />
-                <CardData icon={<BiCartAlt />} label="Lucro" value={24} badge_value={"+25%"} />
+                <CardData icon={<BiCartAlt />} label="Vendas" value={99} badge_value={"+5%"} />
+                <CardData icon={<BiCartAlt />} label="Faturamento" value={99} badge_value={"+15%"} />
+                <CardData icon={<BiCartAlt />} label="Lucro" value={99} badge_value={"+25%"} />
               </div>
 
               <div className={styles.chart_info}>
@@ -88,6 +88,7 @@ export default function Home() {
                   colorStart={"#01b5fa70"}
                   colorEnd={"transparent"}
                   colorBorder={"#01b5fa"}
+                  value={"R$ 99.999,99"}
                   axis={{
                     x: [15, 22, 17, 20, 24, 27, 24],
                     y: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from './page.module.css';
-import PerformanceChart from '@/components/dashboard/PerformanceChart/PerformanceChart';
+import PerformanceChart from '@/components/dashboard/Charts/PerformanceChart/PerformanceChart';
 import { BiBell , BiLike, BiDislike  } from 'react-icons/bi';
 import Button from "@/components/ui/Button/Button";
 
