@@ -14,7 +14,10 @@
     position: relative;
     transition: .3s;
     max-width: 125px;
+    background-color: transparent;
+    border: none;
     background-image: radial-gradient(circle at 0 0, var(--color-bg-dark) 0%, rgba(0, 0, 0, 0) 50%);
+    font-family: Urbanist, sans-serif;
 }
 
 .button::before {

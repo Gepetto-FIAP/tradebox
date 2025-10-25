@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.5s ease;
-  margin-top: 120px;
+  margin: 120px 0;
 }
 
 .registerBox {
@@ -216,9 +216,7 @@
   .row {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 480px) {
   .container {
     padding: 12px;
   }
@@ -230,4 +228,9 @@
   .title {
     font-size: 24px;
   }
+
+  .toggleIcon {
+    font-size: 12px;
+  }
 }
+

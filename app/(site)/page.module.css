@@ -12,10 +12,23 @@
 }
 
 .home_content section {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.home_content section:not(.hero)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-background);
+  z-index: 1;
 }
 
 .section_inner {
@@ -64,16 +77,7 @@
 }
 
 .charts_section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--color-background);
-  filter: brightness(1.5) hue-rotate(10deg);
-  z-index: 1;
+  filter: brightness(1.1) hue-rotate(10deg);
 }
 
 .charts_container {
@@ -92,12 +96,12 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  backdrop-filter: brightness(.75);
+  backdrop-filter: brightness(1.5);
 }
 
 .chart_card:hover {
   border-color: transparent;
-  backdrop-filter: brightness(1.2);
+  backdrop-filter: brightness(2.5);
 }
 
 .chart {
@@ -107,16 +111,12 @@
   position: relative;
   z-index: 1;
   padding: 10px;
-  mask-image: linear-gradient(#000 0%, rgba(0, 0, 0, 0) 99%);
+  mask-image: linear-gradient(#000 15%, rgba(0, 0, 0, 0) 99%);
+  transition: .5s;
 }
 
-.chart > div {
-  filter: brightness(1);
-  transition: all 0.5s ease;
-}
-
-.chart > div:hover {
-  filter: brightness(1);
+.chart_card:hover .chart {
+  mask-image: none;
 }
 
 #cards .chart > div {
@@ -166,7 +166,6 @@
   opacity: 0.75;
   line-height: 1.5;
 }
-
 
 .hero_badge {
   animation: fadeInDown 0.8s ease-out;
@@ -258,69 +257,11 @@
   transform: translateY(-2px);
 }
 
-.stats_bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(90deg, #00d4ff 0%, #01b5fa 50%, #0090c7 100%);
-  padding: 32px 20px;
-  z-index: 2;
-  box-shadow: 0 -4px 20px rgba(0, 212, 255, 0.3);
-}
-
-.stats_container {
-  max-width: 1600px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 0 40px;
-}
-
-.stat_item {
-  text-align: center;
-  flex: 1;
-  min-width: 150px;
-}
-
-.stat_number {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.stat_label {
-  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-  text-transform: lowercase;
-}
-
-.stat_divider {
-  width: 1px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* ========================================
-   FEATURES SECTION
-   ======================================== */
-
-.features {
-  padding: 100px 20px;
-  background: var(--color-bg-dark);
-}
-
 .section_header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 10px;
   margin-bottom: 60px;
 }
@@ -338,394 +279,72 @@
   opacity: 0.8;
 }
 
-.features_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 32px;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-.feature_card {
-  padding: 32px;
-  border-radius: 16px;
-  background: rgba(0, 56, 77, 0.3);
-  border: 1px solid rgba(1, 181, 250, 0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.feature_card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(1, 181, 250, 0.4);
-  box-shadow: 0 12px 40px rgba(1, 181, 250, 0.2);
-}
-
-.feature_icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(1, 181, 250, 0.2) 0%, rgba(1, 181, 250, 0.05) 100%);
-  color: var(--color-primary);
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.feature_card h3 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin: 0 0 12px;
-  color: var(--color-text);
-}
-
-.feature_card p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--color-secondary);
-  opacity: 0.8;
-  margin-bottom: 16px;
-}
-
-.feature_link {
-  display: inline-block;
-  color: var(--color-primary);
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.feature_link:hover {
-  transform: translateX(4px);
-}
-
 /* ========================================
-   PREVIEW SECTION (SCREENSHOTS)
+   COMPARISON SECTION - Varejista vs Indústria
    ======================================== */
 
-.preview_section {
-  display: none;
-  padding: 100px 20px;
-  background: var(--color-background);
-}
-
-.preview_container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 60px;
-  max-width: 1800px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-.preview_card {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.preview_header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 20px;
-}
-
-.preview_icon {
-  font-size: 40px;
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
-.preview_header h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  margin: 0;
-  color: var(--color-text);
-}
-
-.preview_header p {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  color: var(--color-secondary);
-  margin: 4px 0 0;
-  opacity: 0.8;
-}
-
-.preview_image_wrapper {
-  position: relative;
-  width: 100%;
-  border-radius: 20px;
-  overflow: visible;
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-style: preserve-3d;
-  perspective: 1000px;
-}
-
-.preview_image_wrapper:hover {
-  transform: translateY(-12px) rotateX(2deg) rotateY(-2deg) scale(1.02);
-}
-
-.preview_image {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 20px;
-  transition: all 0.6s ease;
-  box-shadow: 
-    0 30px 90px rgba(0, 0, 0, 0.4),
-    0 10px 40px rgba(1, 181, 250, 0.2),
-    0 0 0 1px rgba(1, 181, 250, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  filter: brightness(0.95) contrast(1.05);
-}
-
-.preview_image_wrapper:hover .preview_image {
-  filter: brightness(1) contrast(1.08);
-  box-shadow: 
-    0 40px 120px rgba(0, 0, 0, 0.5),
-    0 20px 60px rgba(1, 181, 250, 0.3),
-    0 0 0 1px rgba(1, 181, 250, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-/* Mockup Device Effect */
-.preview_image_wrapper::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.15) 0%, rgba(1, 181, 250, 0.1) 50%, rgba(0, 144, 199, 0.15) 100%);
-  border-radius: 22px;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.preview_image_wrapper:hover::before {
-  opacity: 1;
-}
-
-.preview_features {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 0 20px;
-}
-
-.preview_features span {
-  padding: 8px 16px;
-  border-radius: 100px;
-  background: rgba(1, 181, 250, 0.1);
-  border: 1px solid rgba(1, 181, 250, 0.2);
-  color: var(--color-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.preview_features span:hover {
-  background: rgba(1, 181, 250, 0.2);
-  border-color: rgba(1, 181, 250, 0.4);
-  transform: translateY(-2px);
-}
-
-/* ========================================
-   CTA SECTION
-   ======================================== */
-
-.cta_section {
-  position: relative;
-  padding: 120px 20px;
-  background: linear-gradient(135deg, 
-    rgba(0, 30, 45, 0.95) 0%, 
-    rgba(0, 50, 70, 0.9) 100%
-  );
-  text-align: center;
-  overflow: hidden;
-}
-
-.cta_section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 50% 50%, rgba(1, 181, 250, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.cta_content {
+.comparison_section {
   position: relative;
   z-index: 1;
 }
 
-.cta_content h2 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  margin: 0 0 20px;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-}
-
-.cta_content p {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 40px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.btn_cta_large {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 56px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ffffff;
-  background: linear-gradient(135deg, #00e5ff 0%, #01b5fa 50%, #0090c7 100%);
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  text-decoration: none;
-  box-shadow: 
-    0 10px 30px rgba(0, 229, 255, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 40px;
-}
-
-.btn_cta_large:hover {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 
-    0 16px 48px rgba(0, 229, 255, 0.6),
-    0 8px 20px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, #00f0ff 0%, #00d4ff 50%, #01b5fa 100%);
-}
-
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ========================================
-   COMPARISON SECTION - Varejista vs Ind├║stria
-   ======================================== */
-
-.comparison_section {
-  padding: 100px 20px;
-  background: linear-gradient(180deg, #001423 0%, #00121f 100%);
-  position: relative;
-}
-
 .comparison_section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(1, 181, 250, 0.3), transparent);
+  filter: brightness(2) hue-rotate(10deg) !important;
 }
 
 .comparison_grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 48px;
-  max-width: 1600px;
   margin: 0 auto;
-  margin-top: 60px;
-  padding: 0 40px;
 }
 
 .comparison_card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(1, 181, 250, 0.2);
+  background: transparent;
+  border: 1px solid var(--color-primary-30);
   border-radius: 20px;
   padding: 40px 32px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: .3s;
   position: relative;
   overflow: hidden;
-}
-
-.comparison_card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #00e5ff, #01b5fa);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.comparison_card:hover::before {
-  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .comparison_card:hover {
-  transform: translateY(-12px);
-  box-shadow: 
-    0 20px 50px rgba(0, 229, 255, 0.2),
-    0 0 60px rgba(1, 181, 250, 0.15);
-  border-color: rgba(1, 181, 250, 0.5);
+  background: var(--color-primary-10);
+  border-color: var(--color-primary-60)
 }
 
 .comparison_header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 30px;
   text-align: center;
-  margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(1, 181, 250, 0.15);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .comparison_icon {
-  font-size: 3rem;
+  font-size: 4rem;
+  background: var(--color-primary-30);
   color: var(--color-primary);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 50px;
 }
 
 .comparison_header h3 {
   font-size: 1.8rem;
-  margin: 0 0 8px;
-  color: #ffffff;
+  margin: 0;
+  color: var(--color-secondary);
 }
 
 .comparison_header p {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  color: var(--color-secondary);
   margin: 0;
 }
 
@@ -740,8 +359,8 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.95rem;
+  color:var(--color-secondary);
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -756,57 +375,48 @@
   display: block;
   width: 100%;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #00e5ff 0%, #01b5fa 50%, #0090c7 100%);
-  color: #001423;
+  background: var(--color-primary-30);
+  color: var(--color-text);
   text-decoration: none;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-align: center;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  transition: .3s;
 }
 
 .comparison_btn:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(0, 229, 255, 0.5);
-  background: linear-gradient(135deg, #00f0ff 0%, #00d4ff 50%, #01b5fa 100%);
+  background: var(--color-primary);
 }
 
 /* ========================================
    BENEFITS SECTION
    ======================================== */
 
-.benefits_section {
-  padding: 100px 20px;
-  background: #001423;
+.benefits_section::before {
+  filter: brightness(2) hue-rotate(10deg) !important;
 }
 
 .benefits_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 40px;
-  max-width: 1600px;
   margin: 0 auto;
   margin-top: 60px;
-  padding: 0 40px;
 }
 
 .benefit_card {
   text-align: center;
-  padding: 40px 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(1, 181, 250, 0.1);
+  padding: 30px 16px;
+  background: transparent;
+  border: 1px solid var(--color-primary-30);
   border-radius: 16px;
   transition: all 0.3s ease;
 }
 
 .benefit_card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(1, 181, 250, 0.3);
-  transform: translateY(-8px);
+  background: var(--color-primary-10);
+  border-color: var(--color-primary-60);
 }
 
 .benefit_icon {
@@ -821,116 +431,16 @@
 .benefit_card h3 {
   font-size: 1.4rem;
   margin: 0 0 12px;
-  color: #ffffff;
+  color: var(--color-secondary);
 }
 
 .benefit_card p {
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-secondary);
   line-height: 1.6;
   margin: 0;
 }
 
-/* ========================================
-   TESTIMONIALS SECTION
-   ======================================== */
-
-.testimonials_section {
-  padding: 100px 20px;
-  background: linear-gradient(180deg, #00121f 0%, #001423 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.testimonials_section::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(1, 181, 250, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.testimonials_grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-top: 60px;
-  position: relative;
-  z-index: 1;
-}
-
-.testimonial_card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(1, 181, 250, 0.15);
-  border-radius: 20px;
-  padding: 32px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.testimonial_card::before {
-  content: '"';
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  font-size: 6rem;
-  color: rgba(1, 181, 250, 0.2);
-  font-family: Georgia, serif;
-  line-height: 1;
-}
-
-.testimonial_card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15);
-  border-color: rgba(1, 181, 250, 0.3);
-}
-
-.testimonial_stars {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-  letter-spacing: 2px;
-}
-
-.testimonial_text {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.7;
-  margin: 0 0 24px;
-  font-style: italic;
-}
-
-.testimonial_author {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(1, 181, 250, 0.1);
-}
-
-.testimonial_author strong {
-  color: #ffffff;
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.testimonial_author span {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-}
-
-/* CTA Note */
-.cta_note {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 400;
-}
 
 /* ========================================
    TEAM SECTION
@@ -938,86 +448,56 @@
 
 .team_section {
   width: 100%;
-  padding: 100px 40px;
-  background: linear-gradient(180deg, rgba(0, 20, 35, 0.3) 0%, rgba(0, 40, 60, 0.2) 100%);
   position: relative;
-  overflow: hidden;
 }
 
 .team_section::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 1000px;
-  background: radial-gradient(circle, rgba(1, 181, 250, 0.06) 0%, transparent 70%);
-  pointer-events: none;
+  filter: brightness(1.1) hue-rotate(10deg) !important;
 }
 
 .team_grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 32px;
-  max-width: 1600px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
   margin: 60px auto 0;
   position: relative;
   z-index: 1;
 }
 
 .team_card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(1, 181, 250, 0.15);
-  border-radius: 20px;
-  padding: 32px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--color-primary-10);
+  border: 1px solid var(--color-primary-30);
+  border-radius: 12px;
+  padding: 24px;
+  transition: .3s;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.team_card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(1, 181, 250, 0.05) 0%, transparent 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  min-width: max-content;
 }
 
 .team_card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 16px 48px rgba(0, 229, 255, 0.2);
-  border-color: rgba(1, 181, 250, 0.4);
-}
-
-.team_card:hover::before {
-  opacity: 1;
+  border-color: var(--color-primary)
 }
 
 .team_image_wrapper {
-  width: 180px;
-  height: 180px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
   margin-bottom: 24px;
-  border: 3px solid rgba(1, 181, 250, 0.3);
+  border: 1px solid var(--color-primary-10);
   transition: all 0.4s ease;
-  background: rgba(1, 181, 250, 0.1);
+  background: var(--color-primary-60)
 }
 
 .team_card:hover .team_image_wrapper {
-  border-color: rgba(1, 181, 250, 0.6);
-  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.3);
-  transform: scale(1.05);
+  border-color: var(--color-primary);
+  transform: scale(1.025);
 }
 
 .team_image {
@@ -1028,7 +508,7 @@
 }
 
 .team_card:hover .team_image {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .team_info {
@@ -1089,16 +569,6 @@
     gap: 80px;
   }
 
-  .comparison_grid {
-    max-width: 2000px;
-    padding: 0 80px;
-  }
-
-  .benefits_grid {
-    max-width: 2000px;
-    padding: 0 80px;
-  }
-
   .section_header {
     max-width: 1100px;
   }
@@ -1118,9 +588,7 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .team_grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
+
 }
 
 /* Telas M├⌐dias (769px - 1440px) */
@@ -1129,18 +597,6 @@
     gap: 40px;
   }
 
-  .hero_container,
-  .stats_container,
-  .features_grid,
-  .comparison_grid,
-  .benefits_grid {
-    padding: 0 30px;
-  }
-
-  .team_grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
 }
 
 /* Tablets e Monitores Pequenos (769px - 1200px) - Dashboards em coluna */
@@ -1151,9 +607,7 @@
     max-width: 900px;
   }
 
-  .team_grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
 }
 
 /* Mobile */
@@ -1202,85 +656,19 @@
     width: 100%;
     max-width: 300px;
   }
-
-  .stats_bar {
-    padding: 24px 20px;
-  }
-
-  .stats_container {
-    gap: 20px;
-  }
-
-  .stat_divider {
-    display: none;
-  }
-
-  .stat_number {
-    font-size: clamp(1.8rem, 10vw, 2.5rem);
-  }
-
-  .stat_label {
-    font-size: 0.85rem;
-  }
-
-  .preview_container {
-    grid-template-columns: 1fr;
-    gap: 60px;
-    padding: 0 20px;
-  }
-
-  .preview_header {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .preview_features {
-    justify-content: center;
-  }
-
-  .preview_features span {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-  }
-
-  .preview_image_wrapper:hover {
-    transform: translateY(-8px) scale(1.01);
-  }
-
+  
   .comparison_grid,
   .benefits_grid,
   .testimonials_grid,
   .team_grid {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 0 20px;
-  }
 
-  .comparison_card,
-  .benefit_card,
-  .testimonial_card {
-    padding: 32px 24px;
-  }
-
-  .hero_container,
-  .stats_container {
-    padding: 0 20px;
-  }
-
-  .comparison_section,
-  .benefits_section,
-  .testimonials_section,
-  .team_section {
-    padding: 60px 20px;
   }
 
   .comparison_list li {
     font-size: 0.9rem;
   }
 
-  .cta_note {
-    font-size: 0.85rem;
-    padding: 0 20px;
-  }
+
 }

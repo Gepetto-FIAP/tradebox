@@ -34,11 +34,6 @@ export default function Header() {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/#solucoes">
-                                Soluções
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="/#recursos">
                                 Recursos
                             </Link>
@@ -48,10 +43,15 @@ export default function Header() {
                                 Equipe
                             </Link>
                         </li>
+                        <li>
+                            <Link href="/#solucoes">
+                                Soluções
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
                     
-                <Link href="/auth/register" className={ styles.header_button }>
+                <Link href="/#solucoes" className={ styles.header_button }>
                     <span>
                         <BiRightArrowAlt/>
                     </span>

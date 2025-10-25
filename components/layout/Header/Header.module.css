@@ -18,7 +18,7 @@
     width: 100%;
     max-width: var(--container-max-width);
     margin: 0;
-    padding: 20px;
+    padding: 20px 30px;
 }
 
 .header_items {
@@ -172,8 +172,6 @@
 
 
 @media (min-width: 769px) and (max-width: 1024px) {
-
-
     .header_items {
         gap: 12px;
     }
