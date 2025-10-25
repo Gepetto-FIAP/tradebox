@@ -1,47 +1,79 @@
 .header {
-    position: absolute;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    position: fixed;
+    z-index: 999;
+    top: 0;
 }
 
 .header_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
-    border-radius: 10px;
-    padding: 30px 0;
-    width: var(--container-width);
+    width: 100%;
     max-width: var(--container-max-width);
+    margin: 0;
+    padding: 20px;
 }
 
 .header_items {
     list-style: none;
     display: flex;
-    gap: 15px;
+    gap: clamp(12px, 2vw, 24px);
 }
 
 .header_items a {
-    font-size: .9rem;
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
     font-weight: 400;
     text-decoration: none;
     color: var(--color-secondary);
-    opacity: .75;
-    transition: .3s;
+    opacity: .7;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.header_items a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
 }
 
 .header_items a:hover {
     color: var(--color-primary);
     opacity: 1;
+    transform: translateY(-2px);
+}
+
+.header_items a:hover::after {
+    width: 100%;
+}
+
+.header_items a:active {
+    transform: translateY(0);
 }
 
 .header_logo {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
     color: var(--color-text);
     mask-image: linear-gradient(to bottom, black 0%, transparent 125%);
     line-height: 1;
     letter-spacing: -1px;
     cursor: pointer;
     transition: .4s;
+    text-decoration: none;
 }
 
 .header_logo span:first-child {
@@ -58,25 +90,27 @@
 
 .header_button {
     position: relative;
-    padding: 6px 12px;
+    padding: clamp(6px, .8vw, 8px) clamp(12px, 1.8vw, 16px);
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     outline: none;
     background: none;
     color: var(--color-primary);
     border: 1px solid var(--color-primary-60);
     background: transparent;
     cursor: pointer;
-    font-size: .9rem;
+    font-size: clamp(0.75rem, 1.2vw, 0.9rem);
     font-weight: 500;
     font-family: Urbanist, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 4px;
+    gap: clamp(3px, 0.5vw, 6px);
     overflow: hidden;
     transition: .3s;
     scale: 100%;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
 .header_button:active {
@@ -117,4 +151,72 @@
 
 .header_button:hover span:first-child {
     left: 40%;
+}
+
+@media (min-width: 1921px) {
+
+    .header_items {
+        gap: 32px;
+    }
+
+    .header_logo {
+        font-size: 1.8rem;
+    }
+
+    .header_button {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+}
+
+
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+
+    .header_items {
+        gap: 12px;
+    }
+
+    .header_items a {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header_container {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .header_items {
+        display: none; 
+    }
+
+    .header_logo {
+        font-size: 1.1rem;
+    }
+
+    .header_button {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .header_button span:last-child {
+        display: inline; 
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .header_logo {
+        font-size: 1rem;
+    }
+
+    .header_button {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        gap: 3px;
+    }
 }

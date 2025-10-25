@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { connectOracle } from '@/lib/db';
 import { requireAuth, successResponse, errorResponse, handleOracleError } from '@/lib/api-middleware';
+const oracledb = require('oracledb');
 
 /**
  * GET /api/categories
@@ -34,7 +35,11 @@ export async function GET(request: NextRequest) {
       ORDER BY nome
     `;
     
-    const result = await connection.execute(query, { ativo });
+    const result = await connection.execute(
+      query, 
+      { ativo },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     
     // Converter rows para formato esperado
     const categories = (result.rows || []).map((row: any) => ({
