@@ -21,6 +21,10 @@
     padding: 20px 30px;
 }
 
+.header_container:not(:has(nav)) {
+    justify-content: center;
+}
+
 .header_items {
     list-style: none;
     display: flex;
