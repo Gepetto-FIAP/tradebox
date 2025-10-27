@@ -183,36 +183,6 @@ export default function BulkSaleUpload({ isOpen, onClose, onSaleComplete }: Bulk
     }
   };
 
-  const handleResolveConflict = (index: number, productId: number) => {
-    setProcessedData(prev => prev.map((item, i) => {
-      if (i === index && item.status === 'multiple' && item.produtos) {
-        const selected = item.produtos.find(p => p.id === productId);
-        return {
-          ...item,
-          produto: selected,
-          selectedProductId: productId,
-          preco_unitario: item.preco_unitario || selected.preco_base,
-          status: 'valid' as const
-        };
-      }
-      return item;
-    }));
-  };
-
-  const handleContinueFromConflicts = () => {
-    const hasUnresolved = processedData.some(
-      p => p.status === 'multiple' && !p.selectedProductId
-    );
-
-    if (hasUnresolved) {
-      setError('Resolva todos os conflitos antes de continuar');
-      return;
-    }
-
-    setError('');
-    setStep('review');
-  };
-
   const handleFinalizeSale = async () => {
     setStep('finalizing');
     setError('');
