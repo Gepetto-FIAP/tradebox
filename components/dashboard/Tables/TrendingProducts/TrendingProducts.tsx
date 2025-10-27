@@ -1,6 +1,6 @@
 import styles from './TrendingProducts.module.css';
-import Table from '../../ui/Table/Table';
-import TrendingRanking from '../TrendingRanking/TredingRanking';
+import Table from '../../../ui/Table/Table';
+import TrendingRanking from '../../Others/TrendingRanking/TredingRanking';
 
 const trendingProducts = [
     {

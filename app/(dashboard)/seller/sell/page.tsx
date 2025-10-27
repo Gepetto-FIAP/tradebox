@@ -1,4 +1,4 @@
-import RecentOrders from '@/components/dashboard/RecentOrders/RecentOrders';
+import RecentOrders from '@/components/dashboard/Tables/RecentOrders/RecentOrders';
 import styles from './page.module.css';
 
 

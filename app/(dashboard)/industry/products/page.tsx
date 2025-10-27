@@ -1,5 +1,5 @@
 import styles from './page.module.css';
-import ProductListIndustry from '@/components/dashboard/ProductListIndustry/ProductListIndustry';
+import ProductListIndustry from '@/components/dashboard/Tables/ProductListIndustry/ProductListIndustry';
 
 export default function IndustryProducts() {
   return (

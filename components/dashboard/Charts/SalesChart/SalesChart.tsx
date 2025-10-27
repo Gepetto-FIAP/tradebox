@@ -2,13 +2,19 @@
 
 import { Chart, Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend, ScriptableContext, elements, ChartOptions } from 'chart.js';
 import {Line} from 'react-chartjs-2'
+import styles from './SalesChart.module.css';
 
 Chart.register(Filler, CategoryScale, PointElement, LinearScale, LineElement, Title, Tooltip, Legend);
 
 type SalesChartProps = {
   colorStart?: string;
   colorEnd?: string;
-  colorBorder?: string; 
+  colorBorder?: string;
+  value?: string | number;
+  axis: {
+    x: number[];
+    y: string[];
+  };
 };
 
 const options: ChartOptions<'line'> = {
@@ -30,14 +36,9 @@ const options: ChartOptions<'line'> = {
   },
 };
 
-
-const axisX = [15, 22, 17, 20, 24, 27, 24];
-const axisY = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
-
-export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesChartProps) {
-
+export default function SalesChart({ colorStart, colorEnd, colorBorder, axis, value }: SalesChartProps) {
   const data = {
-  labels: axisY,
+  labels: axis.y,
   datasets: [
     {
       backgroundColor: (context: ScriptableContext<"line">) => {
@@ -48,12 +49,12 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesC
         return gradient;
       },
       label: 'Vendas',
-      data: axisX,
+      data: axis.x,
       borderWidth: 2,
       borderColor: colorBorder,
       tension: 0.333,
       fill: true,
-      pointRadius: axisX.map((value) => (value === Math.max(...axisX) ? 4 : 0)),
+      pointRadius: axis.x.map((value) => (value === Math.max(...axis.x) ? 4 : 0)),
       pointBackgroundColor: "#fff",
       pointHoverRadius: 4,
       pointHoverBackgroundColor: colorBorder || "#000",
@@ -64,5 +65,21 @@ export default function SalesChart({ colorStart, colorEnd, colorBorder }: SalesC
 };
 
 
-  return <Line data={data} options={options} />;
+  return (
+    <>
+    <div className={styles.chart_container}>
+      <div className={styles.chart_content}>
+        <div className={styles.card_label}>
+          Vendas nos últimos 7 dias
+        </div>
+        <div className={styles.chart_value}>
+          {value}
+        </div>
+      </div>
+      <div className={styles.chart}>
+        <Line data={data} options={options} />
+      </div>
+    </div>
+    </>
+  );
 }

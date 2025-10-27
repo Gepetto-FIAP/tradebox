@@ -20,39 +20,7 @@
     padding: 0 20px;
 }
 
-.chart_container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    border: 2px solid var(--color-border);
-    border-radius: 8px;
-    overflow: hidden;
-}
 
-.chart_content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px 0 0 10px;
-}
-
-.chart_value {
-    color: var(--color-primary);
-    font-size: 1.8rem;
-    font-weight: 200;
-    color: var(--color-text);
-}
-
-.chart {
-    margin-top: -10%;
-    scale: 1.01;
-    filter: brightness(0.9) opacity(0.75);
-    transition: .3s ease;
-}
-
-.chart:hover {
-    filter: brightness(1) opacity(1);
-}
 
 .recent_orders_wrapper {
     display: flex;
@@ -205,8 +173,6 @@
     .chart_value {
         font-size: 1.8rem;
     }
-
- 
 }
 
 .chart_wrapper { grid-area: chart; }

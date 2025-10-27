@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Table from '../../ui/Table/Table';
+import Table from '../../../ui/Table/Table';
 import styles from './RecentOrders.module.css';
 
 // Mock data - remover quando conectar com DB

@@ -1,8 +1,14 @@
-import SalesChart from '@/components/dashboard/SalesChart/SalesChart'; 
+import SalesChart from '@/components/dashboard/Charts/SalesChart/SalesChart'; 
 import styles from './page.module.css';
-import TrendingProducts from '@/components/dashboard/TrendingProducts/TrendingProducts'; 
-import CardData from '@/components/dashboard/CardData/CardData';
+import TrendingProducts from '@/components/dashboard/Tables/TrendingProducts/TrendingProducts'; 
+import CardData from '@/components/dashboard/Cards/CardData/CardData';
 import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
+
+
+const axisData = {
+  x: [15, 22, 17, 20, 24, 27, 24],
+  y: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+};
 
 
 export default async function Seller() {
@@ -11,15 +17,15 @@ export default async function Seller() {
     <>
       <div className={styles.content}> 
         <div className={styles.chart_wrapper}>
-          <div className={styles.chart_container}>
-            <div className={styles.chart_content}>
-              <div className={styles.card_label}>Vendas nos últimos 7 dias</div>
-              <div className={styles.chart_value}>R$ 25.234,56</div>
-            </div>
-            <div className={styles.chart}>
-              <SalesChart colorStart={"#01b5fa70"} colorEnd={"transparent"} colorBorder={"#01b5fa"} />
-            </div>
-          </div>
+
+              <SalesChart
+              colorStart={"#01b5fa70"} 
+              colorEnd={"transparent"} 
+              colorBorder={"#01b5fa"}
+              value={"R$ 15.449,12"}
+              axis={axisData}
+              />
+            
         </div>
         <div className={styles.recent_orders_wrapper}>
           <div className={styles.orders_container}>
