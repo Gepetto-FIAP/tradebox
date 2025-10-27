@@ -102,17 +102,23 @@ export async function GET(request: NextRequest) {
         AND p.ativo = :ativo
     `;
     
+    // Criar objeto de binds apenas com os parâmetros necessários para count
+    const countBinds: any = { vendedor_id: vendedorId, ativo };
+    
     if (search) {
       countQuery += ` AND (UPPER(p.nome) LIKE :search OR p.gtin LIKE :search_gtin)`;
+      countBinds.search = `%${search.toUpperCase()}%`;
+      countBinds.search_gtin = `%${search}%`;
     }
     
     if (categoria_id) {
       countQuery += ` AND p.categoria_id = :categoria_id`;
+      countBinds.categoria_id = categoria_id;
     }
     
     const countResult = await connection.execute(
       countQuery, 
-      binds,
+      countBinds,
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     const total = (countResult.rows?.[0] as any)?.TOTAL || 0;

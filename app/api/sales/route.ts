@@ -157,6 +157,38 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Verificar estoque de cada produto
+    for (const item of itens) {
+      const stockQuery = `
+        SELECT id, nome, estoque
+        FROM produtos
+        WHERE id = :produto_id
+          AND vendedor_id = :vendedor_id
+          AND ativo = 'Y'
+      `;
+      
+      const stockResult = await connection.execute(
+        stockQuery,
+        { 
+          produto_id: item.produto_id, 
+          vendedor_id: vendedorId 
+        },
+        { outFormat: require('oracledb').OUT_FORMAT_OBJECT }
+      );
+      
+      if (stockResult.rows && stockResult.rows.length > 0) {
+        const produto: any = stockResult.rows[0];
+        
+        if (produto.ESTOQUE < item.quantidade) {
+          return errorResponse(
+            'Estoque insuficiente',
+            `Produto "${produto.NOME}" não possui estoque suficiente. Disponível: ${produto.ESTOQUE}, Solicitado: ${item.quantidade}`,
+            400
+          );
+        }
+      }
+    }
+    
     // Calcular totais
     let valor_total = 0;
     let quantidade_itens = 0;
@@ -220,6 +252,21 @@ export async function POST(request: NextRequest) {
         produto_id: item.produto_id,
         quantidade: item.quantidade,
         preco_unitario: item.preco_unitario
+      });
+      
+      // Atualizar estoque do produto
+      const updateStockQuery = `
+        UPDATE produtos
+        SET estoque = estoque - :quantidade,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = :produto_id
+          AND vendedor_id = :vendedor_id
+      `;
+      
+      await connection.execute(updateStockQuery, {
+        quantidade: item.quantidade,
+        produto_id: item.produto_id,
+        vendedor_id: vendedorId
       });
     }
     

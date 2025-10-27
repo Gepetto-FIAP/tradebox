@@ -1,31 +1,124 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import SalesChart from '@/components/dashboard/Charts/SalesChart/SalesChart'; 
 import styles from './page.module.css';
 import TrendingProducts from '@/components/dashboard/Tables/TrendingProducts/TrendingProducts'; 
 import CardData from '@/components/dashboard/Cards/CardData/CardData';
-import {BiCartAlt, BiDollar, BiLineChart, BiBasket} from 'react-icons/bi';
+import {BiCartAlt, BiDollar, BiBasket, BiPackage} from 'react-icons/bi';
 
+interface DashboardMetrics {
+  total_vendas: number;
+  faturamento: number;
+  vendas_7d: number;
+  total_produtos: number;
+  produtos_estoque_baixo: number;
+  total_vendas_anterior: number;
+  faturamento_anterior: number;
+}
 
-const axisData = {
-  x: [15, 22, 17, 20, 24, 27, 24],
-  y: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-};
+interface MonthlyPerformance {
+  mes: string;
+  qtd_pedidos: number;
+  receita: number;
+}
 
+export default function Seller() {
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [chartData, setChartData] = useState<{x: number[], y: string[]} | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function Seller() {
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        
+        // Buscar métricas
+        const metricsResponse = await fetch('/api/dashboard/metrics?periodo=30d');
+        const metricsData = await metricsResponse.json();
+        
+        if (metricsData.success && metricsData.metrics) {
+          setMetrics(metricsData.metrics);
+        }
+        
+        // Buscar dados para o gráfico (últimos 7 dias)
+        const analyticsResponse = await fetch('/api/dashboard/analytics?periodo=7d');
+        const analyticsData = await analyticsResponse.json();
+        
+        if (analyticsData.success && analyticsData.monthlyPerformance) {
+          // Transformar dados mensais em dados diários (últimos 7 dias)
+          // Como o banco retorna dados mensais, vamos criar uma visualização simplificada
+          const last7Days = getLast7Days();
+          const dailyValues = last7Days.map(() => Math.floor(Math.random() * 30) + 15); // Placeholder até termos dados diários
+          
+          setChartData({
+            x: dailyValues,
+            y: last7Days
+          });
+        }
+        
+      } catch (error) {
+        console.error('Erro ao buscar dados do dashboard:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const getLast7Days = () => {
+    const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const result = [];
+    const today = new Date();
+    
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      result.push(days[date.getDay()]);
+    }
+    
+    return result;
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value);
+  };
+
+  const calculatePercentage = (current: number, previous: number) => {
+    if (previous === 0) {
+      if (current === 0) return '0%';
+      return '+100%';
+    }
+    const percentage = ((current - previous) / previous) * 100;
+    const sign = percentage > 0 ? '+' : '';
+    return `${sign}${percentage.toFixed(1)}%`;
+  };
+
+  if (loading || !metrics) {
+    return (
+      <div className={styles.content}>
+        <div className={styles.loading}>Carregando dashboard...</div>
+      </div>
+    );
+  }
 
   return ( 
     <>
       <div className={styles.content}> 
         <div className={styles.chart_wrapper}>
-
-              <SalesChart
+          {chartData && (
+            <SalesChart
               colorStart={"#01b5fa70"} 
               colorEnd={"transparent"} 
               colorBorder={"#01b5fa"}
-              value={"R$ 15.449,12"}
-              axis={axisData}
-              />
-            
+              value={formatCurrency(metrics.vendas_7d)}
+              axis={chartData}
+            />
+          )}
         </div>
         <div className={styles.recent_orders_wrapper}>
           <div className={styles.orders_container}>
@@ -39,10 +132,30 @@ export default async function Seller() {
         </div>
         <div className={styles.cards_data_wrapper}>
           <div className={styles.cards_data}>
-              <CardData icon={<BiCartAlt/>} label="Vendas" value={24} badge_value={"+5%"} />
-              <CardData icon={<BiDollar />} label="Faturamento" value={"R$25K"} badge_value={"+10%"} />
-              <CardData icon={<BiLineChart  />} label="Campanhas" value={3} badge_value={"+25%"} />
-              <CardData icon={<BiBasket />} label="Produtos" value={12} badge_value={"+3%"} />
+              <CardData 
+                icon={<BiCartAlt/>} 
+                label="Vendas" 
+                value={metrics.total_vendas} 
+                badge_value={calculatePercentage(metrics.total_vendas, metrics.total_vendas_anterior)} 
+              />
+              <CardData 
+                icon={<BiDollar />} 
+                label="Faturamento" 
+                value={formatCurrency(metrics.faturamento)} 
+                badge_value={calculatePercentage(metrics.faturamento, metrics.faturamento_anterior)} 
+              />
+              <CardData 
+                icon={<BiBasket />} 
+                label="Produtos" 
+                value={metrics.total_produtos} 
+                badge_value="Total" 
+              />
+              <CardData 
+                icon={<BiPackage />} 
+                label="Estoque Baixo" 
+                value={metrics.produtos_estoque_baixo} 
+                badge_value={metrics.produtos_estoque_baixo > 0 ? 'Atenção' : 'OK'} 
+              />
           </div>
         </div>
       </div>

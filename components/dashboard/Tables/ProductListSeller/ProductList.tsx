@@ -2,181 +2,152 @@
 
 import { useState, useEffect } from 'react';
 import Table from '@/components/ui/Table/Table';
-import { BiTrashAlt, BiLoader, BiExpand } from 'react-icons/bi';
+import { BiTrashAlt, BiLoader } from 'react-icons/bi';
 import styles from './ProductList.module.css';
-
-// Dados temporários - depois vão vir do DB
-const mockProducts = [
-  { 
-    id: 11,
-    name: 'Produto A',
-    price: 29.99,
-    stock: 100,
-    gtin: '1234567890123',
-    industry: 1
-  },
-  { 
-    id: 2,
-    name: 'Produto B', 
-    price: 49.99,
-    stock: 50,
-    gtin: '2345678901234',
-    industry: 2
-  },
-  { 
-    id: 3,
-    name: 'Produto C',
-    price: 19.99,
-    stock: 200,
-    gtin: '3456789012345',
-    industry: null
-  },
-  { 
-    id: 4,
-    name: 'Produto D',
-    price: 39.99,
-    stock: 150,
-    gtin: '4567890123456',
-    industry: 3
-  },
-  { 
-    id: 5,
-    name: 'Produto E',
-    price: 59.99,
-    stock: 80,
-    gtin: '5678901234567',
-    industry: null
-  }
-];
-
-const industries = [
-  {
-    id: 1,
-    name: 'Unilever'
-  },  
-  {
-    id: 2,
-    name: 'Procter & Gamble'
-  },
-  {
-    id: 3,
-    name: 'Nestlé'
-  }
-];
 
 interface Product {
   id: number;
-  name: string;
-  price: number;
-  stock: number;
+  nome: string;
+  preco_base: number;
+  estoque: number;
   gtin: string;
-  industry: number | null;
+  industria_id: number | null;
+  industria_nome?: string;
+}
+
+interface Industry {
+  id: number;
+  nome: string;
 }
 
 
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<number | null>(null);
+  const [error, setError] = useState<string>('');
 
   const [editingValues, setEditingValues] = useState<{[key: string]: any}>({});
 
-  // Função para buscar produtos do banco (futura implementação)
+  // Buscar produtos do banco
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // TODO: Substituir por chamada real para a API/DB
-      // const response = await fetch('/api/products');
-      // const data = await response.json();
-      // setProducts(data);
+      const response = await fetch('/api/products');
+      const data = await response.json();
       
-      // Simulação de delay da API
-      await new Promise(resolve => setTimeout(resolve, 900));
-      setProducts(mockProducts);
-
-      const initialValues: {[key: string]: any} = {};
-      mockProducts.forEach(product => {
-        initialValues[`${product.id}-name`] = product.name;
-        initialValues[`${product.id}-price`] = product.price;
-        initialValues[`${product.id}-stock`] = product.stock;
-        initialValues[`${product.id}-industry`] = product.industry || '';
-      });
-      setEditingValues(initialValues);
+      if (data.success && data.products) {
+        setProducts(data.products);
+        
+        // Inicializar valores de edição
+        const initialValues: {[key: string]: any} = {};
+        data.products.forEach((product: Product) => {
+          initialValues[`${product.id}-nome`] = product.nome;
+          initialValues[`${product.id}-preco_base`] = product.preco_base;
+          initialValues[`${product.id}-estoque`] = product.estoque;
+          initialValues[`${product.id}-industria_id`] = product.industria_id || '';
+        });
+        setEditingValues(initialValues);
+      } else {
+        setError('Erro ao carregar produtos');
+      }
       
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
+      setError('Erro ao conectar com o servidor');
     } finally {
       setLoading(false);
     }
   };
 
-  // Função para atualizar produto no banco
-  const updateProduct = async (productId: number, field: keyof Product, value: string | number) => {
-      if (updating !== null) {
-        console.log('Aguarde o update anterior terminar');
-        return;
+  // Buscar indústrias para dropdown
+  const fetchIndustries = async () => {
+    try {
+      const response = await fetch('/api/industries');
+      const data = await response.json();
+      
+      if (data.success && data.industries) {
+        setIndustries(data.industries);
       }
+    } catch (error) {
+      console.error('Erro ao buscar indústrias:', error);
+    }
+  };
+
+  // Atualizar produto no banco
+  const updateProduct = async (productId: number, field: keyof Product, value: string | number) => {
+    if (updating !== null) {
+      return;
+    }
 
     try {
       setUpdating(productId);
       
-      // TODO: Fazer chamada para API atualizar no banco
-      // await fetch(`/api/products/${productId}`, {
-      //   method: 'PATCH',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ [field]: value })
-      // });
+      const response = await fetch(`/api/products/${productId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [field]: value })
+      });
       
-      // Simulação de delay da API
-      await new Promise(resolve => setTimeout(resolve, 900));
+      const data = await response.json();
       
-      setProducts(prevProducts => 
-        prevProducts.map(product => 
-          product.id === productId 
-            ? { ...product, [field]: value }
-            : product
-        )
-      );
-      
-      console.log(`Produto ${productId} - ${field} atualizado para: ${value}`);
+      if (data.success) {
+        setProducts(prevProducts => 
+          prevProducts.map(product => 
+            product.id === productId 
+              ? { ...product, [field]: value }
+              : product
+          )
+        );
+      } else {
+        alert(`Erro: ${data.error || 'Falha ao atualizar produto'}`);
+        // Reverter valor em caso de erro
+        fetchProducts();
+      }
       
     } catch (error) {
       console.error('Erro ao atualizar produto:', error);
       alert('Erro ao atualizar produto. Tente novamente.');
+      fetchProducts();
     } finally {
       setUpdating(null);
     }
   };
 
-  // Função para deletar produto
+  // Deletar produto
   const handleDeleteProduct = async (productId: number, productName: string) => {
-    
     const confirmDelete = confirm(`Tem certeza que deseja excluir "${productName}"?`);
     
     if (confirmDelete) {
       try {
         setUpdating(productId);
         
-        // TODO: Fazer chamada para API deletar no banco
-        // await fetch(`/api/products/${productId}`, { method: 'DELETE' })
-        // Simulação de delay da API
-        await new Promise(resolve => setTimeout(resolve, 900));
-        
-        setProducts(prevProducts => 
-          prevProducts.filter(product => product.id !== productId)
-        );
-
-        setEditingValues(prev => {
-          const newValues = { ...prev };
-          delete newValues[`${productId}-name`];
-          delete newValues[`${productId}-price`];
-          delete newValues[`${productId}-stock`];
-          delete newValues[`${productId}-industry`];
-          return newValues;
+        const response = await fetch(`/api/products/${productId}`, { 
+          method: 'DELETE' 
         });
         
-        console.log(`Produto ${productName} excluído com sucesso`);
+        const data = await response.json();
+        
+        if (data.success) {
+          setProducts(prevProducts => 
+            prevProducts.filter(product => product.id !== productId)
+          );
+
+          setEditingValues(prev => {
+            const newValues = { ...prev };
+            delete newValues[`${productId}-nome`];
+            delete newValues[`${productId}-preco_base`];
+            delete newValues[`${productId}-estoque`];
+            delete newValues[`${productId}-industria_id`];
+            return newValues;
+          });
+        } else {
+          alert(`Erro: ${data.error || 'Falha ao excluir produto'}`);
+        }
+        
       } catch (error) {
         console.error('Erro ao excluir produto:', error);
         alert('Erro ao excluir produto. Tente novamente.');
@@ -189,29 +160,28 @@ export default function ProductList() {
 
   const handleNameChange = (productId: number, value: string) => {
     if (value.trim()) {
-      updateProduct(productId, 'name', value);
+      updateProduct(productId, 'nome', value);
     }
   };
 
   const handlePriceChange = (productId: number, value: string) => {
     const numValue = parseFloat(value);
     if (!isNaN(numValue) && numValue >= 0) {
-      updateProduct(productId, 'price', numValue);
+      updateProduct(productId, 'preco_base', numValue);
     }
   };
 
   const handleStockChange = (productId: number, value: string) => {
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 0) {
-      updateProduct(productId, 'stock', numValue);
+      updateProduct(productId, 'estoque', numValue);
     }
   };
 
   const handleIndustryChange = (productId: number, value: string) => {
     const num = value === '' ? null : parseInt(value, 10);
-    updateProduct(productId, 'industry', num as any);
-
-    handleInputChange(productId, 'industry', value);
+    updateProduct(productId, 'industria_id', num as any);
+    handleInputChange(productId, 'industria_id', value);
   };
 
 
@@ -225,6 +195,7 @@ export default function ProductList() {
 
   useEffect(() => {
     fetchProducts();
+    fetchIndustries();
   }, []);
 
   const columns = [
@@ -234,13 +205,13 @@ export default function ProductList() {
       render: (value: number) => `#${value}`
     },
     {
-      key: 'name',
+      key: 'nome',
       header: 'Nome do Produto',
       render: (value: string, row: Product) => (
         <input 
           type="text" 
-          value={editingValues[`${row.id}-name`] || ''}
-          onChange={(e) => handleInputChange(row.id, 'name', e.target.value)}
+          value={editingValues[`${row.id}-nome`] || ''}
+          onChange={(e) => handleInputChange(row.id, 'nome', e.target.value)}
           onBlur={(e) => handleNameChange(row.id, e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
@@ -252,15 +223,15 @@ export default function ProductList() {
       )
     },
     {
-      key: 'price',
+      key: 'preco_base',
       header: 'Preço',
       render: (value: number, row: Product) => (
         <input 
           type="number" 
-          value={editingValues[`${row.id}-price`] || ''} 
+          value={editingValues[`${row.id}-preco_base`] || ''} 
           step="0.01"
           min="0"
-          onChange={(e) => handleInputChange(row.id, 'price', e.target.value)}
+          onChange={(e) => handleInputChange(row.id, 'preco_base', e.target.value)}
           onBlur={(e) => handlePriceChange(row.id, e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
@@ -272,14 +243,14 @@ export default function ProductList() {
       )
     },
     {
-      key: 'stock',
+      key: 'estoque',
       header: 'Estoque',
       render: (value: number, row: Product) => (
         <input 
           type="number" 
-          value={editingValues[`${row.id}-stock`] || ''} 
+          value={editingValues[`${row.id}-estoque`] || ''} 
           min="0"
-          onChange={(e) => handleInputChange(row.id, 'stock', e.target.value)}
+          onChange={(e) => handleInputChange(row.id, 'estoque', e.target.value)}
           onBlur={(e) => handleStockChange(row.id, e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
@@ -295,21 +266,21 @@ export default function ProductList() {
       header: 'GTIN',
     },
     {
-      key: 'industry',
+      key: 'industria_id',
       header: 'Indústria',
-      render: (value: string, row: Product) => (
+      render: (value: number | null, row: Product) => (
         <select
-          title={value || 'Selecione uma indústria'}
-          value={editingValues[`${row.id}-industry`] ?? ''}
+          title={row.industria_nome || 'Selecione uma indústria'}
+          value={editingValues[`${row.id}-industria_id`] ?? ''}
           onChange={(e) => {
-            handleIndustryChange(row.id, e.target.value); // Select pode salvar imediatamente
+            handleIndustryChange(row.id, e.target.value);
           }}         
           disabled={updating === row.id}
         >
           <option value="">Selecione uma indústria</option>
           {industries.map(industry => (
             <option key={industry.id} value={industry.id}>
-              {industry.name}
+              {industry.nome}
             </option>
           ))}
         </select>
@@ -321,7 +292,7 @@ export default function ProductList() {
       render: (value: any, row: Product) => (
         <div>
           <button 
-            onClick={() => handleDeleteProduct(row.id, row.name)}
+            onClick={() => handleDeleteProduct(row.id, row.nome)}
             disabled={loading || updating === row.id}
             title={updating === row.id ? 'Atualizando...' : 'Excluir produto'}
           >
@@ -335,6 +306,10 @@ export default function ProductList() {
 
   if (loading) {
     return <div className={styles.loading}>Carregando produtos...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
   }
 
   return (

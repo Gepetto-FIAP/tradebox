@@ -2,69 +2,40 @@
 
 import { useState, useEffect } from 'react';
 import Table from '../../../ui/Table/Table';
+import SaleItemsModal from '../../SaleItemsModal/SaleItemsModal';
 import styles from './RecentOrders.module.css';
 
-// Mock data - remover quando conectar com DB
-const mockOrders = [
-    {
-        idOrder: 1,
-        data: '2023-10-01',
-        itens: 3,
-        total: 100
-    },
-    {
-        idOrder: 2,
-        data: '2023-10-02',
-        itens: 1,
-        total: 50
-    },
-    {
-        idOrder: 3,
-        data: '2023-10-03',
-        itens: 2,
-        total: 75
-    },
-    {
-        idOrder: 4,
-        data: '2023-10-04',
-        itens: 1,
-        total: 50
-    }
-];
-
 interface Order {
-  idOrder: number;
-  data: string;
-  itens: number;
-  total: number;
+  id: number;
+  data_venda: string;
+  quantidade_itens: number;
+  valor_total: number;
 }
 
 export default function RecentOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+  const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
 
   // Função para buscar pedidos recentes do banco
   const fetchRecentOrders = async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // TODO: Substituir por chamada real para a API/DB
-      // const response = await fetch('/api/orders/recent');
-      // 
-      // if (!response.ok) {
-      //   throw new Error('Erro ao buscar pedidos');
-      // }
-      // 
-      // const data = await response.json();
-      // setOrders(data);
+      const response = await fetch('/api/sales?limit=20');
+      const data = await response.json();
       
-      // Simulação de chamada da API
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setOrders(mockOrders);
+      if (data.success && data.sales) {
+        setOrders(data.sales);
+      } else {
+        setError('Erro ao carregar vendas');
+      }
       
     } catch (error) {
       console.error('Erro ao buscar pedidos:', error);
-      
+      setError('Erro ao conectar com o servidor');
     } finally {
       setLoading(false);
     }
@@ -77,12 +48,12 @@ export default function RecentOrders() {
 
   const columns = [
     {
-      key: 'idOrder',
+      key: 'id',
       header: 'Nº',
       render: (value: number) => `#${value}`
     },
     {
-      key: 'data',
+      key: 'data_venda',
       header: 'Data',
       render: (value: string) => {
         const date = new Date(value);
@@ -90,12 +61,19 @@ export default function RecentOrders() {
       }
     },
     {
-      key: 'itens',
+      key: 'quantidade_itens',
       header: 'Itens',
-      render: (value: number) => `${value} ${value === 1 ? 'item' : 'itens'}`
+      render: (value: number, row: Order) => (
+        <button 
+          onClick={() => setSelectedSaleId(row.id)}
+          className={styles.items_button}
+        >
+          {value} {value === 1 ? 'item' : 'itens'}
+        </button>
+      )
     },
     {
-      key: 'total',
+      key: 'valor_total',
       header: 'Total',
       render: (value: number) => `R$ ${value.toFixed(2)}`
     }
@@ -110,5 +88,31 @@ export default function RecentOrders() {
     );
   }
 
-  return <Table columns={columns} data={orders} />;
+  if (error) {
+    return (
+      <div className={styles.error}>
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (orders.length === 0) {
+    return (
+      <div className={styles.empty}>
+        <p>Nenhuma venda realizada ainda</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Table columns={columns} data={orders} />
+      {selectedSaleId && (
+        <SaleItemsModal 
+          saleId={selectedSaleId} 
+          onClose={() => setSelectedSaleId(null)} 
+        />
+      )}
+    </>
+  );
 }

@@ -1,0 +1,124 @@
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 600px;
+  max-width: 800px;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: var(--color-secondary);
+}
+
+.error {
+  color: #f55;
+}
+
+.sale_info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-bg-alt);
+  border-radius: 8px;
+}
+
+.info_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-weight: 300;
+  color: var(--color-secondary);
+  opacity: 0.8;
+}
+
+.value {
+  font-weight: 300;
+  color: var(--color-secondary);
+}
+
+.value.concluida {
+  color: #4ade80;
+}
+
+.value.pendente {
+  color: #fbbf24;
+}
+
+.value.cancelada {
+  color: #f87171;
+}
+
+.items_table {
+  overflow-x: auto;
+}
+
+.items_table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items_table thead {
+  background: var(--color-bg-alt);
+}
+
+.items_table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.items_table td {
+  padding: 0.75rem;
+  font-weight: 200;
+  color: var(--color-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.items_table .gtin {
+  font-family: monospace;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.items_table .center {
+  text-align: center;
+}
+
+.items_table .price {
+  text-align: right;
+}
+
+.total_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-bg-alt);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.total_label {
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--color-secondary);
+}
+
+.total_value {
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--color-accent);
+}
+

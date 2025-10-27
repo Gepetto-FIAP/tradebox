@@ -2,10 +2,11 @@
 
 import styles from './page.module.css';
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import {  Result } from "@zxing/library";
 
-import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX  } from "react-icons/bi";
+import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX, BiArrowBack, BiMinus  } from "react-icons/bi";
 import MoneyInput from '@/components/ui/InputMoney/InputMoney';
 import Button from '@/components/ui/Button/Button';
 
@@ -15,6 +16,7 @@ const DESIRED_CROP_ASPECT_RATIO = 3 / 2;
 const CROP_SIZE_FACTOR = 0.3;
 
 export default function CameraView() {
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const displayCroppedCanvasRef = useRef<HTMLCanvasElement>(null);
   const cropOverlayRef = useRef<HTMLDivElement>(null);
@@ -156,9 +158,11 @@ export default function CameraView() {
       const decodeCanvas = async () => {
         try {
           const result: Result = await codeReader.current.decodeFromCanvas(displayCanvas);
-          console.log("Decoded barcode:", result.getText());
+          const decodedText = result.getText();
+          
+          console.log("Decoded barcode:", decodedText);
 
-          consultarProduto(result.getText());
+          consultarProduto(decodedText);
         
         } catch (err: unknown) {
           if (err instanceof Error && err.name !== "NotFoundException") {
@@ -181,21 +185,159 @@ export default function CameraView() {
     };
   }, []);
 
+  const [productValue, setProductValue] = useState<number>(0);
+  const [productQuantity, setProductQuantity] = useState<number>(1);
+  const [productStock, setProductStock] = useState<number>(0);
+  const [selectedIndustry, setSelectedIndustry] = useState<number | null>(null);
+  const [industries, setIndustries] = useState<any[]>([]);
+  const [isQuickRegister, setIsQuickRegister] = useState(false);
+  const [basketOpen, setBasketOpen] = useState(false);
+  const [cart, setCart] = useState<any[]>([]);
+
+  // Buscar indústrias ao montar
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        const response = await fetch('/api/industries');
+        const data = await response.json();
+        if (data.success && data.industries) {
+          setIndustries(data.industries);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar indústrias:', error);
+      }
+    };
+    fetchIndustries();
+  }, []);
+
   async function consultarProduto(codigo: string) {
-    if (barcodeResult != null) return;
+    // Evitar múltiplas consultas do mesmo código enquanto já está processando
+    if (barcodeResult === codigo) return;
+    
     setBarcodeResult(codigo);
+    setIsQuickRegister(false);
+    
     try {
-      const response = await fetch(`/api/gtin?codigo=${codigo}`);
-      const data = await response.json();      
-      setProductInfo(data);
+      // 1. Primeiro buscar no BD local
+      const localResponse = await fetch(`/api/products/gtin/${codigo}`);
+      const localData = await localResponse.json();
+      
+      if (localData.success && localData.found && localData.products && localData.products.length > 0) {
+        // Produto encontrado no catálogo
+        // Se houver múltiplos, selecionar o com menor preço base
+        const product = localData.products.reduce((prev: any, current: any) => 
+          (current.preco_base < prev.preco_base) ? current : prev
+        );
+        
+        // Validar estoque
+        if (product.estoque <= 0) {
+          setProductInfo({ 
+            error: `Produto "${product.nome}" está sem estoque disponível.` 
+          });
+          return;
+        }
+        
+        setProductInfo({
+          id: product.id,
+          nome: product.nome,
+          ean: codigo,
+          marca: product.industria_nome || 'Sem marca',
+          categoria: product.categoria_nome || 'Sem categoria',
+          imageBase64: '', // Produto local não tem imagem
+          preco_base: product.preco_base,
+          estoque: product.estoque
+        });
+        setProductValue(Math.round(product.preco_base * 100)); // Converter para centavos
+        setProductQuantity(1);
+        setProductStock(product.estoque);
+        return;
+      }
+      
+      // 2. Se não encontrado, buscar na API externa
+      const externalResponse = await fetch(`/api/gtin?codigo=${codigo}`);
+      const externalData = await externalResponse.json();
+      
+      if (externalData.success && externalData.product) {
+        // Produto encontrado na API externa - mostrar cadastro rápido
+        setProductInfo({
+          ...externalData.product,
+          ean: codigo
+        });
+        setIsQuickRegister(true);
+        setProductValue(0);
+        setProductQuantity(1);
+        setProductStock(0);
+        setSelectedIndustry(null);
+      } else {
+        setProductInfo({ error: "Produto não encontrado." });
+      }
     } catch (err) {
+      console.error('Erro ao consultar produto:', err);
       setProductInfo({ error: "Erro ao consultar produto." });
     }
   }
 
-  const [productValue, setProductValue] = useState<number>(0);
-  const [basketOpen, setBasketOpen] = useState(false);
-  const [cart, setCart] = useState<any[]>([]);
+  async function handleQuickRegister() {
+    if (!productValue || productValue === 0) {
+      alert("Preencha o preço de venda!");
+      return;
+    }
+
+    if (!productStock || productStock < 0) {
+      alert("Preencha o estoque inicial!");
+      return;
+    }
+
+    // Validar se a quantidade de venda não excede o estoque cadastrado
+    if (productQuantity > productStock) {
+      alert(`Quantidade de venda (${productQuantity}) não pode ser maior que o estoque cadastrado (${productStock})`);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gtin: productInfo.ean,
+          nome: productInfo.nome,
+          descricao: productInfo.descricao || '',
+          preco_base: productValue / 100,
+          preco_custo: 0,
+          estoque: productStock,
+          categoria_id: null,
+          industria_id: selectedIndustry,
+          ativo: 'Y'
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success && data.product) {
+        addToCart({
+          ...productInfo,
+          id: data.product.id,
+          productValue: productValue / 100,
+          quantity: productQuantity,
+          preco_base: productValue / 100,
+          estoque: data.product.estoque
+        });
+        
+        setProductInfo(null);
+        setBarcodeResult(null);
+        setProductValue(0);
+        setProductQuantity(1);
+        setProductStock(0);
+        setSelectedIndustry(null);
+        setIsQuickRegister(false);
+      } else {
+        alert(data.message || 'Erro ao cadastrar produto');
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar produto:', error);
+      alert('Erro ao cadastrar produto');
+    }
+  }
 
   function addToCart(product: any) {
     setCart((prev) => [...prev, product]);
@@ -217,27 +359,60 @@ export default function CameraView() {
 
   function getCleanCart(cart: any[]) {
     return cart.map(item => ({
-      nome: item.nome,
-      ean: item.ean,
+      produto_id: item.id,
       quantidade: item.quantity,
-      productValue: item.productValue,
-      marca: item.marca,
-      categoria: item.categoria
+      preco_unitario: item.productValue
     }));
   }
 
-  const cleanCart = getCleanCart(cart);
-  console.log(cleanCart);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  async function handleFinalizeSale() {
+    if (cart.length === 0) {
+      alert('Adicione produtos ao carrinho antes de finalizar a venda');
+      return;
+    }
+
+    setIsCheckingOut(true);
+
+    try {
+      const response = await fetch('/api/sales', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          itens: getCleanCart(cart),
+          observacoes: null
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Venda realizada com sucesso!\nTotal: R$ ${data.valor_total.toFixed(2)}\nItens: ${data.quantidade_itens}`);
+        setCart([]);
+        setBasketOpen(false);
+      } else {
+        alert(data.message || 'Erro ao finalizar venda');
+      }
+    } catch (error) {
+      console.error('Erro ao finalizar venda:', error);
+      alert('Erro ao conectar com o servidor');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  }
 
   return (
     <div className={styles.container_scan}>
       
+      {/* Botão de voltar */}
       <button 
-      style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
-      onClick={() => consultarProduto("7894900700398 ")}
+        className={styles.back_button}
+        onClick={() => router.push('/seller/sell')}
+        aria-label="Voltar"
       >
-        Testar Consulta
-
+        <BiArrowBack />
+        Voltar
       </button>
 
       {!error && (
@@ -278,7 +453,7 @@ export default function CameraView() {
             ) : (
               <div className={styles.product_content}>
                 <div className={styles.product_image}>
-                  <img src={productInfo.imageBase64} />
+                  {productInfo.imageBase64 && <img src={productInfo.imageBase64} alt={productInfo.nome} />}
                 </div>
                 <div className={styles.product_info}>
                   <div className={styles.product_name}>
@@ -300,28 +475,223 @@ export default function CameraView() {
                       {productInfo.marca }
                     </div>
                   </div>
+                  
+                  {/* Campos do cadastro rápido inline */}
+                  {isQuickRegister && (
+                    <div className={styles.quick_register}>
+                      <div style={{ fontSize: '0.85rem', color: '#fbbf24', marginTop: '0.5rem' }}>
+                        Produto não encontrado no catálogo. Preencha os dados para cadastro rápido:
+                      </div>
+                      
+                      {/* 1. Estoque (obrigatório) */}
+                      <div style={{ marginTop: '0.75rem' }}>
+                        <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem' }}>
+                          Estoque inicial *:
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          value={productStock}
+                          onChange={(e) => setProductStock(Number(e.target.value))}
+                          placeholder="Ex: 10"
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--color-bg)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '4px',
+                            fontSize: '0.9rem'
+                          }}
+                        />
+                      </div>
+                      
+                      {/* 2. Indústria (opcional) */}
+                      <div style={{ marginTop: '0.5rem' }}>
+                        <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem' }}>
+                          Indústria (opcional):
+                        </label>
+                        <select
+                          value={selectedIndustry || ''}
+                          onChange={(e) => setSelectedIndustry(e.target.value ? Number(e.target.value) : null)}
+                          style={{
+                            width: '100%',
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--color-bg)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '4px',
+                            fontSize: '0.9rem'
+                          }}
+                        >
+                          <option value="">Sem indústria</option>
+                          {industries.map((ind) => (
+                            <option key={ind.id} value={ind.id}>
+                              {ind.nome}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* 3. Quantidade de venda */}
+                      <div style={{ marginTop: '0.5rem' }}>
+                        <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem' }}>
+                          Quantidade a vender (após cadastro):
+                        </label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <button
+                            type="button"
+                            onClick={() => setProductQuantity(Math.max(1, productQuantity - 1))}
+                            style={{
+                              padding: '0.5rem',
+                              backgroundColor: 'var(--color-bg)',
+                              color: 'var(--color-secondary)',
+                              border: '1px solid var(--color-border)',
+                              borderRadius: '4px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <BiMinus />
+                          </button>
+                          <input
+                            type="number"
+                            min="1"
+                            value={productQuantity}
+                            onChange={(e) => setProductQuantity(Number(e.target.value))}
+                            style={{
+                              flex: 1,
+                              padding: '0.5rem',
+                              backgroundColor: 'var(--color-bg)',
+                              color: 'var(--color-secondary)',
+                              border: '1px solid var(--color-border)',
+                              borderRadius: '4px',
+                              fontSize: '0.9rem',
+                              textAlign: 'center'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setProductQuantity(productQuantity + 1)}
+                            style={{
+                              padding: '0.5rem',
+                              backgroundColor: 'var(--color-bg)',
+                              color: 'var(--color-secondary)',
+                              border: '1px solid var(--color-border)',
+                              borderRadius: '4px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <BiPlus />
+                          </button>
+                        </div>
+                        {productStock > 0 && productQuantity > productStock && (
+                          <div style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '0.25rem' }}>
+                            ⚠️ Quantidade maior que estoque ({productStock})
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Controle de quantidade para produto existente */}
+                  {!isQuickRegister && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                      <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.25rem' }}>
+                        Quantidade:
+                      </label>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => setProductQuantity(Math.max(1, productQuantity - 1))}
+                          style={{
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--color-bg)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <BiMinus />
+                        </button>
+                        <input
+                          type="number"
+                          min="1"
+                          max={productInfo.estoque || 999}
+                          value={productQuantity}
+                          onChange={(e) => setProductQuantity(Number(e.target.value))}
+                          style={{
+                            flex: 1,
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--color-bg)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '4px',
+                            fontSize: '0.9rem',
+                            textAlign: 'center'
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (productInfo.estoque && productQuantity < productInfo.estoque) {
+                              setProductQuantity(productQuantity + 1);
+                            } else if (!productInfo.estoque) {
+                              setProductQuantity(productQuantity + 1);
+                            }
+                          }}
+                          style={{
+                            padding: '0.5rem',
+                            backgroundColor: 'var(--color-bg)',
+                            color: 'var(--color-secondary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <BiPlus />
+                        </button>
+                      </div>
+                      {productInfo.estoque && (
+                        <div style={{ fontSize: '0.75rem', color: 'var(--color-secondary)', opacity: 0.7, marginTop: '0.25rem' }}>
+                          Estoque disponível: {productInfo.estoque} unidades
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   <div className={styles.button_wrapper}>
                     <button className={styles.button}
                       onClick={() => {
-                        if (!productValue || Number(productValue) === 0) {
-                          alert("Preencha o valor do produto!");
-                          return;
-                        }
-                        addToCart(
-                          { ...productInfo, 
+                        if (isQuickRegister) {
+                          handleQuickRegister();
+                        } else {
+                          if (!productValue || Number(productValue) === 0) {
+                            alert("Preencha o valor do produto!");
+                            return;
+                          }
+                          // Validar estoque
+                          if (productInfo.estoque && productQuantity > productInfo.estoque) {
+                            alert(`Quantidade solicitada (${productQuantity}) excede o estoque disponível (${productInfo.estoque})`);
+                            return;
+                          }
+                          addToCart({
+                            ...productInfo,
                             productValue: productValue / 100,
-                            quantity: 1
+                            quantity: productQuantity
                           });
-                        setProductInfo(null);
-                        setBarcodeResult(null);
-                        setProductValue(0);
+                          setProductInfo(null);
+                          setBarcodeResult(null);
+                          setProductValue(0);
+                          setProductQuantity(1);
+                        }
                       }}
                       >
                         <div className={styles.button_icon}>
                           <BiCartAdd />
                         </div>
                         <div className={styles.button_text}>
-                          adicionar
+                          {isQuickRegister ? 'Cadastrar e Adicionar' : 'Adicionar'}
                         </div>
                     </button>
                   </div>
@@ -329,7 +699,7 @@ export default function CameraView() {
 
                 <div className={styles.product_price}>
                   <div className={styles.product_price_label}>
-                    R$
+                    {isQuickRegister ? 'Preço Venda' : 'R$'}
                   </div>
                   <MoneyInput 
                   value={productValue} 
@@ -342,6 +712,10 @@ export default function CameraView() {
               setProductInfo(null);
               setBarcodeResult(null);
               setProductValue(0);
+              setProductQuantity(1);
+              setProductStock(0);
+              setSelectedIndustry(null);
+              setIsQuickRegister(false);
             }}>
                 <BiX />
               </button>
@@ -403,12 +777,11 @@ export default function CameraView() {
 
           <div className={styles.basket_checkout}>
             <button 
-            onClick={ () => {
-              alert("Carrinho: \n" + JSON.stringify(cleanCart, null, 2));
-            }}
+            onClick={handleFinalizeSale}
+            disabled={isCheckingOut || cart.length === 0}
             className={styles.checkout_button}>
               <div className={styles.checkout_button_text}>
-                Finalizar Venda
+                {isCheckingOut ? 'Processando...' : 'Finalizar Venda'}
               </div>
               <div className={styles.checkout_button_icon}>
                 <BiChevronRight />

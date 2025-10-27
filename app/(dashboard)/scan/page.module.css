@@ -10,6 +10,37 @@
                 rgb(0 0 0 / 60%) 70%);
 }
 
+.back_button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: var(--color-secondary);
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: Urbanist, sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.back_button:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: var(--color-accent);
+    transform: translateX(-2px);
+}
+
+.back_button svg {
+    font-size: 1.2rem;
+}
+
 .cam_wrapper {
     position: relative;
     max-width: 800px;
@@ -102,7 +133,7 @@ video.video {
 @keyframes scan {
     0% { top: 10px; }
     50% { top: calc(100% - 10px); }
-}   
+}
 
 .product_box_wrapper {
     position: absolute;
