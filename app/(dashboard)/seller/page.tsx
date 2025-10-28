@@ -42,14 +42,23 @@ export default function Seller() {
         }
         
         // Buscar dados para o gráfico (últimos 7 dias)
-        const analyticsResponse = await fetch('/api/dashboard/analytics?periodo=7d');
-        const analyticsData = await analyticsResponse.json();
+        const dailySalesResponse = await fetch('/api/dashboard/daily-sales');
+        const dailySalesData = await dailySalesResponse.json();
         
-        if (analyticsData.success && analyticsData.monthlyPerformance) {
-          // Transformar dados mensais em dados diários (últimos 7 dias)
-          // Como o banco retorna dados mensais, vamos criar uma visualização simplificada
+        if (dailySalesData.success && dailySalesData.dailySales) {
+          // Criar array com os últimos 7 dias
           const last7Days = getLast7Days();
-          const dailyValues = last7Days.map(() => Math.floor(Math.random() * 30) + 15); // Placeholder até termos dados diários
+          const dailySalesMap = new Map(
+            dailySalesData.dailySales.map((sale: any) => [sale.dia, sale.qtd_vendas])
+          );
+          
+          // Preencher valores com 0 para dias sem vendas
+          const dailyValues: number[] = last7Days.map((_, index) => {
+            const date = new Date();
+            date.setDate(date.getDate() - (6 - index));
+            const dateStr = date.toISOString().split('T')[0];
+            return (dailySalesMap.get(dateStr) as number) || 0;
+          });
           
           setChartData({
             x: dailyValues,
