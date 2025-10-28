@@ -8,6 +8,8 @@ import {
 } from '@/lib/api-middleware';
 import { validatePeriodo } from '@/lib/validators';
 
+const oracledb = require('oracledb');
+
 /**
  * GET /api/dashboard/metrics
  * Retorna métricas principais do dashboard
@@ -49,7 +51,11 @@ export async function GET(request: NextRequest) {
         AND data_venda >= CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
     `;
     
-    const salesResult = await connection.execute(salesQuery, { vendedor_id: vendedorId });
+    const salesResult = await connection.execute(
+      salesQuery, 
+      { vendedor_id: vendedorId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const salesData: any = salesResult.rows?.[0] || {};
     
     // Vendas nos últimos 7 dias
@@ -61,7 +67,11 @@ export async function GET(request: NextRequest) {
         AND data_venda >= CURRENT_TIMESTAMP - INTERVAL '7' DAY
     `;
     
-    const vendas7dResult = await connection.execute(vendas7dQuery, { vendedor_id: vendedorId });
+    const vendas7dResult = await connection.execute(
+      vendas7dQuery, 
+      { vendedor_id: vendedorId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const vendas7dData: any = vendas7dResult.rows?.[0] || {};
     
     // Total de produtos
@@ -72,7 +82,11 @@ export async function GET(request: NextRequest) {
         AND ativo = 'Y'
     `;
     
-    const productsResult = await connection.execute(productsQuery, { vendedor_id: vendedorId });
+    const productsResult = await connection.execute(
+      productsQuery, 
+      { vendedor_id: vendedorId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const productsData: any = productsResult.rows?.[0] || {};
     
     // Produtos com estoque baixo
@@ -84,15 +98,41 @@ export async function GET(request: NextRequest) {
         AND estoque < 10
     `;
     
-    const lowStockResult = await connection.execute(lowStockQuery, { vendedor_id: vendedorId });
+    const lowStockResult = await connection.execute(
+      lowStockQuery, 
+      { vendedor_id: vendedorId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     const lowStockData: any = lowStockResult.rows?.[0] || {};
+    
+    // Buscar dados do período anterior para comparação
+    const previousPeriodQuery = `
+      SELECT 
+        COUNT(*) as total_vendas_anterior,
+        COALESCE(SUM(valor_total), 0) as faturamento_anterior
+      FROM vendas
+      WHERE vendedor_id = :vendedor_id
+        AND status = 'CONCLUIDA'
+        AND data_venda >= CURRENT_TIMESTAMP - INTERVAL '${days * 2}' DAY
+        AND data_venda < CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
+    `;
+    
+    const previousPeriodResult = await connection.execute(
+      previousPeriodQuery,
+      { vendedor_id: vendedorId },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+    const previousPeriodData: any = previousPeriodResult.rows?.[0] || {};
     
     const metrics = {
       total_vendas: salesData.TOTAL_VENDAS || 0,
       faturamento: salesData.FATURAMENTO || 0,
       vendas_7d: vendas7dData.VENDAS_7D || 0,
       total_produtos: productsData.TOTAL_PRODUTOS || 0,
-      produtos_estoque_baixo: lowStockData.PRODUTOS_ESTOQUE_BAIXO || 0
+      produtos_estoque_baixo: lowStockData.PRODUTOS_ESTOQUE_BAIXO || 0,
+      // Dados do período anterior para comparação
+      total_vendas_anterior: previousPeriodData.TOTAL_VENDAS_ANTERIOR || 0,
+      faturamento_anterior: previousPeriodData.FATURAMENTO_ANTERIOR || 0
     };
     
     return successResponse({ metrics });

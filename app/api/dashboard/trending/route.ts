@@ -8,6 +8,8 @@ import {
 } from '@/lib/api-middleware';
 import { validatePeriodo } from '@/lib/validators';
 
+const oracledb = require('oracledb');
+
 /**
  * GET /api/dashboard/trending
  * Retorna produtos mais vendidos (trending)
@@ -55,10 +57,14 @@ export async function GET(request: NextRequest) {
       FETCH FIRST :limit ROWS ONLY
     `;
     
-    const result = await connection.execute(query, {
-      vendedor_id: vendedorId,
-      limit
-    });
+    const result = await connection.execute(
+      query, 
+      {
+        vendedor_id: vendedorId,
+        limit
+      },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
     
     const products = (result.rows || []).map((row: any) => ({
       produto_id: row.PRODUTO_ID,

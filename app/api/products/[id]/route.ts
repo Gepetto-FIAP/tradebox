@@ -7,6 +7,7 @@ import {
   handleOracleError 
 } from '@/lib/api-middleware';
 import { validateId, validateUpdateProductData } from '@/lib/validators';
+const oracledb = require('oracledb');
 
 /**
  * GET /api/products/[id]
@@ -153,14 +154,14 @@ export async function PATCH(
     
     // Verificar se produto existe e pertence ao vendedor
     const checkQuery = `
-      SELECT id FROM produtos
+      SELECT id, gtin, industria_id FROM produtos
       WHERE id = :product_id AND vendedor_id = :vendedor_id
     `;
     
     const checkResult = await connection.execute(checkQuery, {
       product_id: productId,
       vendedor_id: vendedorId
-    });
+    }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
     
     if (!checkResult.rows || checkResult.rows.length === 0) {
       return errorResponse(
@@ -168,6 +169,53 @@ export async function PATCH(
         'O produto não existe ou você não tem permissão para editá-lo',
         404
       );
+    }
+    
+    const currentProduct: any = checkResult.rows[0];
+    
+    // Se industria_id está sendo alterada, verificar unicidade GTIN + INDUSTRIA
+    const currentIndustryId = currentProduct.INDUSTRIA_ID === null ? null : currentProduct.INDUSTRIA_ID;
+    const newIndustryId = body.industria_id === null ? null : (body.industria_id === undefined ? undefined : body.industria_id);
+    
+    // Só validar se a indústria está realmente mudando
+    const isIndustryChanging = body.industria_id !== undefined && 
+                                (currentIndustryId !== newIndustryId);
+    
+    if (isIndustryChanging) {
+      const checkDuplicateQuery = `
+        SELECT COUNT(*) as count
+        FROM produtos
+        WHERE vendedor_id = :vendedor_id 
+          AND gtin = :gtin
+          AND id != :product_id
+          AND (
+            (industria_id = :industria_id AND :industria_id IS NOT NULL)
+            OR (industria_id IS NULL AND :industria_id IS NULL)
+          )
+      `;
+      
+      const duplicateResult = await connection.execute(
+        checkDuplicateQuery, 
+        { 
+          vendedor_id: vendedorId, 
+          gtin: currentProduct.GTIN,
+          product_id: productId,
+          industria_id: newIndustryId
+        },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
+      );
+      
+      const count = (duplicateResult.rows?.[0] as any)?.COUNT || 0;
+      if (count > 0) {
+        const industryMsg = newIndustryId 
+          ? 'desta indústria' 
+          : 'sem indústria associada';
+        return errorResponse(
+          'Produto duplicado',
+          `Você já possui este produto (GTIN: ${currentProduct.GTIN}) cadastrado ${industryMsg}. Não é possível ter o mesmo GTIN cadastrado duas vezes para a mesma indústria.`,
+          400
+        );
+      }
     }
     
     // Se industria_id fornecida, verificar se é INDUSTRIA
@@ -180,7 +228,7 @@ export async function PATCH(
       
       const industryResult = await connection.execute(checkIndustryQuery, {
         industria_id: body.industria_id
-      });
+      }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
       
       const industryCount = (industryResult.rows?.[0] as any)?.COUNT || 0;
       if (industryCount === 0) {
