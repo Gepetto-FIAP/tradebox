@@ -7,6 +7,7 @@ import {
   handleOracleError 
 } from '@/lib/api-middleware';
 import { validateId } from '@/lib/validators';
+const oracledb = require('oracledb');
 
 /**
  * GET /api/sales/[id]
@@ -61,7 +62,7 @@ export async function GET(
     const saleResult = await connection.execute(saleQuery, {
       sale_id: saleId,
       vendedor_id: vendedorId
-    });
+    }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
     
     if (!saleResult.rows || saleResult.rows.length === 0) {
       return errorResponse(
@@ -78,9 +79,9 @@ export async function GET(
       vendedor_id: saleRow.VENDEDOR_ID,
       cliente_id: saleRow.CLIENTE_ID,
       data_venda: saleRow.DATA_VENDA,
-      valor_total: saleRow.VALOR_TOTAL,
-      quantidade_itens: saleRow.QUANTIDADE_ITENS,
-      status: saleRow.STATUS,
+      valor_total: saleRow.VALOR_TOTAL || 0,
+      quantidade_itens: saleRow.QUANTIDADE_ITENS || 0,
+      status: saleRow.STATUS ? saleRow.STATUS.trim() : 'CONCLUIDA',
       observacoes: saleRow.OBSERVACOES,
       created_at: saleRow.CREATED_AT,
       cliente_nome: saleRow.CLIENTE_NOME
@@ -99,23 +100,23 @@ export async function GET(
         p.nome as produto_nome,
         p.gtin as produto_gtin
       FROM itens_venda iv
-      JOIN produtos p ON iv.produto_id = p.id
+      LEFT JOIN produtos p ON iv.produto_id = p.id
       WHERE iv.venda_id = :sale_id
       ORDER BY iv.id
     `;
     
-    const itemsResult = await connection.execute(itemsQuery, { sale_id: saleId });
+    const itemsResult = await connection.execute(itemsQuery, { sale_id: saleId }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
     
     const items = (itemsResult.rows || []).map((row: any) => ({
       id: row.ID,
       venda_id: row.VENDA_ID,
       produto_id: row.PRODUTO_ID,
-      quantidade: row.QUANTIDADE,
-      preco_unitario: row.PRECO_UNITARIO,
-      subtotal: row.SUBTOTAL,
+      quantidade: row.QUANTIDADE || 0,
+      preco_unitario: row.PRECO_UNITARIO || 0,
+      subtotal: row.SUBTOTAL || 0,
       created_at: row.CREATED_AT,
-      produto_nome: row.PRODUTO_NOME,
-      produto_gtin: row.PRODUTO_GTIN
+      produto_nome: row.PRODUTO_NOME || 'Produto não encontrado',
+      produto_gtin: row.PRODUTO_GTIN || 'N/A'
     }));
     
     return successResponse({ sale, items });
