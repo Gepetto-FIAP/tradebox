@@ -343,9 +343,6 @@ CHECK (
     OR tipo_pessoa = 'PF'
 );
 
--- GTIN válido (8, 12, 13 ou 14 dígitos)
-ALTER TABLE produtos ADD CONSTRAINT chk_gtin_format
-CHECK (REGEXP_LIKE(gtin, '^[0-9]{8}$|^[0-9]{12,14}$'));
 
 -- Preço custo não pode ser maior que preço base
 ALTER TABLE produtos ADD CONSTRAINT chk_preco_custo_valido 

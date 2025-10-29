@@ -351,7 +351,7 @@ export async function PATCH(
 
 /**
  * DELETE /api/products/[id]
- * Deleta produto (soft delete)
+ * Deleta produto permanentemente (hard delete)
  */
 export async function DELETE(
   request: NextRequest,
@@ -400,10 +400,9 @@ export async function DELETE(
       );
     }
     
-    // Soft delete: marca como inativo
+    // Hard delete: remove permanentemente do banco de dados
     const deleteQuery = `
-      UPDATE produtos
-      SET ativo = 'N'
+      DELETE FROM produtos
       WHERE id = :product_id AND vendedor_id = :vendedor_id
     `;
     
