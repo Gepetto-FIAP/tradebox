@@ -1,5 +1,35 @@
 .loading {
     font-size: 0.9rem;
     color: var(--color-text);
+    padding: 2rem;
+    text-align: center;
 }
 
+.error {
+    font-size: 0.9rem;
+    color: #e74c3c;
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    opacity: 0.6;
+    padding: 2rem;
+    text-align: center;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: var(--color-primary);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

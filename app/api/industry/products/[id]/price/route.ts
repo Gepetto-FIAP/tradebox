@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireIndustria } from '@/lib/api-middleware';
 import { connectOracle } from '@/lib/db';
+import oracledb from 'oracledb';
 import { UpdatePrecoCustoRequest } from '@/lib/types';
 
 /**
@@ -61,7 +62,8 @@ export async function PATCH(
         FROM produtos p
         WHERE p.id = :product_id
           AND p.ativo = 'Y'`,
-        { product_id: productId }
+        { product_id: productId },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
 
       if (!checkResult.rows || checkResult.rows.length === 0) {
@@ -139,7 +141,8 @@ export async function PATCH(
         FROM produtos p
         LEFT JOIN usuarios u ON p.vendedor_id = u.id
         WHERE p.id = :product_id`,
-        { product_id: productId }
+        { product_id: productId },
+        { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
 
       const updatedProduct = updatedResult.rows?.[0] as any;
