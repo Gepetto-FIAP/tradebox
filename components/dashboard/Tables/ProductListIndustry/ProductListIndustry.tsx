@@ -2,76 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import Table from '@/components/ui/Table/Table';
-import { BiTrashAlt, BiLoader, BiExpand } from 'react-icons/bi';
+import { BiLoader } from 'react-icons/bi';
 import styles from './ProductListIndustry.module.css';
-
-// Dados temporários - depois vão vir do DB
-const mockProducts = [
-  { 
-    id: 1,
-    name: 'Produto A',
-    price: 29.99,
-    cost: 19.99,
-    gtin: '1234567890123',
-    seller: 1
-  },
-  { 
-    id: 2,
-    name: 'Produto B', 
-    price: 49.99,
-    cost: 29.99,
-    gtin: '2345678901234',
-    seller: 2
-  },
-  { 
-    id: 3,
-    name: 'Produto C',
-    price: 19.99,
-    cost: 9.99,
-    gtin: '3456789012345',
-    seller: 2
-  },
-  { 
-    id: 4,
-    name: 'Produto D',
-    price: 39.99,
-    cost: 24.99,
-    gtin: '4567890123456',
-    seller: 3
-  },
-  { 
-    id: 5,
-    name: 'Produto E',
-    price: 59.99,
-    cost: 34.99,
-    gtin: '5678901234567',
-    seller: 3
-  }
-
-];
-
-const sellers = [
-  {
-    id: 1,
-    name: 'Loja do João'
-  },  
-  {
-    id: 2,
-    name: 'Mercado da Maria'
-  },
-  {
-    id: 3,
-    name: 'Supermercado Central'
-  }
-];
 
 interface Product {
   id: number;
-  name: string;
-  price: number;
-  cost: number;
+  nome: string;
+  preco_base: number;
+  preco_custo: number;
   gtin: string;
-  seller: number;
+  vendedor_nome: string;
+  vendedor_id: number;
 }
 
 export default function ProductList() {
@@ -79,77 +20,95 @@ export default function ProductList() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<number | null>(null);
   const [editingValues, setEditingValues] = useState<{[key: string]: any}>({});
+  const [error, setError] = useState<string | null>(null);
 
-  // Função para buscar produtos do banco (futura implementação)
   const fetchProducts = async () => {
     try {
       setLoading(true);
+      setError(null);
       
-      // TODO: Substituir por chamada real para a API/DB
-      // const response = await fetch('/api/products');
-      // const data = await response.json();
-      // setProducts(data);
+      const response = await fetch('/api/industry/products');
       
-      // Simulação de delay da API
-      await new Promise(resolve => setTimeout(resolve, 900));
-      setProducts(mockProducts);
-
-    const initialValues: {[key: string]: any} = {};
-      mockProducts.forEach(product => {
-        initialValues[`${product.id}-cost`] = product.cost || 0;
-      });
-
-      setEditingValues(initialValues);
+      if (!response.ok) {
+        throw new Error('Erro ao buscar produtos');
+      }
+      
+      const result = await response.json();
+      
+      if (result.success && result.products) {
+        setProducts(result.products);
+        
+        // Inicializar valores de edição
+        const initialValues: {[key: string]: any} = {};
+        result.products.forEach((product: Product) => {
+          initialValues[`${product.id}-preco_custo`] = product.preco_custo || 0;
+        });
+        setEditingValues(initialValues);
+      } else {
+        throw new Error('Formato de resposta inválido');
+      }
       
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
+      setError('Erro ao carregar produtos');
     } finally {
       setLoading(false);
     }
   };
 
-    const updateProduct = async (productId: number, field: keyof Product, value: string | number) => {
-      if (updating !== null) {
-        console.log('Aguarde o update anterior terminar');
-        return;
-      }
+  const updateProductCost = async (productId: number, newCost: number) => {
+    if (updating !== null) {
+      console.log('Aguarde o update anterior terminar');
+      return;
+    }
 
     try {
       setUpdating(productId);
       
-      // TODO: Fazer chamada para API atualizar no banco
-      // await fetch(`/api/products/${productId}`, {
-      //   method: 'PATCH',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ [field]: value })
-      // });
+      const response = await fetch(`/api/industry/products/${productId}/price`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preco_custo: newCost })
+      });
       
-      // Simulação de delay da API
-      await new Promise(resolve => setTimeout(resolve, 900));
-
+      const result = await response.json();
       
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || result.error || 'Erro ao atualizar preço de custo');
+      }
+      
+      // Atualizar produto localmente
       setProducts(prevProducts => 
         prevProducts.map(product => 
           product.id === productId 
-            ? { ...product, [field]: value }
+            ? { ...product, preco_custo: newCost }
             : product
         )
       );
       
-      console.log(`Produto ${productId} - ${field} atualizado para: ${value}`);
+      console.log('Preço de custo atualizado com sucesso');
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao atualizar produto:', error);
-      alert('Erro ao atualizar produto. Tente novamente.');
+      alert(error.message || 'Erro ao atualizar preço de custo. Tente novamente.');
+      
+      // Restaurar valor anterior
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        setEditingValues(prev => ({
+          ...prev,
+          [`${productId}-preco_custo`]: product.preco_custo
+        }));
+      }
     } finally {
       setUpdating(null);
     }
   };
 
   const handleCostChange = (productId: number, value: string) => {
-    const numValue = parseInt(value);
+    const numValue = parseFloat(value);
     if (!isNaN(numValue) && numValue >= 0) {
-      updateProduct(productId, 'cost', numValue);
+      updateProductCost(productId, numValue);
     }
   };
 
@@ -171,7 +130,7 @@ export default function ProductList() {
       render: (value: number) => `#${value}`
     },
     {
-      key: 'name',
+      key: 'nome',
       header: 'Nome do Produto',
     },
     {
@@ -179,36 +138,48 @@ export default function ProductList() {
       header: 'GTIN',
     },
     {
-      key: 'seller',
-      header: 'Seller',
-      render: (value: number) => {
-        const seller = sellers.find(sel => sel.id === value);
-        return <span>{seller ? seller.name : '-'}</span>;
-      }
+      key: 'vendedor_nome',
+      header: 'Vendedor',
+      render: (value: string) => <span>{value || '-'}</span>
     },
-
     {
-        key: 'cost',
-        header: 'Custo',
-        render: (value: number, row: Product) => (
+      key: 'preco_custo',
+      header: 'Preço de Custo',
+      render: (value: number, row: Product) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontWeight: '500', color: 'var(--color-text)', opacity: 0.7 }}>R$</span>
             <input 
-            type="number" 
-            value={editingValues[`${row.id}-cost`] || ''} 
-            min="0"
-            onChange={(e) => handleInputChange(row.id, 'cost', e.target.value)}
-            onBlur={(e) => handleCostChange(row.id, e.target.value)}
-            onKeyPress={(e) => {
+              type="number" 
+              step="0.01"
+              value={editingValues[`${row.id}-preco_custo`] || ''} 
+              min="0"
+              onChange={(e) => handleInputChange(row.id, 'preco_custo', e.target.value)}
+              onBlur={(e) => handleCostChange(row.id, e.target.value)}
+              onKeyPress={(e) => {
                 if (e.key === 'Enter') {
-                e.currentTarget.blur();
+                  e.currentTarget.blur();
                 }
-            }}
-            disabled={updating === row.id}
+              }}
+              disabled={updating === row.id}
+              placeholder="0.00"
+              style={{ 
+                padding: '6px 10px', 
+                borderRadius: '4px', 
+                border: '1px solid var(--color-border)',
+                width: '90px'
+              }}
             />
+          </div>
+          {updating === row.id && <BiLoader className={styles.spinner} />}
+        </div>
       )
     },
     {
-      key: 'price',
-      header: 'Preço Seller',
+      key: 'preco_base',
+      header: 'Preço do Seller',
+      render: (value: number) => 
+        value ? value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'R$ 0,00'
     }
   ];
 
@@ -216,10 +187,17 @@ export default function ProductList() {
     return <div className={styles.loading}>Carregando produtos...</div>;
   }
 
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
+
+  if (products.length === 0) {
+    return <div className={styles.empty}>Nenhum produto cadastrado</div>;
+  }
+
   return (
     <>
       <Table data={products} columns={columns} />
     </>
-
   );
 }
