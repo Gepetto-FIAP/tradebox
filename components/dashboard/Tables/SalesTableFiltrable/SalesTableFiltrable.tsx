@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Table from '@/components/ui/Table/Table';
+import styles from './SalesTableFiltrable.module.css';
 
 interface Sale {
   id: number;
@@ -71,7 +72,7 @@ export default function SalesList(
 
 
       {loading ? (
-        <div>Carregando vendas...</div>
+        <div className={styles.loading}>Carregando vendas...</div>
       ) : (
         <Table data={sales} columns={columns} />
       )}

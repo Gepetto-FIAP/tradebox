@@ -121,7 +121,7 @@
     .card_data {
         min-width: 0;
         width: auto;
-        padding: 15px 0;
+        padding: 0;
     }
 
     .card_value {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Modal from '../../ui/Modal/Modal';
+import Modal from '../../../ui/Modal/Modal';
 import styles from './SaleItemsModal.module.css';
 
 interface SaleItem {
