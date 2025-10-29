@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { connectOracle } from '@/lib/db';
+import oracledb from 'oracledb';
 import { 
   requireIndustria, 
   successResponse, 
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
   try {
     connection = await connectOracle();
     
-    // Total de produtos cadastrados com a indústria
+    // Total de produtos cadastrados com a indústria (período atual)
     const productsQuery = `
       SELECT COUNT(*) as total_produtos
       FROM produtos
@@ -46,10 +47,26 @@ export async function GET(request: NextRequest) {
         AND ativo = 'Y'
     `;
     
-    const productsResult = await connection.execute(productsQuery, { industria_id: industriaId });
+    const productsResult = await connection.execute(productsQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     const productsData: any = productsResult.rows?.[0] || {};
     
-    // Total de vendedores ativos
+    // Total de produtos no período anterior
+    const productsPrevQuery = `
+      SELECT COUNT(*) as total_produtos
+      FROM produtos
+      WHERE industria_id = :industria_id
+        AND ativo = 'Y'
+        AND created_at < CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
+    `;
+    
+    const productsPrevResult = await connection.execute(productsPrevQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    const productsPrevData: any = productsPrevResult.rows?.[0] || {};
+    
+    // Total de vendedores ativos (período atual)
     const sellersQuery = `
       SELECT COUNT(DISTINCT p.vendedor_id) as total_vendedores
       FROM produtos p
@@ -57,10 +74,26 @@ export async function GET(request: NextRequest) {
         AND p.ativo = 'Y'
     `;
     
-    const sellersResult = await connection.execute(sellersQuery, { industria_id: industriaId });
+    const sellersResult = await connection.execute(sellersQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     const sellersData: any = sellersResult.rows?.[0] || {};
     
-    // Vendas e faturamento no período
+    // Total de vendedores ativos no período anterior
+    const sellersPrevQuery = `
+      SELECT COUNT(DISTINCT p.vendedor_id) as total_vendedores
+      FROM produtos p
+      WHERE p.industria_id = :industria_id
+        AND p.ativo = 'Y'
+        AND p.created_at < CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
+    `;
+    
+    const sellersPrevResult = await connection.execute(sellersPrevQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    const sellersPrevData: any = sellersPrevResult.rows?.[0] || {};
+    
+    // Vendas e faturamento no período atual
     const salesQuery = `
       SELECT 
         COUNT(DISTINCT v.id) as total_vendas,
@@ -73,10 +106,31 @@ export async function GET(request: NextRequest) {
         AND v.data_venda >= CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
     `;
     
-    const salesResult = await connection.execute(salesQuery, { industria_id: industriaId });
+    const salesResult = await connection.execute(salesQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     const salesData: any = salesResult.rows?.[0] || {};
     
-    // Produto mais vendido
+    // Vendas e faturamento no período anterior
+    const salesPrevQuery = `
+      SELECT 
+        COUNT(DISTINCT v.id) as total_vendas,
+        COALESCE(SUM(iv.subtotal), 0) as receita_gerada
+      FROM vendas v
+      JOIN itens_venda iv ON v.id = iv.venda_id
+      JOIN produtos p ON iv.produto_id = p.id
+      WHERE p.industria_id = :industria_id
+        AND v.status = 'CONCLUIDA'
+        AND v.data_venda >= CURRENT_TIMESTAMP - INTERVAL '${days * 2}' DAY
+        AND v.data_venda < CURRENT_TIMESTAMP - INTERVAL '${days}' DAY
+    `;
+    
+    const salesPrevResult = await connection.execute(salesPrevQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    const salesPrevData: any = salesPrevResult.rows?.[0] || {};
+    
+    // Produto mais vendido no período atual
     const topProductQuery = `
       SELECT 
         p.nome,
@@ -92,14 +146,38 @@ export async function GET(request: NextRequest) {
       FETCH FIRST 1 ROWS ONLY
     `;
     
-    const topProductResult = await connection.execute(topProductQuery, { industria_id: industriaId });
+    const topProductResult = await connection.execute(topProductQuery, { industria_id: industriaId }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     const topProductData: any = topProductResult.rows?.[0] || {};
     
+    // Calcular crescimento percentual
+    const calcGrowth = (current: number, previous: number): number => {
+      if (previous === 0) return current > 0 ? 100 : 0;
+      return Math.round(((current - previous) / previous) * 100);
+    };
+    
+    const currentProducts = productsData.TOTAL_PRODUTOS || 0;
+    const previousProducts = productsPrevData.TOTAL_PRODUTOS || 0;
+    const currentSellers = sellersData.TOTAL_VENDEDORES || 0;
+    const previousSellers = sellersPrevData.TOTAL_VENDEDORES || 0;
+    const currentRevenue = salesData.RECEITA_GERADA || 0;
+    const previousRevenue = salesPrevData.RECEITA_GERADA || 0;
+    
     const metrics = {
-      total_produtos: productsData.TOTAL_PRODUTOS || 0,
-      total_vendedores: sellersData.TOTAL_VENDEDORES || 0,
+      total_produtos: currentProducts,
+      total_produtos_anterior: previousProducts,
+      crescimento_produtos: calcGrowth(currentProducts, previousProducts),
+      
+      total_vendedores: currentSellers,
+      total_vendedores_anterior: previousSellers,
+      crescimento_vendedores: calcGrowth(currentSellers, previousSellers),
+      
       total_vendas: salesData.TOTAL_VENDAS || 0,
-      receita_gerada: salesData.RECEITA_GERADA || 0,
+      receita_gerada: currentRevenue,
+      receita_gerada_anterior: previousRevenue,
+      crescimento_receita: calcGrowth(currentRevenue, previousRevenue),
+      
       produto_mais_vendido: topProductData.NOME || 'Nenhum',
       qtd_vendida_top: topProductData.QTD_VENDIDA || 0
     };

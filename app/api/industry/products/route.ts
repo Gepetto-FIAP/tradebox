@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { connectOracle } from '@/lib/db';
+import oracledb from 'oracledb';
 import { 
   requireIndustria, 
   successResponse, 
@@ -50,6 +51,7 @@ export async function GET(request: NextRequest) {
         p.nome,
         p.descricao,
         p.preco_base,
+        p.preco_custo,
         p.estoque,
         p.ativo,
         p.created_at,
@@ -83,7 +85,7 @@ export async function GET(request: NextRequest) {
     
     query += ` 
       GROUP BY p.id, p.vendedor_id, p.industria_id, p.categoria_id, p.gtin, 
-               p.nome, p.descricao, p.preco_base, p.estoque, p.ativo, 
+               p.nome, p.descricao, p.preco_base, p.preco_custo, p.estoque, p.ativo, 
                p.created_at, p.updated_at, c.nome, u.nome
       ORDER BY p.created_at DESC
       OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY
@@ -91,7 +93,9 @@ export async function GET(request: NextRequest) {
     binds.offset = offset;
     binds.limit = limit;
     
-    const result = await connection.execute(query, binds);
+    const result = await connection.execute(query, binds, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     
     // Query para contar total
     let countQuery = `
@@ -101,15 +105,23 @@ export async function GET(request: NextRequest) {
         AND p.ativo = 'Y'
     `;
     
+    // Criar objeto de binds específico para o count (sem offset e limit)
+    const countBinds: any = { industria_id: industriaId };
+    
     if (search) {
       countQuery += ` AND (UPPER(p.nome) LIKE :search OR p.gtin LIKE :search_gtin)`;
+      countBinds.search = `%${search.toUpperCase()}%`;
+      countBinds.search_gtin = `%${search}%`;
     }
     
     if (categoria_id) {
       countQuery += ` AND p.categoria_id = :categoria_id`;
+      countBinds.categoria_id = categoria_id;
     }
     
-    const countResult = await connection.execute(countQuery, binds);
+    const countResult = await connection.execute(countQuery, countBinds, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     const total = (countResult.rows?.[0] as any)?.TOTAL || 0;
     
     // Converter rows para formato esperado
@@ -122,6 +134,7 @@ export async function GET(request: NextRequest) {
       nome: row.NOME,
       descricao: row.DESCRICAO,
       preco_base: row.PRECO_BASE,
+      preco_custo: row.PRECO_CUSTO,
       estoque: row.ESTOQUE,
       ativo: row.ATIVO,
       created_at: row.CREATED_AT,

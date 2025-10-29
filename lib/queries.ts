@@ -1,4 +1,5 @@
 import { connectOracle } from './db';
+import oracledb from 'oracledb';
 
 /**
  * Busca produtos do vendedor com filtros opcionais
@@ -1235,6 +1236,8 @@ export async function getPriceSuggestions(
       margem_maxima,
       margem_alvo,
       limit
+    }, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
     });
     
     return result.rows || [];
