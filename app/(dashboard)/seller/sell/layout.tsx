@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 import Button from '@/components/ui/Button/Button';
-import ManualSaleModal from '@/components/dashboard/ManualSaleModal/ManualSaleModal';
-import BulkSaleUpload from '@/components/dashboard/BulkSaleUpload/BulkSaleUpload';
+import ManualSaleModal from '@/components/dashboard/Others/ManualSaleModal/ManualSaleModal';
+import BulkSaleUpload from '@/components/dashboard/Others/BulkSaleUpload/BulkSaleUpload';
 import type { ReactNode } from 'react';
 import { BiBarcodeReader, BiPlus, BiUpload} from "react-icons/bi";
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Modal from '../../ui/Modal/Modal';
+import Modal from '../../../ui/Modal/Modal';
 import styles from './BulkSaleUpload.module.css';
 import { BiUpload, BiX, BiCheck, BiError, BiChevronRight } from 'react-icons/bi';
 

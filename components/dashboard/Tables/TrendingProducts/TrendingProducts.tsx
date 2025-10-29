@@ -58,15 +58,15 @@ export default function TrendingProducts() {
     }, []);
 
     if (loading) {
-        return <div className={styles.trending_container}>Carregando...</div>;
+        return <div className={styles.loading}>Carregando...</div>;
     }
 
     if (error) {
-        return <div className={styles.trending_container}>{error}</div>;
+        return <div className={styles.error}>{error}</div>;
     }
 
     if (products.length === 0) {
-        return <div className={styles.trending_container}>Nenhum produto vendido ainda.</div>;
+        return <div className={styles.empty}>Nenhum produto vendido ainda.</div>;
     }
 
     const sortedProducts = [...products].sort((a, b) => b.vendas - a.vendas);

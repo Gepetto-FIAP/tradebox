@@ -12,12 +12,29 @@
     scrollbar-width: none;
 }
 
+.content:has(.loading) {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
 .chart_wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     padding: 0 20px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    opacity: 0.7;
+    color: var(--color-secondary);
 }
 
 

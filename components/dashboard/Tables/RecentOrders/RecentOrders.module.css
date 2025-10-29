@@ -1,26 +1,21 @@
 .loading {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  font-size: 1rem;
   color: var(--color-secondary);
-}
-
-.error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  color: #f55;
+  opacity: 0.7;
 }
 
 .empty {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  font-size: 1rem;
   color: var(--color-secondary);
   opacity: 0.7;
+}
+
+.error {
+  display: flex;
+  font-size: 1rem;
+  color: #f55;
 }
 
 .items_button {

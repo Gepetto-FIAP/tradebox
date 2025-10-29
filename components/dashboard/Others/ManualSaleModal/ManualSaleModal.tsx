@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Modal from '../../ui/Modal/Modal';
-import MoneyInput from '../../ui/InputMoney/InputMoney';
+import Modal from '../../../ui/Modal/Modal';
+import MoneyInput from '../../../ui/InputMoney/InputMoney';
 import styles from './ManualSaleModal.module.css';
 import { BiSearch, BiPlus, BiTrash, BiChevronRight } from 'react-icons/bi';
 

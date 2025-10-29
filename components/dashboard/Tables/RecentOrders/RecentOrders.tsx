@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Table from '../../../ui/Table/Table';
-import SaleItemsModal from '../../SaleItemsModal/SaleItemsModal';
+import SaleItemsModal from '../../Others/SaleItemsModal/SaleItemsModal';
 import styles from './RecentOrders.module.css';
 
 interface Order {
@@ -83,7 +83,7 @@ export default function RecentOrders() {
   if (loading) {
     return (
       <div className={styles.loading}>
-        <p>Carregando pedidos recentes...</p>
+        <p>Carregando...</p>
       </div>
     );
   }
@@ -99,7 +99,7 @@ export default function RecentOrders() {
   if (orders.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>Nenhuma venda realizada ainda</p>
+        <p>Nenhuma venda realizada ainda.</p>
       </div>
     );
   }
