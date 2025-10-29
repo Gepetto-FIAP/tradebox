@@ -8,12 +8,11 @@ import {  Result } from "@zxing/library";
 
 import { BiBasket, BiCartAdd, BiChevronRight, BiChevronUp, BiPlus, BiX, BiArrowBack, BiMinus  } from "react-icons/bi";
 import MoneyInput from '@/components/ui/InputMoney/InputMoney';
-import Button from '@/components/ui/Button/Button';
 
 
 // Aspect ratio and crop size factor
 const DESIRED_CROP_ASPECT_RATIO = 3 / 2;
-const CROP_SIZE_FACTOR = 0.3;
+const CROP_SIZE_FACTOR = 0.35;
 
 export default function CameraView() {
   const router = useRouter();
@@ -25,14 +24,16 @@ export default function CameraView() {
 
   const [productInfo, setProductInfo] = useState<any>(null);
   const [barcodeResult, setBarcodeResult] = useState<any>(null);
+  const [isDecoding, setIsDecoding] = useState<boolean>(true);
+  const [isConsulting, setIsConsulting] = useState<boolean>(false);
 
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (lineRef.current) {
-      lineRef.current.style.animationPlayState = barcodeResult ? 'paused' : 'running';
+      lineRef.current.style.animationPlayState = (!isDecoding || barcodeResult) ? 'paused' : 'running';
     }
-  }, [barcodeResult]);
+  }, [barcodeResult, isDecoding]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
@@ -156,13 +157,18 @@ export default function CameraView() {
       overlayDiv.style.boxSizing = 'border-box';
       
       const decodeCanvas = async () => {
+        // Só decodifica se o decoding estiver ativo e não estiver consultando
+        if (!isDecoding || isConsulting) return;
+        
         try {
           const result: Result = await codeReader.current.decodeFromCanvas(displayCanvas);
           const decodedText = result.getText();
           
           console.log("Decoded barcode:", decodedText);
 
-          consultarProduto(decodedText);
+          // Pausar decoding imediatamente após decodificar
+          setIsDecoding(false);
+          await consultarProduto(decodedText);
         
         } catch (err: unknown) {
           if (err instanceof Error && err.name !== "NotFoundException") {
@@ -212,8 +218,9 @@ export default function CameraView() {
 
   async function consultarProduto(codigo: string) {
     // Evitar múltiplas consultas do mesmo código enquanto já está processando
-    if (barcodeResult === codigo) return;
+    if (barcodeResult == codigo || isConsulting) return;
     
+    setIsConsulting(true);
     setBarcodeResult(codigo);
     setIsQuickRegister(false);
     
@@ -243,7 +250,7 @@ export default function CameraView() {
           ean: codigo,
           marca: product.industria_nome || 'Sem marca',
           categoria: product.categoria_nome || 'Sem categoria',
-          imageBase64: 'data:image/png;base64,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', // Produto local não tem imagem
+          imageBase64: 'data:image/png;base64,////vH7iifN+Dsk5CHx+//rG6b8+/gmvc5PQO1LoqZmZmZmZmZmZmZmZmZmZmZmZmZmVnHO/rA/c8efvjhw8/e/<kpy/X1/fO2z7FwJy255kj9bQdeWaPz2UmO/+CC+sZ9vI5CMwoPwLyIyA/AvIjID8C8iMgPwLyIyA/AvIjID8C8iMgPwLyIyA/AvIjID8C8vvDMX/s5RVw/QjIj4D8CMiPgPwIyI+A/AjIj4D8CMiPgPwIyI+A/GtNQH4E5J85gffUN9mf5V9/Ah+8qp5ld90t/ywIfPimeoYduEH+uezx53bqadt57nGfy4x27N77DkX9Q7+++5jPZHYGnnr6yYN33HHwyaefUt/MzMzMzMzMzMzMzMzMzMzMzMzMzHrefwBMHdh6qquiBgAAAABJRU5ErkJggg==', // Produto local não tem imagem
           preco_base: product.preco_base,
           estoque: product.estoque
         });
@@ -274,6 +281,8 @@ export default function CameraView() {
     } catch (err) {
       console.error('Erro ao consultar produto:', err);
       setProductInfo({ error: "Erro ao consultar produto." });
+    } finally {
+      setIsConsulting(false);
     }
   }
 
@@ -323,13 +332,8 @@ export default function CameraView() {
           estoque: data.product.estoque
         });
         
-        setProductInfo(null);
-        setBarcodeResult(null);
-        setProductValue(0);
-        setProductQuantity(1);
-        setProductStock(0);
-        setSelectedIndustry(null);
-        setIsQuickRegister(false);
+        // Resetar estados e reativar decoding
+        resetScanState();
       } else {
         alert(data.message || 'Erro ao cadastrar produto');
       }
@@ -337,6 +341,17 @@ export default function CameraView() {
       console.error('Erro ao cadastrar produto:', error);
       alert('Erro ao cadastrar produto');
     }
+  }
+
+  function resetScanState() {
+    setProductInfo(null);
+    setBarcodeResult(null);
+    setProductValue(0);
+    setProductQuantity(1);
+    setProductStock(0);
+    setSelectedIndustry(null);
+    setIsQuickRegister(false);
+    setIsDecoding(true); // Reativar decoding
   }
 
   function addToCart(product: any) {
@@ -408,20 +423,19 @@ export default function CameraView() {
       
       <button 
       style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, fontSize: '0.7rem' }}
-      onClick={() => consultarProduto("7894900700398 ")}
+      onClick={() => consultarProduto("78909434")}
       >
         Testar consulta ... 
 
       </button>
       
-      {/* Botão de voltar */}
       <button 
         className={styles.back_button}
         onClick={() => router.push('/seller/sell')}
         aria-label="Voltar"
       >
         <BiArrowBack />
-        Voltar
+        
       </button>
 
       {!error && (
@@ -452,6 +466,7 @@ export default function CameraView() {
         {barcodeResult && !productInfo && ( 
           <div>Consultando: {barcodeResult}</div>
         )}
+ 
 
         {productInfo && (
           <div className={styles.product_box}>
@@ -690,10 +705,7 @@ export default function CameraView() {
                             productValue: productValue / 100,
                             quantity: productQuantity
                           });
-                          setProductInfo(null);
-                          setBarcodeResult(null);
-                          setProductValue(0);
-                          setProductQuantity(1);
+                          resetScanState();
                         }
                       }}
                       >
@@ -719,13 +731,7 @@ export default function CameraView() {
               </div>
             )}
             <button className={styles.button_close} onClick={() => {
-              setProductInfo(null);
-              setBarcodeResult(null);
-              setProductValue(0);
-              setProductQuantity(1);
-              setProductStock(0);
-              setSelectedIndustry(null);
-              setIsQuickRegister(false);
+              resetScanState();
             }}>
                 <BiX />
               </button>
