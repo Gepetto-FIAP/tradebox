@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       data_venda: row[3],
       valor_total: row[4],
       quantidade_itens: row[5],
-      status: row[6],
+      status: row[6] ? String(row[6]).trim() : 'CONCLUIDA',
       observacoes: row[7],
       created_at: row[8],
       cliente_nome: row[9]
@@ -133,7 +133,8 @@ export async function POST(request: NextRequest) {
     
     // Verificar se todos os produtos pertencem ao vendedor
     const productIds = itens.map((item: any) => item.produto_id);
-    const placeholders = productIds.map((_: any, i: number) => `:pid${i}`).join(',');
+    const uniqueProductIds = [...new Set(productIds)]; // IDs únicos para validação
+    const placeholders = uniqueProductIds.map((_: any, i: number) => `:pid${i}`).join(',');
     
     const checkProductsQuery = `
       SELECT id FROM produtos
@@ -143,13 +144,13 @@ export async function POST(request: NextRequest) {
     `;
     
     const checkBinds: any = { vendedor_id: vendedorId };
-    productIds.forEach((id: number, i: number) => {
+    uniqueProductIds.forEach((id, i: number) => {
       checkBinds[`pid${i}`] = id;
     });
     
     const checkResult = await connection.execute(checkProductsQuery, checkBinds);
     
-    if (!checkResult.rows || checkResult.rows.length !== productIds.length) {
+    if (!checkResult.rows || checkResult.rows.length !== uniqueProductIds.length) {
       return errorResponse(
         'Produtos inválidos',
         'Um ou mais produtos não existem ou não pertencem a você',
@@ -157,8 +158,14 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Verificar estoque de cada produto
-    for (const item of itens) {
+    // Verificar estoque de cada produto (agrupando quantidades do mesmo produto)
+    const productQuantities = new Map<number, number>();
+    itens.forEach((item: any) => {
+      const currentQty = productQuantities.get(item.produto_id) || 0;
+      productQuantities.set(item.produto_id, currentQty + item.quantidade);
+    });
+    
+    for (const [produto_id, totalQuantidade] of productQuantities) {
       const stockQuery = `
         SELECT id, nome, estoque
         FROM produtos
@@ -170,7 +177,7 @@ export async function POST(request: NextRequest) {
       const stockResult = await connection.execute(
         stockQuery,
         { 
-          produto_id: item.produto_id, 
+          produto_id: produto_id, 
           vendedor_id: vendedorId 
         },
         { outFormat: require('oracledb').OUT_FORMAT_OBJECT }
@@ -179,10 +186,10 @@ export async function POST(request: NextRequest) {
       if (stockResult.rows && stockResult.rows.length > 0) {
         const produto: any = stockResult.rows[0];
         
-        if (produto.ESTOQUE < item.quantidade) {
+        if (produto.ESTOQUE < totalQuantidade) {
           return errorResponse(
             'Estoque insuficiente',
-            `Produto "${produto.NOME}" não possui estoque suficiente. Disponível: ${produto.ESTOQUE}, Solicitado: ${item.quantidade}`,
+            `Produto "${produto.NOME}" não possui estoque suficiente. Disponível: ${produto.ESTOQUE}, Solicitado: ${totalQuantidade}`,
             400
           );
         }
@@ -233,17 +240,22 @@ export async function POST(request: NextRequest) {
     
     // Inserir itens da venda
     for (const item of itens) {
+      // Calcular subtotal (garantir que sempre seja calculado)
+      const subtotal = item.quantidade * item.preco_unitario;
+      
       const insertItemQuery = `
         INSERT INTO itens_venda (
           venda_id,
           produto_id,
           quantidade,
-          preco_unitario
+          preco_unitario,
+          subtotal
         ) VALUES (
           :venda_id,
           :produto_id,
           :quantidade,
-          :preco_unitario
+          :preco_unitario,
+          :subtotal
         )
       `;
       
@@ -251,7 +263,8 @@ export async function POST(request: NextRequest) {
         venda_id: vendaId,
         produto_id: item.produto_id,
         quantidade: item.quantidade,
-        preco_unitario: item.preco_unitario
+        preco_unitario: item.preco_unitario,
+        subtotal: subtotal
       });
       
       // Atualizar estoque do produto
