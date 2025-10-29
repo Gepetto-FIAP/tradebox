@@ -159,7 +159,7 @@ export default function PricingInsightsWidget({
     );
   }
 
-  const hasLowMarginProducts = data?.total_produtos_baixa_margem > 0;
+  const hasLowMarginProducts = (data?.total_produtos_baixa_margem ?? 0) > 0;
   
   // Paginação
   const totalPages = data ? Math.ceil(data.sugestoes.length / PRODUCTS_PER_PAGE) : 0;
