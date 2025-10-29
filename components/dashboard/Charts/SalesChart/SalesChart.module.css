@@ -5,6 +5,7 @@
     border: 2px solid var(--color-border);
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
 }
 
 .chart_content {
@@ -22,10 +23,14 @@
 }
 
 .chart {
-    margin-top: -10%;
     scale: 1.01;
     filter: brightness(0.9) opacity(0.75);
-    transition: .3s ease;
+    transition: .3s ease; 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
 }
 
 .chart:hover {
