@@ -200,7 +200,7 @@ export async function POST(request: NextRequest) {
     // Verificar se GTIN + INDÚSTRIA já existe para este vendedor
     // Permite o mesmo GTIN de indústrias diferentes
     const checkQuery = `
-      SELECT COUNT(*) as count
+      SELECT id, ativo
       FROM produtos
       WHERE vendedor_id = :vendedor_id 
         AND gtin = :gtin
@@ -217,16 +217,104 @@ export async function POST(request: NextRequest) {
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
     
-    const count = (checkResult.rows?.[0] as any)?.COUNT || 0;
-    if (count > 0) {
-      const industryMsg = industria_id 
-        ? 'desta indústria' 
-        : 'sem indústria associada';
-      return errorResponse(
-        'Produto duplicado',
-        `Você já possui este produto (GTIN: ${gtin}) cadastrado ${industryMsg}. Para cadastrar o mesmo produto de outra indústria, selecione uma indústria diferente.`,
-        400
-      );
+    // Se produto existe
+    if (checkResult.rows && checkResult.rows.length > 0) {
+      const existingProduct: any = checkResult.rows[0];
+      
+      // Se produto está ATIVO, retornar erro de duplicação
+      if (existingProduct.ATIVO === 'Y') {
+        const industryMsg = industria_id 
+          ? 'desta indústria' 
+          : 'sem indústria associada';
+        return errorResponse(
+          'Produto duplicado',
+          `Você já possui este produto (GTIN: ${gtin}) cadastrado ${industryMsg}. Para cadastrar o mesmo produto de outra indústria, selecione uma indústria diferente.`,
+          400
+        );
+      }
+      
+      // Se produto está INATIVO, reativar e atualizar dados
+      if (existingProduct.ATIVO === 'N') {
+        const updateQuery = `
+          UPDATE produtos
+          SET 
+            nome = :nome,
+            descricao = :descricao,
+            preco_base = :preco_base,
+            preco_custo = :preco_custo,
+            estoque = :estoque,
+            categoria_id = :categoria_id,
+            ativo = 'Y',
+            updated_at = CURRENT_TIMESTAMP
+          WHERE id = :product_id AND vendedor_id = :vendedor_id
+        `;
+        
+        await connection.execute(updateQuery, {
+          product_id: existingProduct.ID,
+          vendedor_id: vendedorId,
+          nome,
+          descricao: descricao || null,
+          preco_base,
+          preco_custo: preco_custo || 0,
+          estoque,
+          categoria_id: categoria_id || null
+        }, { autoCommit: true });
+        
+        // Buscar produto reativado com joins
+        const selectQuery = `
+          SELECT 
+            p.id,
+            p.vendedor_id,
+            p.industria_id,
+            p.categoria_id,
+            p.gtin,
+            p.nome,
+            p.descricao,
+            p.preco_base,
+            p.preco_custo,
+            p.estoque,
+            p.ativo,
+            p.created_at,
+            p.updated_at,
+            c.nome as categoria_nome,
+            u.nome as industria_nome
+          FROM produtos p
+          LEFT JOIN categorias c ON p.categoria_id = c.id
+          LEFT JOIN usuarios u ON p.industria_id = u.id
+          WHERE p.id = :product_id
+        `;
+        
+        const selectResult = await connection.execute(
+          selectQuery, 
+          { product_id: existingProduct.ID },
+          { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+        const row: any = selectResult.rows?.[0];
+        
+        const product = {
+          id: row.ID,
+          vendedor_id: row.VENDEDOR_ID,
+          industria_id: row.INDUSTRIA_ID,
+          categoria_id: row.CATEGORIA_ID,
+          gtin: row.GTIN,
+          nome: row.NOME,
+          descricao: row.DESCRICAO,
+          preco_base: row.PRECO_BASE,
+          preco_custo: row.PRECO_CUSTO,
+          estoque: row.ESTOQUE,
+          ativo: row.ATIVO,
+          created_at: row.CREATED_AT,
+          updated_at: row.UPDATED_AT,
+          categoria_nome: row.CATEGORIA_NOME,
+          industria_nome: row.INDUSTRIA_NOME
+        };
+        
+        return successResponse(
+          { product, reativado: true },
+          'Produto reativado e atualizado com sucesso',
+          200
+        );
+      }
     }
     
     // Se industria_id fornecida, verificar se é INDUSTRIA
