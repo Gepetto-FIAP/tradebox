@@ -1,5 +1,4 @@
 ﻿import Link from 'next/link';
-import Image from 'next/image';
 import styles from './page.module.css';
 import { BiStore, BiBuildings, BiLineChart, BiPackage, BiTrendingUp, BiCheckCircle, BiRocket, BiShield, BiSupport, BiCartAlt } from 'react-icons/bi';
 import CardData from '@/components/dashboard/Cards/CardData/CardData';

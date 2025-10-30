@@ -146,9 +146,8 @@ export default function ProductList() {
       key: 'preco_custo',
       header: 'Preço de Custo',
       render: (value: number, row: Product) => (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span style={{ fontWeight: '500', color: 'var(--color-text)', opacity: 0.7 }}>R$</span>
+        <div className={styles.value_input_container}>
+            <div className={styles.value_input_currency}>R$</div>
             <input 
               type="number" 
               step="0.01"
@@ -163,16 +162,9 @@ export default function ProductList() {
               }}
               disabled={updating === row.id}
               placeholder="0.00"
-              style={{ 
-                padding: '6px 10px', 
-                borderRadius: '4px', 
-                border: '1px solid var(--color-border)',
-                width: '90px'
-              }}
+     
             />
-          </div>
-          {updating === row.id && <BiLoader className={styles.spinner} />}
-        </div>
+        </ div>
       )
     },
     {

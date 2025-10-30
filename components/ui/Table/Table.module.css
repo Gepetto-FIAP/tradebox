@@ -56,11 +56,11 @@
     cursor: text;
 }
 
-.table_row div:first-child, .table_row div:first-child input {
+.table_row .table_col:first-child, .table_row .table_col:first-child input {
     text-align: left;
 }
 
-.table_row div:last-child, .table_row div:last-child input {
+.table_row .table_col:last-child, .table_row .table_col:last-child input {
     text-align: right;
     display: flex;
     justify-content: flex-end;

@@ -25,6 +25,24 @@
     color: var(--color-primary);
 }
 
+.value_input_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.value_input_container .value_input_currency {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 8px;
+    color: var(--color-secondary);
+    opacity: 0.4;
+}
+
 @keyframes spin {
     from {
         transform: rotate(0deg);
