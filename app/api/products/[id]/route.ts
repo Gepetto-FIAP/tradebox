@@ -351,7 +351,7 @@ export async function PATCH(
 
 /**
  * DELETE /api/products/[id]
- * Deleta produto permanentemente (hard delete)
+ * Deleta produto (soft delete se houver vendas, hard delete caso contrário)
  */
 export async function DELETE(
   request: NextRequest,
@@ -383,14 +383,14 @@ export async function DELETE(
     
     // Verificar se produto existe e pertence ao vendedor
     const checkQuery = `
-      SELECT id FROM produtos
+      SELECT id, nome FROM produtos
       WHERE id = :product_id AND vendedor_id = :vendedor_id
     `;
     
     const checkResult = await connection.execute(checkQuery, {
       product_id: productId,
       vendedor_id: vendedorId
-    });
+    }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
     
     if (!checkResult.rows || checkResult.rows.length === 0) {
       return errorResponse(
@@ -400,21 +400,57 @@ export async function DELETE(
       );
     }
     
-    // Hard delete: remove permanentemente do banco de dados
-    const deleteQuery = `
-      DELETE FROM produtos
-      WHERE id = :product_id AND vendedor_id = :vendedor_id
+    const productName = (checkResult.rows[0] as any).NOME;
+    
+    // Verificar se existem vendas relacionadas ao produto
+    const checkSalesQuery = `
+      SELECT COUNT(*) as count FROM itens_venda
+      WHERE produto_id = :product_id
     `;
     
-    await connection.execute(deleteQuery, {
-      product_id: productId,
-      vendedor_id: vendedorId
-    }, { autoCommit: true });
+    const salesResult = await connection.execute(checkSalesQuery, {
+      product_id: productId
+    }, { outFormat: oracledb.OUT_FORMAT_OBJECT });
     
-    return successResponse(
-      {},
-      'Produto removido com sucesso'
-    );
+    const salesCount = (salesResult.rows?.[0] as any)?.COUNT || 0;
+    
+    if (salesCount > 0) {
+      // Se houver vendas relacionadas, fazer SOFT DELETE (marcar como inativo e zerar estoque)
+      const softDeleteQuery = `
+        UPDATE produtos
+        SET ativo = 'N', estoque = 0, updated_at = CURRENT_TIMESTAMP
+        WHERE id = :product_id AND vendedor_id = :vendedor_id
+      `;
+      
+      await connection.execute(softDeleteQuery, {
+        product_id: productId,
+        vendedor_id: vendedorId
+      }, { autoCommit: true });
+      
+      return successResponse(
+        { 
+          tipo_remocao: 'soft_delete',
+          vendas_relacionadas: salesCount
+        },
+        `Produto "${productName}" desativado com sucesso. O produto possui ${salesCount} venda(s) relacionada(s), foi marcado como inativo e seu estoque foi zerado para preservar o histórico.`
+      );
+    } else {
+      // Se não houver vendas, pode fazer HARD DELETE (remoção permanente)
+      const deleteQuery = `
+        DELETE FROM produtos
+        WHERE id = :product_id AND vendedor_id = :vendedor_id
+      `;
+      
+      await connection.execute(deleteQuery, {
+        product_id: productId,
+        vendedor_id: vendedorId
+      }, { autoCommit: true });
+      
+      return successResponse(
+        { tipo_remocao: 'hard_delete' },
+        `Produto "${productName}" removido permanentemente com sucesso`
+      );
+    }
     
   } catch (error) {
     console.error('Error deleting product:', error);
