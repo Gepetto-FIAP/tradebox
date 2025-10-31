@@ -519,6 +519,202 @@ Retorna dados completos para dashboard de analytics.
 
 ---
 
+#### 15. **POST** `/api/products/batch`
+Busca múltiplos produtos por GTIN em uma única requisição.
+
+**Body:**
+```json
+{
+  "gtins": [
+    "7891234567890",
+    "7891234567891",
+    "7891234567892"
+  ]
+}
+```
+
+**Validações:**
+- Array não pode estar vazio
+- Máximo de 100 GTINs por requisição
+
+**Response:**
+```json
+{
+  "success": true,
+  "results": {
+    "7891234567890": [
+      {
+        "id": 1,
+        "nome": "Arroz Integral 1kg",
+        "preco_base": 8.90,
+        "estoque": 100,
+        ...
+      }
+    ]
+  },
+  "not_found": ["7891234567892"],
+  "summary": {
+    "total_requested": 3,
+    "found": 2,
+    "not_found": 1
+  }
+}
+```
+
+**Uso:** Busca em lote durante upload de vendas via CSV ou escaneamento múltiplo.
+
+---
+
+#### 16. **GET** `/api/dashboard/daily-sales`
+Retorna dados de vendas dos últimos 7 dias agrupados por dia.
+
+**Response:**
+```json
+{
+  "success": true,
+  "dailySales": [
+    {
+      "date": "2024-10-18",
+      "day": "seg",
+      "qtd_vendas": 5,
+      "receita": 234.50,
+      "qtd_itens": 15
+    },
+    {
+      "date": "2024-10-19",
+      "day": "ter",
+      "qtd_vendas": 8,
+      "receita": 412.30,
+      "qtd_itens": 24
+    }
+  ]
+}
+```
+
+**Notas:**
+- Sempre retorna 7 dias (do dia atual -6 até hoje)
+- Dias sem vendas aparecem com valores zerados
+- Útil para gráfico de vendas por dia da semana
+
+---
+
+#### 17. **GET** `/api/dashboard/profit-analysis`
+Retorna análises detalhadas de lucro e margem de produtos.
+
+**Query Parameters:**
+- `periodo_dias` (number, opcional): Dias para análise (padrão: 30)
+- `limit_produtos` (number, opcional): Produtos no ranking (padrão: 10)
+- `limit_vendas` (number, opcional): Vendas analisadas (padrão: 20)
+- `margem_minima` (number, opcional): Margem mínima % (padrão: 20)
+
+**Response:**
+```json
+{
+  "success": true,
+  "periodo_dias": 30,
+  "resumo": {
+    "lucro_total": 5432.10,
+    "receita_total": 25000.00,
+    "margem_global": 21.73,
+    "produtos_baixa_margem": 3
+  },
+  "produtos_lucrativos": [
+    {
+      "produto_id": 1,
+      "nome": "Arroz Integral 1kg",
+      "gtin": "7891234567890",
+      "qtd_vendas": 45,
+      "qtd_vendida": 120,
+      "receita_total": 1068.00,
+      "custo_total": 720.00,
+      "lucro_total": 348.00,
+      "margem_media": 32.55
+    }
+  ],
+  "analise_vendas": [
+    {
+      "venda_id": 1,
+      "data_venda": "2024-10-18T14:30:00.000Z",
+      "receita_total": 89.70,
+      "custo_total": 60.00,
+      "lucro_total": 29.70,
+      "margem_percentual": 33.11
+    }
+  ],
+  "margem_por_industria": [
+    {
+      "industria": "Indústria ABC",
+      "qtd_produtos": 5,
+      "margem_media": 28.50,
+      "receita_gerada": 5000.00,
+      "custo_total": 3500.00,
+      "lucro_total": 1500.00
+    }
+  ],
+  "alertas_margem_baixa": [
+    {
+      "produto_id": 2,
+      "nome": "Produto X",
+      "preco_custo": 8.50,
+      "preco_base": 10.00,
+      "lucro_unitario": 1.50,
+      "margem_percentual": 17.65
+    }
+  ]
+}
+```
+
+**Dados Inclusos:**
+- **resumo**: Métricas agregadas de lucro e margem
+- **produtos_lucrativos**: Top produtos por lucratividade
+- **analise_vendas**: Lucro e margem por venda individual
+- **margem_por_industria**: Performance por parceiro de indústria
+- **alertas_margem_baixa**: Produtos com margem abaixo do esperado
+
+**Uso:** Dashboard de análise de rentabilidade, identificação de produtos problemáticos.
+
+---
+
+#### 18. **GET** `/api/gtin`
+Consulta informações de produto na API externa GTIN.
+
+**Query Parameters:**
+- `codigo` ou `code` (string, obrigatório): Código GTIN/EAN
+
+**Response (Sucesso):**
+```json
+{
+  "success": true,
+  "product": {
+    "gtin": "7891234567890",
+    "nome": "Arroz Integral 1kg",
+    "descricao": "Arroz integral tipo 1, pacote 1kg",
+    "marca": "Marca X",
+    "categoria": "Alimentos",
+    "imageBase64": "data:image/jpeg;base64,/9j/4AAQ..."
+  }
+}
+```
+
+**Response (Não Encontrado):**
+```json
+{
+  "success": false,
+  "error": "Produto não encontrado na base GTIN."
+}
+```
+
+**Erros:**
+- `400`: Código não informado
+- `404`: Produto não encontrado
+- `500`: Erro na comunicação com API externa
+
+**Uso:** Scanner de código de barras, cadastro rápido de produtos.
+
+**Nota:** Requer credenciais GTIN configuradas em variáveis de ambiente.
+
+---
+
 ## Fluxos de Uso
 
 ### Fluxo: Cadastrar Produto via Scan

@@ -319,6 +319,105 @@ Retorna dados completos de analytics.
 
 ---
 
+#### 8. **PATCH** `/api/industry/products/[id]/price`
+Atualiza o preço de custo de um produto específico.
+
+**Permissão:** Apenas a indústria associada ao produto pode atualizar.
+
+**Body:**
+```json
+{
+  "preco_custo": 7.50
+}
+```
+
+**Validações:**
+- `preco_custo` é obrigatório
+- Deve ser um número >= 0
+- Não pode ser maior que o `preco_base` do produto
+
+**Response (Sucesso):**
+```json
+{
+  "success": true,
+  "message": "Preço de custo atualizado com sucesso",
+  "product": {
+    "id": 1,
+    "nome": "Arroz Integral 1kg",
+    "gtin": "7891234567890",
+    "preco_base": 8.90,
+    "preco_custo": 7.50,
+    "lucro_unitario": 1.40,
+    "margem_percentual": 18.67,
+    "vendedor_nome": "João Silva"
+  }
+}
+```
+
+**Erros:**
+- `400`: Validação falhou (preço negativo ou maior que base)
+- `403`: Acesso negado (produto não pertence à indústria)
+- `404`: Produto não encontrado
+
+**Uso:** Gestão de preços de custo, ajuste de margens, recomendações de preço.
+
+---
+
+#### 9. **GET** `/api/industry/dashboard/pricing-insights`
+Retorna insights de preços e sugestões de ajustes para melhorar margens.
+
+**Query Parameters:**
+- `margem_maxima` (number, opcional): Margem máxima % para alertar (padrão: 15)
+- `margem_alvo` (number, opcional): Margem alvo % desejada (padrão: 25)
+- `limit` (number, opcional): Quantidade de sugestões (padrão: 20)
+
+**Response:**
+```json
+{
+  "success": true,
+  "insights": {
+    "total_produtos_baixa_margem": 8,
+    "margem_media_atual": 19.45,
+    "margem_alvo": 25,
+    "sugestoes": [
+      {
+        "produto_id": 1,
+        "nome": "Arroz Integral 1kg",
+        "gtin": "7891234567890",
+        "vendedor": "João Silva",
+        "preco_custo_atual": 8.00,
+        "preco_base": 8.90,
+        "margem_atual": 11.25,
+        "preco_custo_sugerido": 7.12,
+        "margem_alvo": 25.0,
+        "reducao_necessaria": 0.88
+      }
+    ]
+  }
+}
+```
+
+**Dados Inclusos:**
+- **total_produtos_baixa_margem**: Quantidade de produtos com margem abaixo do esperado
+- **margem_media_atual**: Margem média de todos os produtos da indústria
+- **margem_alvo**: Meta de margem configurada
+- **sugestoes**: Lista de produtos com sugestões de ajuste de preço de custo
+
+**Uso:** 
+- Identificar produtos com margem baixa
+- Receber sugestões automáticas de ajuste de preço de custo
+- Tomar decisões de precificação baseadas em dados
+- Negociar com vendedores sobre preços de venda
+
+**Exemplo de Caso de Uso:**
+1. Indústria consulta pricing insights
+2. Identifica produtos com margem < 15%
+3. Vê sugestão de reduzir custo de R$ 8,00 para R$ 7,12
+4. Usa endpoint `/api/industry/products/[id]/price` para ajustar
+5. Margem sobe de 11.25% para 25%
+
+---
+
 ## Casos de Uso
 
 ### 1. Dashboard Principal da Indústria
