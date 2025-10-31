@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { BiShow, BiTrendingDown } from 'react-icons/bi';
+import { BiDotsVerticalRounded  } from 'react-icons/bi';
 import Modal from '@/components/ui/Modal/Modal';
 import Table from '@/components/ui/Table/Table';
 import styles from './ProfitCard.module.css';
@@ -186,7 +186,7 @@ export default function ProfitCard({
     const ratio = currentMargin / targetMargin;
     
     if (ratio >= 1.2) return '#10b981'; // Verde - Muito acima da meta (120%+)
-    if (ratio >= 1.0) return '#3b82f6'; // Azul - Atingiu ou superou a meta (100%+)
+    if (ratio >= 1.0) return '#01b5fa'; // Azul - Atingiu ou superou a meta (100%+)
     if (ratio >= 0.7) return '#f59e0b'; // Laranja - Próximo da meta (70%+)
     return '#ef4444'; // Vermelho - Muito abaixo da meta (<70%)
   };
@@ -194,7 +194,10 @@ export default function ProfitCard({
   // Calcular a cor e intensidade de cada square
   const getSquareColor = (index: number, currentMargin: number, targetMargin: number) => {
     const baseColor = getColorByMarginRatio(currentMargin, targetMargin);
-    const intensity = Math.min(1, Math.max(0.1, (currentMargin - index * (targetMargin / 20)) / (targetMargin / 20)));
+    // Intensidade baseada diretamente na porcentagem da margem atual
+    // Cada square representa ~5% da margem (currentMargin/4 para distribuir em 20 squares)
+    const marginPerSquare = currentMargin / 4;
+    const intensity = Math.min(1, Math.max(0.1, (currentMargin - index * marginPerSquare) / currentMargin));
     
     // Converter hex para RGB e aplicar opacidade
     const hex = baseColor.replace('#', '');
@@ -350,7 +353,6 @@ export default function ProfitCard({
                         rotateY(-50deg)
                       `,
                       backgroundColor: squareColor,
-                      opacity: opacity
                     }}
                   />
                 );
@@ -400,9 +402,7 @@ export default function ProfitCard({
               onClick={() => setShowModal(true)}
               className={styles.view_products_button}
             >
-              <BiTrendingDown />
-              <span>Ver Produtos</span>
-              <BiShow />
+              <BiDotsVerticalRounded/>
             </button>
           )}
         </div>

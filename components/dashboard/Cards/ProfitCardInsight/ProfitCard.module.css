@@ -10,6 +10,7 @@
     width: min-content;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
 .profit_label {
@@ -36,7 +37,7 @@
 }
 
 .profit_details_percentage, .profit_details_percentage input {
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 600;
     color: var(--color-secondary);
 }
@@ -167,34 +168,25 @@ button.active  {
 .view_products_button {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, var(--color-primary-20), var(--color-primary-10));
-    border: 1px solid var(--color-primary);
-    border-radius: 6px;
-    color: var(--color-primary);
-    font-weight: 500;
-    font-size: 0.8rem;
+    padding: 20px 10px;
+    background: transparent;
+    border: none;
+    color: var(--color-secondary);
+    opacity: 0.8;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.2rem;
 }
 
 .view_products_button:hover {
-    background: linear-gradient(135deg, var(--color-primary-40), var(--color-primary-30));
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    filter: brightness(.5);
 }
 
-.view_products_button svg:first-child {
-    font-size: 1rem;
-}
 
-.view_products_button svg:last-child {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
 
 .modal_content {
     max-height: 70vh;
@@ -233,14 +225,6 @@ button.active  {
 }
 
 @media (max-width: 700px) {
-    .view_products_button span {
-        display: none;
-    }
-
-    .view_products_button {
-        padding: 6px 12px;
-        gap: 4px;
-    }
 
     .modal_content {
         max-height: 80vh;
@@ -279,12 +263,6 @@ button.active  {
     color: var(--color-secondary);
 }
 
-.profit_details_divider {
-    font-size: 2rem;
-    color: var(--color-muted);
-    align-self: center;
-}
-
 .profit_details_margin {
     display: flex;
     justify-content: center;
@@ -292,18 +270,42 @@ button.active  {
     text-align: center;
     height: min-content;
     transition: .3s;
-    gap: 5px;
 }
 
+.profit_details_target_margin {
+    opacity: 0;
+    width: 0;
+    transition: all 0.3s ease;
+}
+
+.profit_details_divider {
+    font-size: 2rem;
+    color: var(--color-muted);
+    align-self: center;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.profit_container:hover .profit_details_divider {
+    opacity: 1;
+    width: auto;
+}
+
+.profit_container:hover .profit_details_target_margin {
+    opacity: 1;
+    width: auto;
+}
 
 .profit_details_current_margin, .profit_details_target_margin {
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
 }
 
-
-.profit_details_percentage  {
+.profit_details_percentage {
     display: flex;
 }
 
@@ -334,9 +336,10 @@ button.active  {
 .profit_details_target_margin .profit_details_percentage {
     opacity: 0.6;
     padding: 0 4px;
-    transition: .3s;
+    transition: all 0.3s ease;
     background: transparent;
     outline: 2px solid transparent;
+    outline-offset: -2px;
 }
 
 .profit_details_percentage:has(:focus) {
@@ -345,8 +348,6 @@ button.active  {
     opacity: 1;
     border-radius: 4px;
     color: var(--color-primary);
-
-    
 }
 
 .profit_details_percentage input:focus {
