@@ -155,14 +155,14 @@ O script de inicialização cria automaticamente usuários de teste. Você pode 
 
 **Varejista (Seller):**
 ```
-Email: joao.silva@email.com
-Senha: password123
+Email: joao@varejista.com
+Senha: tradebox123
 ```
 
 **Indústria (Industry):**
 ```
-Email: maria.santos@industria.com
-Senha: password123
+Email: comercial@nestle.com.br
+Senha: tradebox123
 ```
 
 #### Páginas Principais

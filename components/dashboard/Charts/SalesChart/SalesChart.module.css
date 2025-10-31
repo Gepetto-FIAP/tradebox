@@ -73,3 +73,11 @@
         font-size: 1.8rem;
     }
 }
+
+
+@media (max-width: 700px) {
+    .chart {
+        position: relative;
+        margin: 0;
+    }
+}

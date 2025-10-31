@@ -12,15 +12,8 @@ export default async function ScanLayout({
   await requireAuth();
 
   return (
-    <div style={{ position: 'relative', minHeight: '100dvh' }}>
-      <div style={{
-        position: 'absolute',
-        top: 16,
-        right: 16,
-        zIndex: 1000,
-      }}>
-        <LogoutButton variant="icon" />
-      </div>
+    <div>
+      
       {children}
     </div>
   );

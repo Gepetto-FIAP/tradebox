@@ -1,5 +1,10 @@
 :root {
   --color-bg-dark: #00384d;
+  --color-bg-dark-60: rgba(0, 56, 77, 0.6);
+  --color-bg-dark-40: rgba(0, 56, 77, 0.4);
+  --color-bg-dark-30: rgba(0, 56, 77, 0.3);
+  --color-bg-dark-10: rgba(0, 56, 77, 0.1);
+
   --color-bg-light: #ffffff;
   --color-primary: #01b5fa;
   --color-primary-60: #01b3fa60;

@@ -12,16 +12,17 @@
 
 .back_button {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--color-bg-dark-60);
+    border: 1px solid var(--color-bg-dark);
+    backdrop-filter: blur(10px) opacity(0.8);
+    border: none;
     border-radius: 8px;
     color: var(--color-secondary);
     font-size: 1rem;
@@ -32,13 +33,7 @@
 }
 
 .back_button:hover {
-    background: rgba(0, 0, 0, 0.8);
-    border-color: var(--color-accent);
-    transform: translateX(-2px);
-}
-
-.back_button svg {
-    font-size: 1.2rem;
+    background: var(--color-bg-dark-40);
 }
 
 .cam_wrapper {
@@ -311,7 +306,7 @@ video.video {
     z-index: 2;
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
-    border-top: 2px solid var(--color-bg-dark);
+    border-top: 3px solid var(--color-primary);
     height: 0%;
     min-height: max-content;
     transition: height .3s ease-in-out;
@@ -342,7 +337,7 @@ button.basket_open_button {
     justify-content: center;
     border-radius: 50px;
     border: none;
-    background: var(--color-bg-dark);
+    background: var(--color-primary);
     color: var(--color-text);
     transition: rotate .3s ease;
 }

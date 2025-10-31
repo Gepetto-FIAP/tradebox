@@ -6,6 +6,7 @@ import styles from './page.module.css';
 import Table from '@/components/ui/Table/Table';
 import CardData from '@/components/dashboard/Cards/CardData/CardData';
 import { BiStoreAlt, BiBasket, BiLineChart, BiDollar } from "react-icons/bi";
+import ProfitCard from '@/components/dashboard/Cards/ProfitCardInsight/ProfitCard';
 
 type Period = '7d' | '30d' | '90d';
 
@@ -116,7 +117,6 @@ export default function IndustryDashboard() {
 
   return (
     <>
-      {/* Period Toggle - Positioned in top right */}
       <div className={styles.period_toggle}>
         <button
           onClick={() => setPeriodo('7d')}
@@ -144,16 +144,17 @@ export default function IndustryDashboard() {
           Vendedores em alta
         </div>
         {loading ? (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>Carregando...</div>
+          <div className={styles.loading}>Carregando...</div>
         ) : sellers.length > 0 ? (
           <Table columns={columns} data={sellersWithRank} />
         ) : (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>Sem dados para o período</div>
+          <div className={styles.empty}>Sem dados para o período</div>
         )}
       </div>
 
       <div className={styles.profit_wrapper}>
-        <PricingInsightsWidget />
+        
+        <ProfitCard />
       </div>
 
       <div className={styles.cards_data_wrapper}>
@@ -194,6 +195,8 @@ export default function IndustryDashboard() {
         )}
       </div>
       </div>
+
+
     </>
   );
 }

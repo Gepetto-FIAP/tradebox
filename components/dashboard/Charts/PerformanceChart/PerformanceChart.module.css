@@ -1,0 +1,19 @@
+.loading {
+  display: flex;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  opacity: 0.7;
+}
+
+.empty {
+  display: flex;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  opacity: 0.7;
+}
+
+.error {
+  display: flex;
+  font-size: 1rem;
+  color: #f55;
+}

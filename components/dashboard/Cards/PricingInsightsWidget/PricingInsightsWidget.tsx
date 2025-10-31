@@ -66,7 +66,9 @@ export default function PricingInsightsWidget({
         // Inicializar valores de edição
         const initialValues: {[key: string]: any} = {};
         result.insights.sugestoes.forEach((product: ProductSuggestion) => {
-          initialValues[`${product.produto_id}-preco_custo`] = product.preco_custo_atual || 0;
+          const currentCost = product.preco_custo_atual;
+          initialValues[`${product.produto_id}-preco_custo`] = 
+            (currentCost && typeof currentCost === 'number') ? currentCost : 0;
         });
         setEditingValues(initialValues);
       } else {
@@ -126,9 +128,10 @@ export default function PricingInsightsWidget({
       if (data) {
         const product = data.sugestoes.find(p => p.produto_id === productId);
         if (product) {
+          const currentCost = product.preco_custo_atual;
           setEditingValues(prev => ({
             ...prev,
-            [`${productId}-preco_custo`]: product.preco_custo_atual
+            [`${productId}-preco_custo`]: (currentCost && typeof currentCost === 'number') ? currentCost : 0
           }));
         }
       }
@@ -176,7 +179,9 @@ export default function PricingInsightsWidget({
   };
 
   return (
-    <div className={styles.pricing_container}>
+    <>
+
+    <div className={styles.pricing_container} style={{ display: 'flex' }}>
       {loading && (
         <div className={styles.loading_overlay}>
           <BiLoader className={styles.loading_spinner} />
@@ -186,8 +191,12 @@ export default function PricingInsightsWidget({
       <div className={styles.pricing_label}>
         Insights de Precificação
       </div>
+      
+
 
       <div className={styles.pricing_content}>
+
+        
         <div className={styles.pricing_stats}>
           <div className={styles.stat_card}>
             <div className={styles.stat_label}>Produtos com Baixa Margem</div>
@@ -199,7 +208,9 @@ export default function PricingInsightsWidget({
           <div className={styles.stat_card}>
             <div className={styles.stat_label}>Margem Média Atual</div>
             <div className={styles.stat_value}>
-              {data?.margem_media_atual?.toFixed(1) ?? '0.0'}%
+              {(data?.margem_media_atual && typeof data.margem_media_atual === 'number') 
+                ? data.margem_media_atual.toFixed(1) 
+                : '0.0'}%
             </div>
           </div>
 
@@ -275,7 +286,9 @@ export default function PricingInsightsWidget({
                   <div className={styles.product_info}>
                     <div className={styles.product_name}>{product.nome}</div>
                     <div className={styles.product_details}>
-                      {product.vendedor} • Margem atual: {product.margem_atual.toFixed(1)}%
+                      {product.vendedor} • Margem atual: {(product.margem_atual && typeof product.margem_atual === 'number') 
+                        ? product.margem_atual.toFixed(1) 
+                        : '0.0'}%
                     </div>
                   </div>
                   
@@ -287,7 +300,9 @@ export default function PricingInsightsWidget({
                         <input
                           type="number"
                           step="0.01"
-                          value={editingValues[`${product.produto_id}-preco_custo`] || ''}
+                          value={editingValues[`${product.produto_id}-preco_custo`] || 
+                                 (product.preco_custo_atual && typeof product.preco_custo_atual === 'number' 
+                                  ? product.preco_custo_atual : 0)}
                           min="0"
                           onChange={(e) => handleInputChange(product.produto_id, e.target.value)}
                           onBlur={(e) => handleCostChange(product.produto_id, e.target.value)}
@@ -307,20 +322,24 @@ export default function PricingInsightsWidget({
                     <div className={styles.price_item}>
                       <span className={styles.price_label}>Sugerido:</span>
                       <span className={styles.price_value}>
-                        {product.preco_custo_sugerido.toLocaleString('pt-BR', { 
-                          style: 'currency', 
-                          currency: 'BRL' 
-                        })}
+                        {(product.preco_custo_sugerido && typeof product.preco_custo_sugerido === 'number') 
+                          ? product.preco_custo_sugerido.toLocaleString('pt-BR', { 
+                              style: 'currency', 
+                              currency: 'BRL' 
+                            })
+                          : 'R$ 0,00'}
                       </span>
                     </div>
                     
                     <div className={styles.price_item}>
                       <span className={styles.price_label}>Preço Seller:</span>
                       <span className={styles.price_value}>
-                        {product.preco_base.toLocaleString('pt-BR', { 
-                          style: 'currency', 
-                          currency: 'BRL' 
-                        })}
+                        {(product.preco_base && typeof product.preco_base === 'number') 
+                          ? product.preco_base.toLocaleString('pt-BR', { 
+                              style: 'currency', 
+                              currency: 'BRL' 
+                            })
+                          : 'R$ 0,00'}
                       </span>
                     </div>
                   </div>
@@ -331,6 +350,7 @@ export default function PricingInsightsWidget({
         )}
       </div>
     </div>
+    </>
   );
 }
 
