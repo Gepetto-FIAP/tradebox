@@ -130,6 +130,9 @@ ORACLE_USER=seu_usuario
 ORACLE_PASSWORD=sua_senha
 ORACLE_CONNECT_STRING=localhost:1521/XEPDB1
 
+GTIN_USERNAME=usuario // disponível em https://gtin.rscsistemas.com.br/main
+GTIN_PASSWORD=senha 
+
 # JWT Secret (use uma chave forte e aleatória!)
 JWT_SECRET=mude-isso-para-uma-chave-forte-e-segura-em-producao
 
@@ -477,8 +480,8 @@ O script `INIT_DATABASE.sql` já cria usuários e dados de teste:
 
 | Email | Senha | Categoria | Descrição |
 |-------|-------|-----------|-----------|
-| joao.silva@email.com | password123 | VAREJISTA | Vendedor de teste |
-| maria.santos@industria.com | password123 | INDUSTRIA | Indústria de teste |
+| joao@varejista.com | tradebox123 | VAREJISTA | Vendedor de teste |
+| comercial@nestle.com.br | tradebox123 | INDUSTRIA | Indústria de teste |
 
 #### Categorias
 - Alimentos e Bebidas
@@ -490,13 +493,13 @@ O script `INIT_DATABASE.sql` já cria usuários e dados de teste:
 ### Fluxo de Teste Sugerido
 
 1. **Teste como Indústria**:
-   - Login com maria.santos@industria.com
+   - Login com comercial@nestle.com.br
    - Cadastre alguns produtos com GTIN
    - Defina preços de custo
    - Visualize o dashboard
 
 2. **Teste como Varejista**:
-   - Login com joao.silva@email.com
+   - Login com joao@varejista.com
    - Navegue para "Minha Loja"
    - Escaneie ou cadastre produtos manualmente
    - Registre algumas vendas
@@ -522,6 +525,8 @@ O projeto já está configurado para deploy automático na Vercel:
    - `ORACLE_USER`
    - `ORACLE_PASSWORD`
    - `ORACLE_CONNECT_STRING`
+   - `GTIN_USERNAME`
+   - `GTIN_PASSWORD`
    - `JWT_SECRET`
 4. **Deploy!** 🎉
 
@@ -546,6 +551,8 @@ Crie um arquivo `.env.local` com as seguintes variáveis:
 | `ORACLE_USER` | Usuário do Oracle | `system` | ✅ Sim |
 | `ORACLE_PASSWORD` | Senha do Oracle | `oracle123` | ✅ Sim |
 | `ORACLE_CONNECT_STRING` | String de conexão | `localhost:1521/XEPDB1` | ✅ Sim |
+| `GTIN_USERNAME` | Usuário API GTIN | `username` | ✅ Sim |
+| `GTIN_PASSWORD` | Senha API GTIN | `password` | ✅ Sim |
 | `JWT_SECRET` | Chave secreta JWT | `sua-chave-super-secreta` | ✅ Sim |
 | `NODE_ENV` | Ambiente Node | `development` | ❌ Não |
 
