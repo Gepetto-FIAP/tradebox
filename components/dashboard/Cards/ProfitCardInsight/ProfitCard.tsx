@@ -194,10 +194,30 @@ export default function ProfitCard({
   // Calcular a cor e intensidade de cada square
   const getSquareColor = (index: number, currentMargin: number, targetMargin: number) => {
     const baseColor = getColorByMarginRatio(currentMargin, targetMargin);
-    // Intensidade baseada diretamente na porcentagem da margem atual
-    // Cada square representa ~5% da margem (currentMargin/4 para distribuir em 20 squares)
-    const marginPerSquare = currentMargin / 4;
-    const intensity = Math.min(1, Math.max(0.1, (currentMargin - index * marginPerSquare) / currentMargin));
+    
+    // Cada square representa 5% da margem (20 squares = 100%)
+    const marginPerSquare = 5;
+    const squareStartValue = index * marginPerSquare;
+    
+    let intensity = 0.1; // Intensidade mínima para todos os quadrados
+    
+    // Se a margem atual cobre completamente o square, intensidade 100%
+    if (currentMargin >= squareStartValue + marginPerSquare) {
+      intensity = 1.0;
+    }
+    // Se a margem atual cobre parcialmente o square, calcular a intensidade
+    else if (currentMargin > squareStartValue) {
+      const partialCoverage = (currentMargin - squareStartValue) / marginPerSquare;
+      intensity = Math.max(0.1, partialCoverage);
+    }
+    // Para squares além da margem atual, criar efeito degradê
+    else {
+      const distanceFromMargin = squareStartValue - currentMargin;
+      const maxDistance = 40; // Máximo 40% de distância para o efeito degradê
+      const fadeEffect = Math.max(0.1, 1 - (distanceFromMargin / maxDistance));
+      intensity = fadeEffect * 0.3; // Intensidade reduzida para o efeito degradê
+      intensity = Math.max(0.1, intensity);
+    }
     
     // Converter hex para RGB e aplicar opacidade
     const hex = baseColor.replace('#', '');
