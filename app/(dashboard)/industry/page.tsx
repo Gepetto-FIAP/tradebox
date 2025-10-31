@@ -144,11 +144,11 @@ export default function IndustryDashboard() {
           Vendedores em alta
         </div>
         {loading ? (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>Carregando...</div>
+          <div className={styles.loading}>Carregando...</div>
         ) : sellers.length > 0 ? (
           <Table columns={columns} data={sellersWithRank} />
         ) : (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>Sem dados para o período</div>
+          <div className={styles.empty}>Sem dados para o período</div>
         )}
       </div>
 

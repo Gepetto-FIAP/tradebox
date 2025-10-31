@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend, ScriptableContext } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import styles from './PerformanceChart.module.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Title, Tooltip, Legend);
 ChartJS.defaults.font.family = "'Urbanist', 'Helvetica', 'Arial', sans-serif";
@@ -134,9 +135,9 @@ export default function Chart(
             },
         };
 
-        if (loading) return <div>{'Carregando gráfico...'}</div>;
-        if (error) return <div>{`Erro: ${error}`}</div>;
-        if (!items.length) return <div>{'Sem dados para o período.'}</div>;
-        
+        if (loading) return <div className={styles.loading}>{'Carregando gráfico...'}</div>;
+        if (error) return <div className={styles.error}>{`Erro: ${error}`}</div>;
+        if (!items.length) return <div className={styles.empty}>{'Sem dados para o período.'}</div>;
+
         return <Bar data={data} options={options} />;
 }

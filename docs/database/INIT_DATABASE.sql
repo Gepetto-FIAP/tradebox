@@ -482,7 +482,7 @@ INSERT INTO usuarios (
     telefone, endereco, ativo
 ) VALUES (
     'joao@varejista.com',
-    '$2b$10$rOjLKZ5RxZ5RxZ5RxZ5RxeK7vGH4kqH4kqH4kqH4kqH4kqH4kqH4kq',
+    '$2b$10$5n7W0XfZTCFzZ4U5zC0yqOZHHIIr0xUEaYThXjSAdRsFZdz0HuxrC',
     'João Silva Santos',
     'VAREJISTA',
     'PF',
@@ -498,7 +498,7 @@ INSERT INTO usuarios (
     telefone, endereco, ativo
 ) VALUES (
     'contato@mercadinho.com',
-    '$2b$10$rOjLKZ5RxZ5RxZ5RxZ5RxeK7vGH4kqH4kqH4kqH4kqH4kqH4kqH4kq',
+    '$2b$10$5n7W0XfZTCFzZ4U5zC0yqOZHHIIr0xUEaYThXjSAdRsFZdz0HuxrC',
     'Mercadinho Bom Preço LTDA',
     'VAREJISTA',
     'PJ',
@@ -514,7 +514,7 @@ INSERT INTO usuarios (
     telefone, endereco, ativo
 ) VALUES (
     'vendas@cocacola.com.br',
-    '$2b$10$rOjLKZ5RxZ5RxZ5RxZ5RxeK7vGH4kqH4kqH4kqH4kqH4kqH4kqH4kq',
+    '$2b$10$5n7W0XfZTCFzZ4U5zC0yqOZHHIIr0xUEaYThXjSAdRsFZdz0HuxrC',
     'Coca-Cola Brasil S/A',
     'INDUSTRIA',
     'PJ',
@@ -530,7 +530,7 @@ INSERT INTO usuarios (
     telefone, endereco, ativo
 ) VALUES (
     'comercial@nestle.com.br',
-    '$2b$10$rOjLKZ5RxZ5RxZ5RxZ5RxeK7vGH4kqH4kqH4kqH4kqH4kqH4kqH4kq',
+    '$2b$10$5n7W0XfZTCFzZ4U5zC0yqOZHHIIr0xUEaYThXjSAdRsFZdz0HuxrC',
     'Nestlé Brasil LTDA',
     'INDUSTRIA',
     'PJ',
@@ -546,7 +546,7 @@ INSERT INTO usuarios (
     telefone, endereco, ativo
 ) VALUES (
     'contato@unilever.com.br',
-    '$2b$10$rOjLKZ5RxZ5RxZ5RxZ5RxeK7vGH4kqH4kqH4kqH4kqH4kqH4kqH4kq',
+    '$2b$10$5n7W0XfZTCFzZ4U5zC0yqOZHHIIr0xUEaYThXjSAdRsFZdz0HuxrC',
     'Unilever Brasil Industrial LTDA',
     'INDUSTRIA',
     'PJ',
